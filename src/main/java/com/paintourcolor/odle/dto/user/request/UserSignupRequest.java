@@ -16,8 +16,4 @@ public class UserSignupRequest {
 
     @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[(?=.*[^\\w\\s])])[A-Za-z\\d(?=.*[^\\w\\s])]{8,15}$")
     private String password;
-
-    private boolean admin = false;
-
-    private String adminToken = "";
 }

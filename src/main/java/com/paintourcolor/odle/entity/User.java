@@ -24,4 +24,12 @@ public class User {
     private UserRoleEnum role;
     @Column(nullable = false)
     private ActivationEnum activation;
+
+    public User(String username, String password, String email) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.role = UserRoleEnum.USER;
+        this.activation = ActivationEnum.ACTIVE;
+    }
 }

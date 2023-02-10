@@ -1,7 +1,7 @@
 package com.paintourcolor.odle.util.jwtutil;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.paintourcolor.odle.dto.SecurityExceptionDto;
+import com.paintourcolor.odle.dto.security.SecurityExceptionDto;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

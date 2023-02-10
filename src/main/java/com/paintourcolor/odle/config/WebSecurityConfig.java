@@ -45,17 +45,17 @@ public class WebSecurityConfig {
         // 기본 설정인 Session 방식은 사용하지 않고 JWT 방식을 사용하기 위한 설정
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        http.authorizeRequests().antMatchers("/api/user/**").permitAll()
-                .antMatchers("/api/search").permitAll()
-                .antMatchers("/api/shop").permitAll()
+        http.authorizeRequests().antMatchers("/users/signup").permitAll()
+                .antMatchers("/users/login").permitAll()
+                .antMatchers("/users/admin-signup").permitAll()
                 .anyRequest().authenticated()
                 // JWT 인증/인가를 사용하기 위한 설정
                 .and().addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
 
 
-        http.formLogin().loginPage("/api/user/login-page").permitAll();
-
-        http.exceptionHandling().accessDeniedPage("/api/user/forbidden");
+//        http.formLogin().loginPage("/api/user/login-page").permitAll();
+//
+//        http.exceptionHandling().accessDeniedPage("/api/user/forbidden");
 
         return http.build();
     }

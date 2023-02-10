@@ -4,8 +4,17 @@ import com.paintourcolor.odle.dto.user.request.UserInactivateRequest;
 import com.paintourcolor.odle.dto.user.request.UserLoginRequest;
 import com.paintourcolor.odle.dto.user.request.UserSignupRequest;
 import com.paintourcolor.odle.dto.user.response.UserResponse;
+import com.paintourcolor.odle.entity.LogoutToken;
+import com.paintourcolor.odle.repository.LogoutTokenRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
+@Service
+@RequiredArgsConstructor
 public class UserService implements UserServiceInterface {
+
+    private final LogoutTokenRepository logoutTokenRepository;
+
     // 유저 회원가입
     @Override
     public void signupUser(UserSignupRequest userSignupRequest) {
@@ -20,8 +29,9 @@ public class UserService implements UserServiceInterface {
 
     // 로그아웃 유저, 관리자
     @Override
-    public void logoutUser(String username) {
-
+    public void logoutUser(String token) {
+        LogoutToken logoutToken = new LogoutToken(token);
+        logoutTokenRepository.save(logoutToken);
     }
 
     // 유저 비활성화(유저가 본인을)

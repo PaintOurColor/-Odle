@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Profile_우리색으로 칠하조</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+
+<body>
+
+    <nav class="navigation">
+        <div class="navigation__column">
+            <a href="feed.html">
+                <img src="images/main_logo.jpg" />
+
+            </a>
+        </div>
+        <div class="navigation__column">
+            <i class="fa fa-search"></i>
+            <input type="text" placeholder="검색">
+        </div>
+        <div class="navigation__column">
+            <ul class="navigations__links">
+                <li class="navigation__list-item">
+                    <a href="explore.html" class="navigation__link">
+                        <i class="fa fa-compass fa-lg"></i>
+                    </a>
+                </li>
+                <li class="navigation__list-item">
+                    <a href="#" class="navigation__link">
+                        <i class="fa fa-heart-o fa-lg"></i>
+                    </a>
+                </li>
+                <li class="navigation__list-item">
+                    <a href="profile.html" class="navigation__link">
+                        <i class="fa fa-user-o fa-lg"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <!-- 여기서부터 사이드바 -->
+    <aside class="sidebar">
+        <ul>
+            <li class="list">
+                <div class="toggle">
+                    <a href="#">
+                        <span class="icon"><ion-icon name="menu-outline" class="open"></ion-icon></span>
+                        <span class="title">메뉴 접기</span>
+                    </a>
+                </div>
+            </li>
+            <li class="list">
+                <b></b>
+                <b></b>
+                <a href="feed.html">
+                    <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
+                    <span class="title">홈</span>
+                </a>
+            </li>
+            <li class="list active">
+                <b></b>
+                <b></b>
+                <a href="profile.html">
+                    <span class="icon"><ion-icon name="person-outline"></ion-icon></span>
+                    <span class="title">프로필</span>
+                </a>
+            </li>
+            <li class="list">
+                <b></b>
+                <b></b>
+                <a href="chart.html">
+                    <span class="icon"><ion-icon name="bar-chart-outline"></ion-icon></span>
+                    <span class="title">실시간 Top</span>
+                </a>
+            </li>
+            <li class="list">
+                <b></b>
+                <b></b>
+                <a href="#">
+                    <span class="icon"><ion-icon name="alert-outline"></ion-icon></span>
+                    <span class="title">알림</span>
+                </a>
+            </li>
+            <li class="list">
+                <b></b>
+                <b></b>
+                <a href="#">
+                    <span class="icon"><ion-icon name="create-outline"></ion-icon></span>
+                    <span class="title">게시글 작성</span>
+                </a>
+            </li>
+            <li class="list">
+                <b></b>
+                <b></b>
+                <a href="#">
+                    <span class="icon"><ion-icon name="settings-outline"></ion-icon></span>
+                    <span class="title">설정</span>
+                </a>
+            </li>
+            <li class="list">
+                <b></b>
+                <b></b>
+                <a href="#">
+                    <span class="icon"><ion-icon name="log-out-outline"></ion-icon></span>
+                    <span class="title">로그아웃</span>
+                </a>
+            </li>
+            </li>
+        </ul>
+    </aside>
+    <!-- 여기까지 사이드바 -->
+    <main id="profile">
+        <div class="profile__container">
+            <header class="profile__header">
+                <div class="profile__column">
+                    <img src="images/avatar.jpg" />
+                </div>
+                <div class="profile__column">
+                    <div class="profile__title">
+                        <h3 class="profile__username">오들매니저</h3>
+                        <a href="edit-profile.html">프로필 편집</a>
+                    </div>
+                    <ul class="profile__stats">
+                        <li class="profile__stat">
+                            <a>게시글</a>
+                            <span class="stat__number">100</span>
+                        </li>
+                        <li class="profile__stat">
+                            <a href="#팔로워창">팔로워</a>
+                            <span class="stat__number">100</span>
+                        </li>
+                        <li class="profile__stat">
+                            <a href="#팔로워창">팔로잉</a>
+                            <span class="stat__number">100</span>
+                        </li>
+                    </ul>
+                    <p class="profile__bio">
+                        <span>안녕하세요. 자기소개를 적는 공간입니다.</span>
+                    </p>
+                </div>
+            </header>
+            <section id="profile-posts" class="profile__photos">
+                <div class="profile__photo">
+                    <a href="#개별게시글링크">
+                        <img src="images/post_test.jpg" />
+                    </a>
+                </div>
+                <div class="profile__photo">
+                    <a href="#개별게시글링크">
+                        <img src="images/post_test.jpg" />
+                    </a>
+                </div>
+                <div class="profile__photo">
+                    <a href="#개별게시글링크">
+                        <img src="images/post_test.jpg" />
+                    </a>
+                </div>
+                <div class="profile__photo">
+                    <a href="#개별게시글링크">
+                        <img src="images/post_test.jpg" />
+                    </a>
+                </div>
+                <div class="profile__photo">
+                    <a href="#개별게시글링크">
+                        <img src="images/post_test.jpg" />
+                    </a>
+                </div>
+                <div class="profile__photo">
+                    <a href="#개별게시글링크">
+                        <img src="images/post_test.jpg" />
+                    </a>
+                </div>
+            </section>
+        </div>
+    </main>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script src="/sidebar.js"></script>
+</body>
+</html>

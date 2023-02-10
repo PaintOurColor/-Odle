@@ -21,7 +21,23 @@ public class User {
     private String profileImage;
     private String introduction;
     @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
     private UserRoleEnum role;
     @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
     private ActivationEnum activation;
+
+    public User(String email, String password, UserRoleEnum role) {
+        this.email = email;
+        this.password = password;
+        this.role = role;
+    }
+
+    public User(String username, String password, String email, UserRoleEnum role, ActivationEnum activation) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.role = role;
+        this.activation = activation;
+    }
 }

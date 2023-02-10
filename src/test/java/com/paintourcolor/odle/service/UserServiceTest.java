@@ -62,4 +62,20 @@ class UserServiceTest {
         verify(userRepository).saveAndFlush(any(User.class));
 
     }
+
+    @Test
+    void signupUser() {
+    }
+
+    @Test
+    void logoutUser() {
+    }
+
+    @Test
+    void inactivateUser() {
+    }
+
+    @Test
+    void getUser() {
+    }
 }

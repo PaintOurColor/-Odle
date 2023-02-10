@@ -1,0 +1,192 @@
+:root{
+    --bordercolor: rgba(224, 222, 222, 0.87);
+    --bordercoloractive: rgb(128, 128, 128);
+}
+body{
+    background-color: rgba(var(--b3f,250,250,250),1);
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+.signupcontainer{
+    width: 25vw;
+    height: auto;
+    margin: 2% auto;
+}
+.container{
+    background-color: white;
+    border: 1.8px solid var(--bordercolor);
+}
+.container h1{
+    text-align: center;
+}
+#image img{
+    height: 63px;
+}
+.signupcontentcontainer{
+    width: 82%;
+    height: auto;
+    margin: -10px auto;
+}
+._wdftkt{
+    font-size: 20px;
+    opacity: 0.5;
+    font-weight: bold;
+    text-align: center;
+}
+._fblgn{
+    text-align: center; 
+    font-weight: bold;
+    border-radius: 4px;
+    color: #000000;
+    border: 1px solid transparent;
+    background-color: #eefa03;
+    margin: 20px 0px;
+    padding: 5px 0px 5px ;
+     cursor: pointer;
+}
+._fblgn i{
+    font-size: 22px;
+    cursor: pointer;
+}
+._opalr{
+    opacity: 0.5;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+}
+input{
+    width: 98%;
+    height: 33px;
+    margin-bottom: 6px;
+    border: 1.5px solid var(--bordercolor);
+    border-radius: 4px;
+    background-color: rgba(var(--b3f,250,250,250),1);;     
+}
+:-ms-input-placeholder{
+    font-size: 12px;
+    opacity: 0.8;
+    
+}
+::-webkit-input-placeholder{
+    font-size: 12px;
+    opacity: 0.8;
+    padding-left: 10px;
+}
+input:visited,
+input:focus{
+    border: 1px solid transparent;
+}
+.signup-btn{
+    width: 100%;
+    background-color: #0095f6;
+    opacity: 0.4;
+    border-radius: 4px;
+    margin: 10px auto;
+    padding: 8px 0px 8px;
+    font-weight: bold;
+    text-align: center;
+    color: white;
+    cursor: pointer;
+}
+.signup-btn:hover{
+    opacity: 0.6;
+}
+._tpadc{
+    font-size: 12px;
+    opacity: 0.5;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    padding: 2px 5px 2px 5px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.alfdi{
+    font-weight: bold;
+}
+.loginfromsignup{
+    background-color: white;
+    border: 1.9px solid var(--bordercolor);
+    margin: 10px 0px;
+    padding: 20px 0px 20px;
+    text-align: center;
+    font-size: 14px;
+    
+}
+.loginfromsignup a{
+    text-decoration: none;
+    color:  #0095f6;;
+}
+.getapp{
+    font-size: 15px;
+    text-align: center;
+    margin: 20px auto;
+}
+.getappfromsignup{
+    margin-bottom: 40px;
+}
+#iosapp, #androidapp{
+    float: left;
+    text-align: center;
+    margin-left: 21px;
+}
+#iosapp img, #androidapp img{
+    height: 40px;
+   
+}
+.footer{
+    display: block;
+    width: 100%;
+    margin-top: 150px;
+    margin-bottom: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    font-size: 15px;
+    opacity: 0.5;
+}
+.language select{
+    border: none;
+}
+.language select:active,
+.language select:focus{
+    border: none;
+}
+@media screen and (max-width: 480px){
+    .signupcontainer{
+        width: 100vw;
+        height: auto;
+        margin: 2% auto;
+    }
+    #iosapp, #androidapp{
+        float: left;
+        text-align: center;
+        margin-left: 20px;
+    }
+
+
+}
+@media screen and (min-width: 481px) and (max-width: 767px) { 
+    .signupcontainer{
+        width: 60vw;
+        height: auto;
+        margin: 2% auto;
+    }
+    #iosapp, #androidapp{
+        float: left;
+        text-align: center;
+        margin-left: 20px;
+    }
+}
+@media screen and (min-width: 767px) and (max-width: 1120px){
+    .signupcontainer{
+        width: 40vw;
+        height: auto;
+        margin: 2% auto;
+    }
+    #iosapp, #androidapp{
+        float: left;
+        text-align: center;
+        margin-left: 20px;
+    }
+}

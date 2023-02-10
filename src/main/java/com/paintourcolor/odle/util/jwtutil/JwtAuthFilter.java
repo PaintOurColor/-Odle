@@ -2,6 +2,7 @@ package com.paintourcolor.odle.util.jwtutil;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.paintourcolor.odle.dto.security.SecurityExceptionDto;
+import com.paintourcolor.odle.repository.LogoutTokenRepository;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,14 +24,20 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
 
+    private final LogoutTokenRepository logoutTokenRepository;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         String token = jwtUtil.resolveToken(request);
 
+        if(logoutTokenRepository.existsByToken(token)){
+            throw new IllegalArgumentException("이미 로그아웃 처리된 토큰입니다");
+        }
+
         if(token != null) {
             if(!jwtUtil.validateToken(token)){
-                jwtExceptionHandler(response, "Token Error", HttpStatus.UNAUTHORIZED.value());
+                jwtExceptionHandler(response, "토큰 값이 유효하지 않습니다", HttpStatus.UNAUTHORIZED.value());
                 return;
             }
             Claims info = jwtUtil.getUserInfoFromToken(token);

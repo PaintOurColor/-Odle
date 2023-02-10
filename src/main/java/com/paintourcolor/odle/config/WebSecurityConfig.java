@@ -1,5 +1,6 @@
 package com.paintourcolor.odle.config;
 
+import com.paintourcolor.odle.repository.LogoutTokenRepository;
 import com.paintourcolor.odle.util.jwtutil.JwtAuthFilter;
 import com.paintourcolor.odle.util.jwtutil.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class WebSecurityConfig {
 
     private final JwtUtil jwtUtil;
+
+    private final LogoutTokenRepository logoutTokenRepository;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -50,7 +53,7 @@ public class WebSecurityConfig {
                 .antMatchers("/users/admin-signup").permitAll()
                 .anyRequest().authenticated()
                 // JWT 인증/인가를 사용하기 위한 설정
-                .and().addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
+                .and().addFilterBefore(new JwtAuthFilter(jwtUtil, logoutTokenRepository), UsernamePasswordAuthenticationFilter.class);
 
 
 //        http.formLogin().loginPage("/api/user/login-page").permitAll();

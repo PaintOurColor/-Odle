@@ -3,15 +3,29 @@ package com.paintourcolor.odle.controller;
 import com.paintourcolor.odle.dto.user.request.AdminSignupRequest;
 import com.paintourcolor.odle.dto.user.request.UserLoginRequest;
 import com.paintourcolor.odle.dto.user.request.UserSignupRequest;
+import com.paintourcolor.odle.dto.user.response.FollowerCountResponse;
+import com.paintourcolor.odle.dto.user.response.FollowerResponse;
+import com.paintourcolor.odle.dto.user.response.FollowingCountResponse;
+import com.paintourcolor.odle.dto.user.response.FollowingResponse;
+import com.paintourcolor.odle.security.UserDetailsImpl;
 import com.paintourcolor.odle.service.AdminService;
+import com.paintourcolor.odle.service.FollowService;
+import com.paintourcolor.odle.service.FollowServiceInterface;
 import com.paintourcolor.odle.service.UserService;
 import com.paintourcolor.odle.util.jwtutil.JwtUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.math.BigInteger;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,6 +33,7 @@ import javax.validation.Valid;
 public class UserController {
     private final UserService userService;
     private final AdminService adminService;
+    private final FollowServiceInterface followService;
 
     @PostMapping("/signup")
     public String signUp(@RequestBody @Valid UserSignupRequest signUpRequest) {
@@ -47,4 +62,35 @@ public class UserController {
 //        return "redirect:/users/login";
         return "로그아웃 완료";
     }
+
+    @PostMapping("/{userId}/follow")
+    public ResponseEntity<String> followUser(@PathVariable Long userId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        followService.followUser(userDetails.getUserId(), userId);
+        return new ResponseEntity<>("팔로우 완료", HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{userId}/unfollow")
+    public ResponseEntity<String> unfollowUser(@PathVariable Long userId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        followService.unfollowUser(userDetails.getUserId(), userId);
+        return new ResponseEntity<>("팔로우 취소 완료", HttpStatus.OK);
+    }
+
+    @GetMapping("/{userId}/following")
+    public ResponseEntity<List<FollowingResponse>> getFollowings(@PathVariable Long userId, Pageable pageable) {
+        List<FollowingResponse> followingList = followService.getFollowings(userId, pageable);
+        return new ResponseEntity<>(followingList,HttpStatus.OK);
+    }
+
+    @GetMapping("/{userId}/follower-count")
+    public ResponseEntity<FollowerCountResponse> countFollower(@PathVariable Long userId) {
+        FollowerCountResponse followerCount = followService.countFollower(userId);
+        return new ResponseEntity<>(followerCount,HttpStatus.OK);
+    }
+
+    @GetMapping("/{userId}/following-count")
+    public ResponseEntity<FollowingCountResponse> getFollowers(@PathVariable Long userId) {
+        FollowingCountResponse followingCount = followService.countFollowing(userId);
+        return new ResponseEntity<>(followingCount,HttpStatus.OK);
+    }
+
 }

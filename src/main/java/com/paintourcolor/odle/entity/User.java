@@ -40,4 +40,8 @@ public class User {
         this.role = role;
         this.activation = activation;
     }
+
+    public boolean isActivation() {
+        return this.activation.equals(ActivationEnum.ACTIVE);
+    }
 }

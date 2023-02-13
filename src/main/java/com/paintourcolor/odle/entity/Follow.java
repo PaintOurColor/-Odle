@@ -14,8 +14,13 @@ public class Follow {
     private Long id;
     @ManyToOne
     @JoinColumn(name = "followerId", nullable = false)
-    private User follower;
+    private User follower; //팔로우 하는 사람
     @ManyToOne
     @JoinColumn(name = "followingId", nullable = false)
-    private User following;
+    private User following; //팔로우 당하는 사람
+
+    public Follow (User follower, User following){
+        this.follower= follower;
+        this.following=following;
+    }
 }

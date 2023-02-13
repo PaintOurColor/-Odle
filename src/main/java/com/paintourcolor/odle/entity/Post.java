@@ -25,4 +25,10 @@ public class Post extends Timestamped{
     private OpenOrEndEnum openOrEnd;
     @Column(nullable = false)
     private EmotionEnum emotion;
+    @Column(nullable = false)
+    private Long commentCount;
+
+    public void plusComment() {
+        this.commentCount += 1;
+    }
 }

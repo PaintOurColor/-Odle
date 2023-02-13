@@ -24,4 +24,10 @@ public class Comment extends Timestamped{
     private Long likeCount;
     @Column(nullable = false)
     private Long parentId;
+
+    public Comment(Post post, User user, String content) {
+        this.post = post;
+        this.user = user;
+        this.content = content;
+    }
 }

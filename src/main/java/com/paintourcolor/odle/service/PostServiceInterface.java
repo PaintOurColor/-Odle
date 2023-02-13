@@ -6,11 +6,14 @@ import com.paintourcolor.odle.dto.post.request.PostUpdateRequest;
 import com.paintourcolor.odle.dto.post.response.PostListResponse;
 import com.paintourcolor.odle.dto.post.response.PostResponse;
 
+import java.util.List;
+
+
 public interface PostServiceInterface {
     // 게시글 작성
     void createPost(PostCreateRequest postCreateRequest, String username);
     // 게시글 목록 조회
-    PostListResponse getPostList(int page);
+    List<PostResponse> getPostList(int page);
     // 게시글 개별 조회
     PostResponse getPost(Long postId);
     // 게시글 수정

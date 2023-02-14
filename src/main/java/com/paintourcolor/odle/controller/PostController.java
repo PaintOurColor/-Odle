@@ -5,7 +5,7 @@ import com.paintourcolor.odle.dto.post.request.PostDeleteRequest;
 import com.paintourcolor.odle.dto.post.request.PostUpdateRequest;
 import com.paintourcolor.odle.dto.post.response.PostResponse;
 import com.paintourcolor.odle.security.UserDetailsImpl;
-import com.paintourcolor.odle.service.PostService;
+import com.paintourcolor.odle.service.PostServiceInterface;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -17,7 +17,7 @@ import java.util.List;
 @RequestMapping("/posts")
 @RequiredArgsConstructor
 public class PostController {
-    private final PostService postService;
+    private final PostServiceInterface postService;
 
     //게시글 작성
     @PostMapping
@@ -32,27 +32,27 @@ public class PostController {
     }
 
     //게시글 개별 조회
-    @GetMapping("{postId}")
-    public PostResponse getPost(@PathVariable("postId") Long id) {
-        return postService.getPost(id);
+    @GetMapping("/{postId}")
+    public PostResponse getPost(@PathVariable Long postId) {
+        return postService.getPost(postId);
     }
 
     //게시글 수정
     @PatchMapping("/{postId}")
-    public PostResponse updatePost(@PathVariable("postId") Long id,
+    public PostResponse updatePost(@PathVariable Long postId,
                                    @RequestBody PostUpdateRequest postUpdateRequest,
                                    @AuthenticationPrincipal UserDetailsImpl userDetails) {
         String username = userDetails.getUsername();
-        return postService.updatePost(id, postUpdateRequest, username);
+        return postService.updatePost(postId, postUpdateRequest, username);
     }
 
     //게시글 삭제
-    @DeleteMapping("{postId}")
-    public String  deleteBoard(@PathVariable("postId") Long id,
+    @DeleteMapping("/{postId}")
+    public String  deleteBoard(@PathVariable Long postId,
                                          @RequestBody PostDeleteRequest postDeleteRequest,
                                          @AuthenticationPrincipal UserDetailsImpl userDetails) {
         String username = userDetails.getUsername();
-        return postService.deletePost(id, postDeleteRequest, username);
+        return postService.deletePost(postId, postDeleteRequest, username);
     }
 
 

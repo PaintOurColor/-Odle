@@ -4,18 +4,13 @@ import com.paintourcolor.odle.dto.user.request.AdminSignupRequest;
 import com.paintourcolor.odle.dto.user.request.UserLoginRequest;
 import com.paintourcolor.odle.dto.user.request.UserSignupRequest;
 import com.paintourcolor.odle.dto.user.response.FollowerCountResponse;
-import com.paintourcolor.odle.dto.user.response.FollowerResponse;
 import com.paintourcolor.odle.dto.user.response.FollowingCountResponse;
 import com.paintourcolor.odle.dto.user.response.FollowingResponse;
 import com.paintourcolor.odle.security.UserDetailsImpl;
-import com.paintourcolor.odle.service.AdminService;
-import com.paintourcolor.odle.service.FollowService;
-import com.paintourcolor.odle.service.FollowServiceInterface;
-import com.paintourcolor.odle.service.UserService;
+import com.paintourcolor.odle.service.*;
 import com.paintourcolor.odle.util.jwtutil.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -24,15 +19,14 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.math.BigInteger;
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/users")
 public class UserController {
-    private final UserService userService;
-    private final AdminService adminService;
+    private final UserServiceInterface userService;
+    private final AdminServiceInterface adminService;
     private final FollowServiceInterface followService;
 
     @PostMapping("/signup")

@@ -3,9 +3,11 @@ package com.paintourcolor.odle.controller;
 import com.paintourcolor.odle.dto.post.request.PostCreateRequest;
 import com.paintourcolor.odle.dto.post.request.PostDeleteRequest;
 import com.paintourcolor.odle.dto.post.request.PostUpdateRequest;
+import com.paintourcolor.odle.dto.post.request.TagCreateRequest;
 import com.paintourcolor.odle.dto.post.response.PostResponse;
 import com.paintourcolor.odle.security.UserDetailsImpl;
 import com.paintourcolor.odle.service.PostServiceInterface;
+import com.paintourcolor.odle.service.TagServiceInterface;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -18,6 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PostController {
     private final PostServiceInterface postService;
+    private final TagServiceInterface tagService;
 
     //게시글 작성
     @PostMapping
@@ -55,5 +58,11 @@ public class PostController {
         return postService.deletePost(postId, postDeleteRequest, username);
     }
 
+    // 게시글 태그 생성 (테스트 아직 X)
+    @PostMapping("/{postId}/tag")
+    public String createTag(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long postId, @RequestBody TagCreateRequest tagCreateRequest) {
+        tagService.createTag(postId, userDetails.getEmail(), tagCreateRequest);
+        return "태그 작성 완료";
+    }
 
 }

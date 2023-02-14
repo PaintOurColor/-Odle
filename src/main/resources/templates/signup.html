@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Odle</title>
-    <link rel="stylesheet" href="../static/css/styles.css">
-    <script src="low-res-logo.png"></script>
+    <link rel="stylesheet" type="text/css" href="../static/css/styles.css">
+<!--    <script src="low-res-logo.png"></script>-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
 </head>
 <body>
     <div class="signupcontainer">
@@ -24,16 +26,16 @@
                 </div>
                 <div class="_infr">
                     <div class="input">
-                        <input type="text" name="numberoremail" id="numberoremail" placeholder="이메일을 입력하세요">
+                        <input type="text" name="email" id="email" placeholder="이메일을 입력하세요">
                     </div>
                     <div class="input">
-                        <input type="text" name="fullname" id="fullname" placeholder="닉네임을 입력하세요">
-                    </div class="input">
+                        <input type="text" name="username" id="username" placeholder="닉네임을 입력하세요">
+                    </div>
                     <div class="input">
-                        <input type="text" name="username" id="username" placeholder="비밀번호를 입력하세요">
+                        <input type="password" name="password" id="password" placeholder="비밀번호를 입력하세요">
                     </div>
                 </div>
-                <div class="signup-btn">
+                <div class="signup-btn" onclick="signUp()">
                     회원 가입
                 </div>
                 <div class="_tpadc">
@@ -44,7 +46,26 @@
         <div class="loginfromsignup">
             이미 가입하셨나요? <a href="signin.html">로그인</a>
         </div>
-        
+    </div>
     </footer>
 </body>
+
+<script>
+    function signUp() {
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8080/users/signup",
+            data: JSON.stringify({
+                username: $(`#username`).val(),
+                email: $(`#email`).val(),
+                password: $(`#password`).val()
+            }),
+            contentType: "application/json; charset=UTF-8",
+            success: function () {
+                alert("회원가입 추카")
+            }
+        })
+    }
+</script>
+
 </html>

@@ -2,7 +2,7 @@ package com.paintourcolor.odle.controller;
 
 import com.paintourcolor.odle.dto.comment.request.CommentCreateRequest;
 import com.paintourcolor.odle.security.UserDetailsImpl;
-import com.paintourcolor.odle.service.CommentService;
+import com.paintourcolor.odle.service.CommentServiceInterface;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("/posts")
 public class CommentController {
-    private final CommentService commentService;
+    private final CommentServiceInterface commentService;
 
     @PostMapping("/{postId}/comments")
     public String createComment(@PathVariable Long postId,

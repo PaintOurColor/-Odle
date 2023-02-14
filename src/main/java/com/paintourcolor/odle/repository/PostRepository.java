@@ -8,5 +8,5 @@ import java.util.List;
 import java.util.Optional;
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
-    List<Post> findAllByOrderByCreatedAtDesc(int page);
+    List<Post> findAllByOrderByCreatedAtDesc(Pageable pageable);
 }

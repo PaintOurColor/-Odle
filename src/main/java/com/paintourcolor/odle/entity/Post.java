@@ -1,5 +1,6 @@
 package com.paintourcolor.odle.entity;
 
+import com.paintourcolor.odle.dto.post.request.PostUpdateRequest;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -30,5 +31,11 @@ public class Post extends Timestamped{
 
     public void plusComment() {
         this.commentCount += 1;
+    }
+
+    public void update(PostUpdateRequest postUpdateRequest) {
+        this.content = postUpdateRequest.getContent();
+        this.openOrEnd = postUpdateRequest.getOpenOrEndEnum();
+        this.emotion = postUpdateRequest.getEmotionEnum();
     }
 }

@@ -5,6 +5,7 @@ import com.paintourcolor.odle.dto.post.request.PostDeleteRequest;
 import com.paintourcolor.odle.dto.post.request.PostUpdateRequest;
 import com.paintourcolor.odle.dto.post.request.TagCreateRequest;
 import com.paintourcolor.odle.dto.post.response.PostResponse;
+import com.paintourcolor.odle.dto.post.response.TagResponse;
 import com.paintourcolor.odle.security.UserDetailsImpl;
 import com.paintourcolor.odle.service.PostServiceInterface;
 import com.paintourcolor.odle.service.TagServiceInterface;
@@ -65,4 +66,9 @@ public class PostController {
         return "태그 작성 완료";
     }
 
+    // 게시글 태그 조회 (테스트 아직 X)
+    @GetMapping("/{postId}/tag")
+    public List<TagResponse> getTag(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long postId) {
+        return tagService.getTag(userDetails.getEmail(), postId);
+    }
 }

@@ -3,9 +3,13 @@ package com.paintourcolor.odle.service;
 import com.paintourcolor.odle.dto.post.request.TagCreateRequest;
 import com.paintourcolor.odle.dto.post.request.TagUpdateRequest;
 import com.paintourcolor.odle.dto.post.response.TagResponse;
+import com.paintourcolor.odle.entity.Post;
 import com.paintourcolor.odle.entity.Tag;
+import com.paintourcolor.odle.entity.User;
 import com.paintourcolor.odle.repository.PostRepository;
+import com.paintourcolor.odle.repository.PostTagRepository;
 import com.paintourcolor.odle.repository.TagRepository;
+import com.paintourcolor.odle.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +23,7 @@ import java.util.regex.Pattern;
 @RequiredArgsConstructor
 public class TagService implements TagServiceInterface {
     private final PostRepository postRepository;
+    private final UserRepository userRepository;
     private final TagRepository tagRepository;
 
     // 게시글 태그 생성
@@ -42,8 +47,16 @@ public class TagService implements TagServiceInterface {
 
     // 게시글 태그 조회
     @Override
-    public TagResponse getTag(Long postId) {
-        return null;
+    public List<TagResponse> getTag(String email, Long postId) {
+        postRepository.findById(postId).orElseThrow(
+                () -> new IllegalArgumentException("해당 게시글을 찾을 수 없습니다.")
+        );
+        userRepository.findByEmail(email).orElseThrow(
+                () -> new IllegalArgumentException("해당 유저를 찾을 수 없습니다.")
+        );
+
+        List<Tag> tags = tagRepository.findAll();
+        return tags.stream().map(tag -> new TagResponse(tag.getTagName())).toList();
     }
 
     // 게시글 태그 수정

@@ -12,6 +12,7 @@ import com.paintourcolor.odle.repository.PostRepository;
 import com.paintourcolor.odle.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +22,7 @@ public class CommentService implements CommentServiceInterface{
     private final CommentRepository commentRepository;
 
     // 댓글 작성
+    @Transactional
     @Override
     public void createComment(Long postId, CommentCreateRequest commentCreateRequest, String email) {
         String content = commentCreateRequest.getContent();

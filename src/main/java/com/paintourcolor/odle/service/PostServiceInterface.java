@@ -5,6 +5,8 @@ import com.paintourcolor.odle.dto.post.request.PostDeleteRequest;
 import com.paintourcolor.odle.dto.post.request.PostUpdateRequest;
 import com.paintourcolor.odle.dto.post.response.PostListResponse;
 import com.paintourcolor.odle.dto.post.response.PostResponse;
+import com.paintourcolor.odle.entity.Post;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -13,11 +15,11 @@ public interface PostServiceInterface {
     // 게시글 작성
     void createPost(PostCreateRequest postCreateRequest, String username);
     // 게시글 목록 조회
-    List<PostResponse> getPostList(int page);
+    List<PostResponse> getPostList(Pageable pageable);
     // 게시글 개별 조회
     PostResponse getPost(Long postId);
     // 게시글 수정
-    void updatePost(Long postId, PostUpdateRequest postUpdateRequest, String username);
+    PostResponse updatePost(Long postId, PostUpdateRequest postUpdateRequest, String username);
     // 게시글 삭제
-    void deletePost(Long postId, PostDeleteRequest postDeleteRequest, String username);
+    String deletePost(Long postId, PostDeleteRequest postDeleteRequest, String username);
 }

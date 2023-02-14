@@ -3,7 +3,9 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Instagram Login Page</title>
-    <link rel="stylesheet" href="../static/css/styles.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/styles.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
 </head>
 <body>
 
@@ -15,12 +17,12 @@
 			</div>
 			<div class="form">
 				<div class="input_field">
-					<input type="text" placeholder="이메일을 입력하세요" class="input">
+					<input type="text" id="email" placeholder="이메일을 입력하세요" class="input">
 				</div>
 				<div class="input_field">
-					<input type="password" placeholder="비밀번호를 입력하세요" class="input">
+					<input type="password" id="password" placeholder="비밀번호를 입력하세요" class="input">
 				</div>
-				<div class="btn"><a href="#">로그인</a></div>
+				<div class="btn" onclick="signIn()"><a href="#">로그인</a></div>
 			</div>
 			<div class="or">
 				<div class="line"></div>
@@ -44,4 +46,23 @@
 </div>
 
 </body>
+
+<script>
+	function signIn() {
+		$.ajax({
+			type: "POST",
+			url: "http://localhost:8080/users/login",
+			data: JSON.stringify({
+				email: $(`#email`).val(),
+				password: $(`#password`).val()
+			}),
+			contentType: "application/json; charset=UTF-8",
+			success: function () {
+				alert("로그인 완료")
+				location.href="feed.html"
+			}
+		})
+	}
+</script>
+
 </html>

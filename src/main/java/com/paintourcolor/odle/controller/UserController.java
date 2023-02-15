@@ -1,5 +1,7 @@
 package com.paintourcolor.odle.controller;
 
+import com.paintourcolor.odle.dto.TokenDto;
+import com.paintourcolor.odle.dto.TokenRequest;
 import com.paintourcolor.odle.dto.user.request.AdminSignupRequest;
 import com.paintourcolor.odle.dto.user.request.UserLoginRequest;
 import com.paintourcolor.odle.dto.user.request.UserSignupRequest;
@@ -46,6 +48,10 @@ public class UserController {
     public String loginUser(@RequestBody UserLoginRequest userLoginRequest, HttpServletResponse response) {
         userService.loginUser(userLoginRequest, response);
         return "로그인 완료";
+    }
+    @PostMapping("/reissue")
+    public ResponseEntity<TokenDto> reissue(@RequestBody TokenRequest tokenRequest) {
+        return ResponseEntity.ok(userService.reissue(tokenRequest));
     }
 
     // 유저, 관리자 로그아웃

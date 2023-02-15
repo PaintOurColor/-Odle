@@ -1,8 +1,7 @@
 package com.paintourcolor.odle.config;
 
 import com.paintourcolor.odle.repository.LogoutTokenRepository;
-import com.paintourcolor.odle.util.jwtutil.JwtAuthFilter;
-import com.paintourcolor.odle.util.jwtutil.JwtUtil;
+import com.paintourcolor.odle.util.jwtutil.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,10 +22,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class WebSecurityConfig implements WebMvcConfigurer {
-
     private final JwtUtil jwtUtil;
-
     private final LogoutTokenRepository logoutTokenRepository;
+//    private final TokenProvider tokenProvider;
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -35,8 +35,17 @@ public class WebSecurityConfig implements WebMvcConfigurer {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf().disable();
+        http.csrf().disable()
 
+        // exception handling 할 때 우리가 만든 클래스를 추가
+                .exceptionHandling()
+                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                .accessDeniedHandler(jwtAccessDeniedHandler)
+
+                .and()
+                .headers()
+                .frameOptions()
+                .sameOrigin();
         // 기본 설정인 Session 방식은 사용하지 않고 JWT 방식을 사용하기 위한 설정
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
@@ -44,10 +53,14 @@ public class WebSecurityConfig implements WebMvcConfigurer {
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll() // 프론트 CORS 오류 뜰 때
                 .antMatchers("/users/login").permitAll()
                 .antMatchers("/users/admin-signup").permitAll()
+                .antMatchers("/users/**").permitAll()
                 .anyRequest().authenticated()
                 // JWT 인증/인가를 사용하기 위한 설정
-                .and().addFilterBefore(new JwtAuthFilter(jwtUtil, logoutTokenRepository), UsernamePasswordAuthenticationFilter.class);
+//                .and().addFilterBefore(new JwtAuthFilter(jwtUtil, logoutTokenRepository), UsernamePasswordAuthenticationFilter.class);
 
+                // JwtFilter 를 addFilterBefore 로 등록했던 JwtSecurityConfig 클래스를 적용
+                .and()
+                .apply(new JwtSecurityConfig(jwtUtil, logoutTokenRepository));
 
 //        http.formLogin().loginPage("/api/user/login-page").permitAll();
 //

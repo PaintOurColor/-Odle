@@ -27,6 +27,9 @@ public class User {
     @Enumerated(value = EnumType.STRING)
     private ActivationEnum activation;
 
+//    @Enumerated(EnumType.STRING)
+//    private Authority authority;
+
     public User(String email, String password, UserRoleEnum role) {
         this.email = email;
         this.password = password;

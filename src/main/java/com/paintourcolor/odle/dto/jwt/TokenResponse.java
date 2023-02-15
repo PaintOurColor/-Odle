@@ -1,4 +1,4 @@
-package com.paintourcolor.odle.dto;
+package com.paintourcolor.odle.dto.jwt;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class TokenDto {
+public class TokenResponse {
     private String grantType;
     private String accessToken;
     private String refreshToken;

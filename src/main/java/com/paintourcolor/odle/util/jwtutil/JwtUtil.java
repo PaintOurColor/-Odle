@@ -1,10 +1,8 @@
 package com.paintourcolor.odle.util.jwtutil;
 
-import com.paintourcolor.odle.dto.TokenDto;
-import com.paintourcolor.odle.entity.UserRoleEnum;
+import com.paintourcolor.odle.dto.jwt.TokenResponse;
 import com.paintourcolor.odle.security.UserDetailsServiceImpl;
 import io.jsonwebtoken.*;
-import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -70,7 +68,7 @@ public class JwtUtil {
         return null;
     }
 
-    public TokenDto generateTokenDto(Authentication authentication) {
+    public TokenResponse generateTokenDto(Authentication authentication) {
         // 권한 가져오기
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
@@ -94,7 +92,7 @@ public class JwtUtil {
                 .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
 
-        return TokenDto.builder()
+        return TokenResponse.builder()
                 .grantType(BEARER_TYPE)
                 .accessToken(accessToken)
                 .accessTokenExpiresIn(accessTokenExpiresIn.getTime())

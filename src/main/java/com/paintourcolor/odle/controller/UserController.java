@@ -1,7 +1,7 @@
 package com.paintourcolor.odle.controller;
 
-import com.paintourcolor.odle.dto.TokenDto;
-import com.paintourcolor.odle.dto.TokenRequest;
+import com.paintourcolor.odle.dto.jwt.TokenResponse;
+import com.paintourcolor.odle.dto.jwt.TokenRequest;
 import com.paintourcolor.odle.dto.user.request.AdminSignupRequest;
 import com.paintourcolor.odle.dto.user.request.UserLoginRequest;
 import com.paintourcolor.odle.dto.user.request.UserSignupRequest;
@@ -50,7 +50,7 @@ public class UserController {
         return "로그인 완료";
     }
     @PostMapping("/reissue")
-    public ResponseEntity<TokenDto> reissue(@RequestBody TokenRequest tokenRequest) {
+    public ResponseEntity<TokenResponse> reissue(@RequestBody TokenRequest tokenRequest) {
         return ResponseEntity.ok(userService.reissue(tokenRequest));
     }
 

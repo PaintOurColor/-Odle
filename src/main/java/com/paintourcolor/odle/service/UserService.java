@@ -1,7 +1,7 @@
 package com.paintourcolor.odle.service;
 
-import com.paintourcolor.odle.dto.TokenDto;
-import com.paintourcolor.odle.dto.TokenRequest;
+import com.paintourcolor.odle.dto.jwt.TokenResponse;
+import com.paintourcolor.odle.dto.jwt.TokenRequest;
 import com.paintourcolor.odle.dto.user.request.UserLoginRequest;
 import com.paintourcolor.odle.dto.user.request.UserSignupRequest;
 import com.paintourcolor.odle.dto.user.request.UserInactivateRequest;
@@ -53,7 +53,7 @@ public class UserService implements UserServiceInterface {
     // 로그인 유저,관리자
     @Transactional
     @Override
-    public TokenDto loginUser(UserLoginRequest userLoginRequest, HttpServletResponse response) {
+    public TokenResponse loginUser(UserLoginRequest userLoginRequest, HttpServletResponse response) {
 //        String email = userLoginRequest.getEmail();
 //        String password = userLoginRequest.getPassword();
 
@@ -65,7 +65,7 @@ public class UserService implements UserServiceInterface {
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 
         // 3. 인증 정보를 기반으로 JWT 토큰 생성
-        TokenDto tokenDto = jwtUtil.generateTokenDto(authentication);
+        TokenResponse tokenDto = jwtUtil.generateTokenDto(authentication);
 
         // 4. RefreshToken 저장
         RefreshToken refreshToken = RefreshToken.builder()
@@ -100,7 +100,7 @@ public class UserService implements UserServiceInterface {
 
     @Transactional
     @Override
-    public TokenDto reissue(TokenRequest tokenRequest) {
+    public TokenResponse reissue(TokenRequest tokenRequest) {
         // 1. Refresh Token 검증
         if (!jwtUtil.validateToken(tokenRequest.getRefreshToken())) {
             throw new RuntimeException("Refresh Token 이 유효하지 않습니다.");
@@ -119,7 +119,7 @@ public class UserService implements UserServiceInterface {
         }
 
         // 5. 새로운 토큰 생성
-        TokenDto tokenDto = jwtUtil.generateTokenDto(authentication);
+        TokenResponse tokenDto = jwtUtil.generateTokenDto(authentication);
 
         // 6. 저장소 정보 업데이트
         RefreshToken newRefreshToken = refreshToken.updateValue(tokenDto.getRefreshToken());

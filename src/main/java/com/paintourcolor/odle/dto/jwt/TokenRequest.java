@@ -1,4 +1,4 @@
-package com.paintourcolor.odle.dto;
+package com.paintourcolor.odle.dto.jwt;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

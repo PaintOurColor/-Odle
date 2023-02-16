@@ -31,8 +31,16 @@ public class TagService implements TagServiceInterface {
     @Transactional
     @Override
     public void createTag(TagCreateRequest tagCreateRequest) {
-        Tag tag = new Tag(tagCreateRequest.getTagName());
-        tagRepository.save(tag);
+        String tagName = tagCreateRequest.getTagName();
+
+        Tag tag = new Tag(tagName);
+
+        // tagName이 이미 존재한다면 count만 올려주고, 없을 때에만 DB에 저장
+        if (tagRepository.findTagByTagName(tagName)) {
+            tag.plusTagCount();
+        } else {
+            tagRepository.save(tag);
+        }
     }
 
     // 게시글 태그 조회

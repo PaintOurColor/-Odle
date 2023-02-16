@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Pattern;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -15,7 +16,9 @@ public class Tag {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // #로 시작  // 숫자, 영어 대소문자, 한글 가능  // 특문, 띄어쓰기 불가능
     @Column(name = "tagName", nullable = false)
+    @Pattern(regexp = "^#([a-zA-Z0-9ㄱ-ㅎㅏ-ㅣ가-힣])+$")
     private String tagName;
 
     @Column(nullable = false)

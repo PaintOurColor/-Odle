@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -30,16 +31,22 @@ public class TagService implements TagServiceInterface {
     // 게시글 태그 생성
     @Transactional
     @Override
-    public void createTag(TagCreateRequest tagCreateRequest) {
-        String tagName = tagCreateRequest.getTagName();
+    public void createTag(Long postId, TagCreateRequest tagCreateRequest) {
+        postRepository.findById(postId).orElseThrow(
+                () -> new IllegalArgumentException("해당 게시글을 찾을 수 없습니다.")
+        );
 
-        Tag tag = new Tag(tagName);
-
-        // tagName이 이미 존재한다면 count만 올려주고, 없을 때에만 DB에 저장
-        if (tagRepository.findTagByTagName(tagName)) {
-            tag.plusTagCount();
-        } else {
-            tagRepository.save(tag);
+        if (tagCreateRequest != null) {
+            String tagList = tagCreateRequest.getTagList();
+            String[] tagNameList = tagList.split(" ");
+            for (String tagName : tagNameList) {
+                Tag tag = new Tag(tagName);
+                if (tagRepository.findTagByTagName(tagName)) {
+                    tag.plusTagCount();
+                } else {
+                    tagRepository.save(tag);
+                }
+            }
         }
     }
 

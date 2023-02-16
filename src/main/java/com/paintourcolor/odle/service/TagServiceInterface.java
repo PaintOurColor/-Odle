@@ -7,7 +7,7 @@ import com.paintourcolor.odle.dto.post.response.TagResponse;
 import java.util.List;
 
 public interface TagServiceInterface {
-    void createTag(Long postId, String email, TagCreateRequest tagCreateRequest);
+    void createTag(TagCreateRequest tagCreateRequest);
     List<TagResponse> getTag(String email, Long postId);
     void updateTag(Long postId, Long tagId, String username, TagUpdateRequest tagUpdateRequest);
     void deleteTag(Long postId, Long tagId, String username);

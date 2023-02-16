@@ -4,6 +4,7 @@ import com.paintourcolor.odle.dto.post.request.TagCreateRequest;
 import com.paintourcolor.odle.dto.post.request.TagUpdateRequest;
 import com.paintourcolor.odle.dto.post.response.TagResponse;
 import com.paintourcolor.odle.entity.Post;
+import com.paintourcolor.odle.entity.PostTag;
 import com.paintourcolor.odle.entity.Tag;
 import com.paintourcolor.odle.entity.User;
 import com.paintourcolor.odle.repository.PostRepository;
@@ -29,20 +30,9 @@ public class TagService implements TagServiceInterface {
     // 게시글 태그 생성
     @Transactional
     @Override
-    public void createTag(Long postId, String email, TagCreateRequest tagCreateRequest) {
-        postRepository.findById(postId).orElseThrow(
-                () -> new IllegalArgumentException("해당 게시글을 찾을 수 없습니다.")
-        );
-
-        Pattern pattern = Pattern.compile("#(\\S+)");
-        Matcher matcher = pattern.matcher(tagCreateRequest.getTagName());
-        List<String> tagList = new ArrayList<>();
-
-        while (matcher.find()) {
-            tagList.add(matcher.group(1));
-        }
-
-        tagRepository.save(new Tag(tagList.toString()));
+    public void createTag(TagCreateRequest tagCreateRequest) {
+        Tag tag = new Tag(tagCreateRequest.getTagName());
+        tagRepository.save(tag);
     }
 
     // 게시글 태그 조회

@@ -11,6 +11,7 @@ public interface UserServiceInterface {
     void signupUser(UserSignupRequest userSignupRequest);
     void loginUser(UserLoginRequest userLoginRequest, HttpServletResponse response);
     void logoutUser(String token);  // ?
+    void reissueToken(String refreshToken, HttpServletResponse response); //AccessToken 재발급
     void inactivateUser(String username, UserInactivateRequest userInactivateRequest); // 이거 리퀘스트 같이 써도 되는지,,,
     UserResponse getUser(int page);
 }

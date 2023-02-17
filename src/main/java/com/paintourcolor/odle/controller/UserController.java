@@ -11,6 +11,7 @@ import com.paintourcolor.odle.service.*;
 import com.paintourcolor.odle.util.jwtutil.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -28,6 +29,7 @@ public class UserController {
     private final UserServiceInterface userService;
     private final AdminServiceInterface adminService;
     private final FollowServiceInterface followService;
+    private final JwtUtil jwtUtil;
 
     @PostMapping("/signup")
     public String signUp(@RequestBody @Valid UserSignupRequest signUpRequest) {
@@ -51,10 +53,18 @@ public class UserController {
     // 유저, 관리자 로그아웃
     @PostMapping("/logout")
     public String logoutUser(HttpServletRequest request) {
-        String token = request.getHeader(JwtUtil.AUTHORIZATION_HEADER);
+        String token = jwtUtil.getRefreshToken(request);
         userService.logoutUser(token);
 //        return "redirect:/users/login";
         return "로그아웃 완료";
+    }
+
+    // AccessToken 재발급
+    @PostMapping("/reissue")
+    public ResponseEntity<String> reissueToken(HttpServletRequest httpServletRequest, HttpServletResponse response){
+        String refreshToken = jwtUtil.getRefreshToken(httpServletRequest);
+        userService.reissueToken(refreshToken, response);
+        return new ResponseEntity<>("토큰 재발급 완료",HttpStatus.OK);
     }
 
     @PostMapping("/{userId}/follow")

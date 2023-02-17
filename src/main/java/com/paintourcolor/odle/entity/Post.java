@@ -64,9 +64,8 @@ public class Post extends Timestamped{
         this.likeCount++;
         this.postLikes.add(new PostLike(user, this));
     }
-//
-//    public void minusLike(User user) {
-//        this.likeCount--;
-//        this.postLikes.removeIf(postLike -> postLike.getUser().equals(user));
-//    }
+
+    public void minusLike(User user) {
+        this.likeCount--;
+    }
 }

@@ -75,12 +75,12 @@ public class PostController {
         likeService.likePost(postId, userDetails.getUserId());
     }
 
-//
-//
-//    //게시글 좋아요 취소
-//    @DeleteMapping("/{postId}/like")
-//    public void unlikePost(@PathVariable Long postId,
-//                           @AuthenticationPrincipal UserDetailsImpl userDetails) {
-//        likeService.unlikePost(postId, userDetails.getUserId());
-//    }
+
+
+    //게시글 좋아요 취소
+    @DeleteMapping("/{postId}/unlike")
+    public void unlikePost(@PathVariable Long postId,
+                           @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        likeService.unlikePost(postId, userDetails.getUserId());
+    }
 }

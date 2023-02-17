@@ -38,7 +38,6 @@ public class LikeService implements LikeServiceInterface {
         Post post = postRepository.findById(postId).orElseThrow(
                 ()-> new IllegalArgumentException ("해당 게시글을 찾을 수 없습니다")
         );
-//        PostLike postLike = postLikeRepository.findByPostId(postId);
 
         PostLike postLike;
 
@@ -49,37 +48,30 @@ public class LikeService implements LikeServiceInterface {
            postLike = new PostLike(user, post);
         }
 
-
-//        try {
-//            PostLike postLike = postLikeRepository.findByPostId(postId);
-////            postLike.plusLike(user);// postLike 객체의 좋아요 수를 증가시킴
-//        } catch (IllegalArgumentException e){
-//            PostLike postLike = new PostLike(user, post);// 새로운 PostLike 생성
-//        }
-//        PostLike postLike = postLikeRepository.findByPostId(postId);
         postLikeRepository.save(postLike);
         post.plusLike(user); // Post 객체의 좋아요 수를 증가시킴
         postRepository.save(post);
     }
 
-//    // 좋아요 취소
-//    @Override
-//    public void unlikePost(Long postId, Long userId) {
-//        User user = userRepository.findById(userId).orElseThrow(
-//                () -> new IllegalArgumentException("해당 유저를 찾을 수 없습니다.")
-//        );
-//
-//        Post post = postRepository.findById(postId).orElseThrow(
-//                ()-> new IllegalArgumentException ("해당 게시글을 찾을 수 없습니다")
-//        );
-//
-//        PostLike postLike = postLikeRepository.findByUserIdAndPostId(user.getId(), post.getId());
-//        if (postLike != null) {
-//            postLikeRepository.delete(postLike);
-//        }
-//
-//        post.minusLike(user);
-//    }
+    // 좋아요 취소
+    @Override
+    public void unlikePost(Long postId, Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(
+                () -> new IllegalArgumentException("해당 유저를 찾을 수 없습니다.")
+        );
+
+        Post post = postRepository.findById(postId).orElseThrow(
+                ()-> new IllegalArgumentException ("해당 게시글을 찾을 수 없습니다")
+        );
+
+        PostLike postLike = postLikeRepository.findByUserIdAndPostId(user.getId(), post.getId());
+        if (postLike != null) {
+            postLikeRepository.delete(postLike);
+        }
+
+        post.minusLike(user);
+        postRepository.save(post);
+    }
 
 
 //    // 댓글 좋아요

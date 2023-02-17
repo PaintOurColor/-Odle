@@ -2,6 +2,9 @@ package com.paintourcolor.odle.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 
@@ -41,7 +44,15 @@ public class User {
         this.activation = activation;
     }
 
-    public boolean isActivation() {
-        return this.activation.equals(ActivationEnum.ACTIVE);
+    public void isActivation( ) {
+        if(!this.activation.equals(ActivationEnum.ACTIVE)) {
+            throw new DisabledException("비활성화 된 계정입니다.");
+        }
+    }
+
+    public void matchPassword(String requestPassword, PasswordEncoder passwordEncoder) {
+        if (!passwordEncoder.matches(requestPassword, this.password)){
+            throw new BadCredentialsException("아이디 혹은 비밀번호가 일치하지 않습니다.");
+        }
     }
 }

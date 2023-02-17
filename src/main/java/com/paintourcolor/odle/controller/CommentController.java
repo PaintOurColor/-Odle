@@ -60,7 +60,7 @@ public class CommentController {
 
     // 댓글 개수 조회 -> API 추가 필요
     @GetMapping("{postId}/comment-count")
-    public CommentCountResponse getCommentCount() {
-        return null;
+    public CommentCountResponse getCommentCount(@PathVariable Long postId) {
+        return commentService.getCommentCount(postId);
     }
 }

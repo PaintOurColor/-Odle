@@ -100,6 +100,10 @@ public class CommentService implements CommentServiceInterface{
     // 댓글 개수 조회
     @Override
     public CommentCountResponse getCommentCount(Long postId) {
-        return null;
+        Post post = postRepository.findById(postId).orElseThrow(
+                () -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다.")
+        );
+
+        return new CommentCountResponse(post.getCommentCount());
     }
 }

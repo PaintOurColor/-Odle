@@ -38,16 +38,14 @@ public class PostController {
     @GetMapping()
     public List<PostResponse> getPostList(Pageable pageable,
                                           @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        String username = userDetails.getUsername();
-        return postService.getPostList(pageable, username);
+        return postService.getPostList(pageable);
     }
 
     //게시글 개별 조회
     @GetMapping("/{postId}")
     public PostResponse getPost(@PathVariable Long postId,
                                 @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        String username = userDetails.getUsername();
-        return postService.getPost(postId, username);
+        return postService.getPost(postId);
     }
 
     //게시글 수정

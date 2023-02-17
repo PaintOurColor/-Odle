@@ -13,9 +13,9 @@ public interface PostServiceInterface {
     // 게시글 작성
     Long createPost(PostCreateRequest postCreateRequest, String username);
     // 게시글 목록 조회
-    List<PostResponse> getPostList(Pageable pageable, String username);
+    List<PostResponse> getPostList(Pageable pageable);
     // 게시글 개별 조회
-    PostResponse getPost(Long postId, String username);
+    PostResponse getPost(Long postId);
     // 게시글 수정
     PostResponse updatePost(Long postId, PostUpdateRequest postUpdateRequest, String username);
     // 게시글 삭제

@@ -44,13 +44,15 @@ public class PostService implements PostServiceInterface{
     // 게시글 전체 조회
     @Transactional(readOnly = true)
     @Override
+    public List<PostResponse> getPostList(Pageable pageable) {
         Page<Post> posts = postRepository.findAll(pageable);
+        return posts.stream().map(post -> new PostResponse(post, tagService.getTag(post.getId()))).toList();
     }
 
     // 게시글 개별 조회
     @Transactional(readOnly = true)
     @Override
-    public PostResponse getPost(Long postId, String username) {
+    public PostResponse getPost(Long postId) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new NoSuchElementException("해당 게시글은 존재하지 않습니다."));
         List<TagResponse> tagResponses = tagService.getTag(postId);
         return new PostResponse(post, tagResponses);

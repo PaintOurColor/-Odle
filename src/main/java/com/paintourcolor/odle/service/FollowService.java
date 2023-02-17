@@ -10,6 +10,7 @@ import com.paintourcolor.odle.repository.FollowRepository;
 import com.paintourcolor.odle.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,24 +25,23 @@ public class FollowService implements FollowServiceInterface{
     private final UserRepository userRepository;
 
     // 팔로우 하기
+    @Transactional
     @Override
     public void followUser(Long followerId, Long followingId) {
+        User follower = userRepository.findById(followerId).get(); //자신
+        User following = userRepository.findById(followingId).orElseThrow( //팔로우 당하는 사람
+                ()-> new UsernameNotFoundException("팔로우할 유저를 찾을 수 없습니다.")
+        );
+
+        following.isActivation();
+
         Optional<Follow> followCheck = followRepository.findByFollowerIdAndFollowingId(followerId,followingId);
         if (followCheck.isPresent()) {
             throw new IllegalArgumentException("이미 팔로우한 대상입니다.");
         }
 
-        if (followerId==followingId) {
+        if (followerId.equals(followingId)) {
             throw new IllegalArgumentException("자기 자신은 팔로우할 수 없습니다.");
-        }
-
-        User follower = userRepository.findById(followerId).get(); //자신
-        User following = userRepository.findById(followingId).orElseThrow( //팔로우 당하는 사람
-                ()-> new IllegalArgumentException("팔로우할 유저를 찾을 수 없습니다.")
-        );
-
-        if (!following.isActivation()) {
-            throw new IllegalArgumentException("비활성화 된 유저입니다.");
         }
 
         Follow follow = new Follow(follower, following);

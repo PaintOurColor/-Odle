@@ -4,14 +4,14 @@ import com.paintourcolor.odle.dto.user.request.UserLoginRequest;
 import com.paintourcolor.odle.dto.user.request.UserSignupRequest;
 import com.paintourcolor.odle.dto.user.request.UserInactivateRequest;
 import com.paintourcolor.odle.dto.user.response.UserResponse;
-import com.paintourcolor.odle.entity.ActivationEnum;
-import com.paintourcolor.odle.entity.LogoutToken;
-import com.paintourcolor.odle.entity.User;
-import com.paintourcolor.odle.entity.UserRoleEnum;
+import com.paintourcolor.odle.entity.*;
 import com.paintourcolor.odle.repository.LogoutTokenRepository;
+import com.paintourcolor.odle.repository.RefreshTokenRepository;
 import com.paintourcolor.odle.repository.UserRepository;
 import com.paintourcolor.odle.util.jwtutil.JwtUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +26,7 @@ public class UserService implements UserServiceInterface {
     private final JwtUtil jwtUtil;
 
     private final LogoutTokenRepository logoutTokenRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     // 유저 회원가입
     @Transactional
@@ -53,19 +54,34 @@ public class UserService implements UserServiceInterface {
         String password = userLoginRequest.getPassword();
 
         User user = userRepository.findByEmail(email).orElseThrow(
-                () -> new IllegalArgumentException("해당 email의 유저가 존재하지 않습니다.")
+                () -> new UsernameNotFoundException("해당 email의 유저가 존재하지 않습니다.")
         );
 
-        // 받아온 이메일에 해당하는 유저가 ACTIVE 상태인지 확인 필요
-        if (user.getActivation().equals(ActivationEnum.INACTIVE)) {
-            throw new IllegalArgumentException("해당 유저는 탈퇴한 회원입니다.");
-        }
+        user.isActivation(); // 활성화된 유저인지 확인
+        user.matchPassword(password, passwordEncoder); //비밀번호 확인
 
-        if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
-        }
+        String accessToken = jwtUtil.createAccessToken(user.getEmail(), user.getRole()); // accessToken 생성
+        String refreshToken = jwtUtil.createRefreshToken(user.getEmail(), user.getRole()); // refreshToken 생성
 
-        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(user.getEmail(), user.getRole()));
+        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, accessToken);
+        response.addHeader(JwtUtil.AUTHORIZATION_REFRESH, refreshToken);
+        //우선 헤더로 반환. 추후 리프레쉬 토큰은 쿠키에 저장하는 방식으로 변경 예정
+
+        refreshTokenRepository.save(new RefreshToken(refreshToken));
+        //리프레시 레파지토리에 저장
+    }
+
+
+    @Transactional
+    @Override
+    public void reissueToken(String refreshToken, HttpServletResponse response) {
+
+        Object role = jwtUtil.getUserInfoFromToken(refreshToken).get("auth");
+        String email = jwtUtil.getUserInfoFromToken(refreshToken).getSubject();
+
+        String accessToken = jwtUtil.createAccessToken(email, role);
+
+        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, accessToken);
     }
 
     // 로그아웃 유저, 관리자

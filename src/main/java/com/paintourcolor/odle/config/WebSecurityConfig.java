@@ -40,14 +40,13 @@ public class WebSecurityConfig implements WebMvcConfigurer {
         // 기본 설정인 Session 방식은 사용하지 않고 JWT 방식을 사용하기 위한 설정
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        http.authorizeRequests().antMatchers("/users/signup").permitAll()
+        http.authorizeRequests()
+                .antMatchers("/users/**").permitAll()
+                .antMatchers("/posts/**").permitAll()
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll() // 프론트 CORS 오류 뜰 때
-                .antMatchers("/users/login").permitAll()
-                .antMatchers("/users/admin-signup").permitAll()
                 .anyRequest().authenticated()
                 // JWT 인증/인가를 사용하기 위한 설정
                 .and().addFilterBefore(new JwtAuthFilter(jwtUtil, logoutTokenRepository), UsernamePasswordAuthenticationFilter.class);
-
 
 //        http.formLogin().loginPage("/api/user/login-page").permitAll();
 //
@@ -58,7 +57,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedMethods("GET", "POST", "POST", "DELETE", "OPTIONS", "HEAD")
-                .exposedHeaders("Authorization");
+                .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "HEAD");
+//                .exposedHeaders("Authorization");
     }
 }

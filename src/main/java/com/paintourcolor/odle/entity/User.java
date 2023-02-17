@@ -7,6 +7,8 @@ import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -29,6 +31,16 @@ public class User {
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
     private ActivationEnum activation;
+
+//    @ManyToMany
+//    @JoinTable(
+//            name = "LIKE_USER_POST",
+//            joinColumns = @JoinColumn(name = "user_id"),
+//            inverseJoinColumns = @JoinColumn(name = "post_id")
+//    )
+//    private List<Post> likePost = new ArrayList<>();
+//    @Column(nullable = false)
+//    private Long likeCount = 0L;
 
     public User(String email, String password, UserRoleEnum role) {
         this.email = email;

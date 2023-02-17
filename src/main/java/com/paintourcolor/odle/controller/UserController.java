@@ -4,6 +4,7 @@ import com.paintourcolor.odle.dto.user.request.AdminSignupRequest;
 import com.paintourcolor.odle.dto.user.request.UserLoginRequest;
 import com.paintourcolor.odle.dto.user.request.UserSignupRequest;
 import com.paintourcolor.odle.dto.user.response.FollowerCountResponse;
+import com.paintourcolor.odle.dto.user.response.FollowerResponse;
 import com.paintourcolor.odle.dto.user.response.FollowingCountResponse;
 import com.paintourcolor.odle.dto.user.response.FollowingResponse;
 import com.paintourcolor.odle.security.UserDetailsImpl;
@@ -79,6 +80,13 @@ public class UserController {
         return new ResponseEntity<>("팔로우 취소 완료", HttpStatus.OK);
     }
 
+    @GetMapping("/{userId}/follower")
+    public ResponseEntity<List<FollowerResponse>> getFollowers(@PathVariable Long userId, Pageable pageable) {
+        List<FollowerResponse> followerList = followService.getFollowers(userId, pageable);
+        return new ResponseEntity<>(followerList,HttpStatus.OK);
+    }
+
+
     @GetMapping("/{userId}/following")
     public ResponseEntity<List<FollowingResponse>> getFollowings(@PathVariable Long userId, Pageable pageable) {
         List<FollowingResponse> followingList = followService.getFollowings(userId, pageable);
@@ -92,7 +100,7 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/following-count")
-    public ResponseEntity<FollowingCountResponse> getFollowers(@PathVariable Long userId) {
+    public ResponseEntity<FollowingCountResponse> countFollowing(@PathVariable Long userId) {
         FollowingCountResponse followingCount = followService.countFollowing(userId);
         return new ResponseEntity<>(followingCount,HttpStatus.OK);
     }

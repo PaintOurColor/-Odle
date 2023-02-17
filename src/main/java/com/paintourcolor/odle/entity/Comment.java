@@ -1,5 +1,6 @@
 package com.paintourcolor.odle.entity;
 
+import com.paintourcolor.odle.dto.comment.request.CommentUpdateRequest;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -29,5 +30,11 @@ public class Comment extends Timestamped{
         this.post = post;
         this.user = user;
         this.content = content;
+        this.likeCount = 0L;
+        this.parentId = 0L;
+    }
+
+    public void updateComment(CommentUpdateRequest commentUpdateRequest) {
+        this.content = commentUpdateRequest.getContent();
     }
 }

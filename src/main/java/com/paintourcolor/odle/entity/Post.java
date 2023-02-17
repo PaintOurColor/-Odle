@@ -41,6 +41,10 @@ public class Post extends Timestamped{
         this.commentCount += 1;
     }
 
+    public void minusComment() {
+        this.commentCount -= 1;
+    }
+
     public void update(PostUpdateRequest postUpdateRequest) {
         this.content = postUpdateRequest.getContent();
         this.openOrEnd = postUpdateRequest.getOpenOrEndEnum();

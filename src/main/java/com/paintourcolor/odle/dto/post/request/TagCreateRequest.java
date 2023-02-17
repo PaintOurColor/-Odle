@@ -1,16 +1,14 @@
 package com.paintourcolor.odle.dto.post.request;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@Builder
 @NoArgsConstructor
 public class TagCreateRequest {
-    private String tagName;
+    private String tagList;
 
-    public TagCreateRequest(String tagName) {
-        this.tagName = tagName;
+    public TagCreateRequest(String tagList) {
+        this.tagList = tagList;
     }
 }

@@ -4,6 +4,7 @@ import com.paintourcolor.odle.dto.post.request.TagCreateRequest;
 import com.paintourcolor.odle.dto.post.request.TagUpdateRequest;
 import com.paintourcolor.odle.dto.post.response.TagResponse;
 import com.paintourcolor.odle.entity.Post;
+import com.paintourcolor.odle.entity.PostTag;
 import com.paintourcolor.odle.entity.Tag;
 import com.paintourcolor.odle.entity.User;
 import com.paintourcolor.odle.repository.PostRepository;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -29,20 +31,23 @@ public class TagService implements TagServiceInterface {
     // 게시글 태그 생성
     @Transactional
     @Override
-    public void createTag(Long postId, String email, TagCreateRequest tagCreateRequest) {
+    public void createTag(Long postId, TagCreateRequest tagCreateRequest) {
         postRepository.findById(postId).orElseThrow(
                 () -> new IllegalArgumentException("해당 게시글을 찾을 수 없습니다.")
         );
 
-        Pattern pattern = Pattern.compile("#(\\S+)");
-        Matcher matcher = pattern.matcher(tagCreateRequest.getTagName());
-        List<String> tagList = new ArrayList<>();
-
-        while (matcher.find()) {
-            tagList.add(matcher.group(1));
+        if (tagCreateRequest != null) {
+            String tagList = tagCreateRequest.getTagList();
+            String[] tagNameList = tagList.split(" ");
+            for (String tagName : tagNameList) {
+                Tag tag = new Tag(tagName);
+                if (tagRepository.findTagByTagName(tagName)) {
+                    tag.plusTagCount();
+                } else {
+                    tagRepository.save(tag);
+                }
+            }
         }
-
-        tagRepository.save(new Tag(tagList.toString()));
     }
 
     // 게시글 태그 조회

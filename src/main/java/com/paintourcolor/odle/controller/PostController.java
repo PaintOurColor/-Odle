@@ -1,9 +1,6 @@
 package com.paintourcolor.odle.controller;
 
-import com.paintourcolor.odle.dto.post.request.PostCreateRequest;
-import com.paintourcolor.odle.dto.post.request.PostDeleteRequest;
-import com.paintourcolor.odle.dto.post.request.PostUpdateRequest;
-import com.paintourcolor.odle.dto.post.request.TagCreateRequest;
+import com.paintourcolor.odle.dto.post.request.*;
 import com.paintourcolor.odle.dto.post.response.PostResponse;
 import com.paintourcolor.odle.dto.post.response.TagResponse;
 import com.paintourcolor.odle.security.UserDetailsImpl;
@@ -21,7 +18,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PostController {
     private final PostServiceInterface postService;
-    private final TagServiceInterface tagService;
 
     //게시글 작성
     @PostMapping
@@ -59,9 +55,11 @@ public class PostController {
         return postService.deletePost(postId, postDeleteRequest, username);
     }
 
-    // 게시글 태그 생성 (테스트 아직 X)
+/*    // 게시글 태그 생성 (테스트 아직 X)
     @PostMapping("/{postId}/tag")
-    public String createTag(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long postId, @RequestBody TagCreateRequest tagCreateRequest) {
+    public String createTag(@PathVariable Long postId,
+                            @AuthenticationPrincipal UserDetailsImpl userDetails,
+                            @RequestBody TagCreateRequest tagCreateRequest) {
         tagService.createTag(postId, userDetails.getEmail(), tagCreateRequest);
         return "태그 작성 완료";
     }
@@ -70,5 +68,5 @@ public class PostController {
     @GetMapping("/{postId}/tag")
     public List<TagResponse> getTag(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long postId) {
         return tagService.getTag(userDetails.getEmail(), postId);
-    }
+    }*/
 }

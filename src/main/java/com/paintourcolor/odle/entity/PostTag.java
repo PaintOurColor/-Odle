@@ -13,4 +13,11 @@ public class PostTag {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "postId", nullable = false)
+    private Post post;
+
+    @ManyToOne
+    @JoinColumn(name = "tagId", nullable = false)
+    private Tag tag;
 }

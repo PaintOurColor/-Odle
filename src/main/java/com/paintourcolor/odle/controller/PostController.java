@@ -54,19 +54,4 @@ public class PostController {
         String username = userDetails.getUsername();
         return postService.deletePost(postId, postDeleteRequest, username);
     }
-
-/*    // 게시글 태그 생성 (테스트 아직 X)
-    @PostMapping("/{postId}/tag")
-    public String createTag(@PathVariable Long postId,
-                            @AuthenticationPrincipal UserDetailsImpl userDetails,
-                            @RequestBody TagCreateRequest tagCreateRequest) {
-        tagService.createTag(postId, userDetails.getEmail(), tagCreateRequest);
-        return "태그 작성 완료";
-    }
-
-    // 게시글 태그 조회 (테스트 아직 X)
-    @GetMapping("/{postId}/tag")
-    public List<TagResponse> getTag(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long postId) {
-        return tagService.getTag(userDetails.getEmail(), postId);
-    }*/
 }

@@ -5,9 +5,14 @@ import com.paintourcolor.odle.dto.post.request.PostDeleteRequest;
 import com.paintourcolor.odle.dto.post.request.PostUpdateRequest;
 import com.paintourcolor.odle.dto.post.response.PostListResponse;
 import com.paintourcolor.odle.dto.post.response.PostResponse;
+import com.paintourcolor.odle.dto.post.response.TagResponse;
 import com.paintourcolor.odle.entity.Post;
+import com.paintourcolor.odle.entity.PostTag;
+import com.paintourcolor.odle.entity.Tag;
 import com.paintourcolor.odle.repository.PostRepository;
+import com.paintourcolor.odle.repository.PostTagRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -22,6 +27,8 @@ import java.util.stream.Collectors;
 public class PostService implements PostServiceInterface{
 
     private final PostRepository postRepository;
+    private final TagServiceInterface tagService;
+
     // 게시글 작성
     @Override
     public void createPost(PostCreateRequest postCreateRequest, String username) {
@@ -32,7 +39,8 @@ public class PostService implements PostServiceInterface{
     @Transactional(readOnly = true)
     @Override
     public List<PostResponse> getPostList(Pageable pageable) {
-        return postRepository.findAllByOrderByCreatedAtDesc(pageable).stream().map(PostResponse::new).collect(Collectors.toList());
+        Page<Post> posts = postRepository.findAll(pageable);
+        return posts.stream().map(post -> new PostResponse(post, tagService.getTag(post.getId()))).toList();
     }
 
     // 게시글 개별 조회
@@ -40,7 +48,8 @@ public class PostService implements PostServiceInterface{
     @Override
     public PostResponse getPost(Long postId) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new NoSuchElementException("해당 게시글은 존재하지 않습니다."));
-        return new PostResponse(post);
+        List<TagResponse> tagResponses = tagService.getTag(postId);
+        return new PostResponse(post, tagResponses);
     }
 
     // 게시글 수정
@@ -48,11 +57,11 @@ public class PostService implements PostServiceInterface{
     @Override
     public PostResponse updatePost(Long postId, PostUpdateRequest postUpdateRequest, String username) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new NoSuchElementException("해당 게시글은 존재하지 않습니다."));
-
+        List<TagResponse> tagResponses = tagService.getTag(postId);  // PostResponse에 tagResponses를 넣어줘야해서 우선 작성함, 구현은 아직 X
         //username이 다르다면 수정권한x
         if (post.getUser().getUsername().equals(username)) {
             post.update(postUpdateRequest);
-            return new PostResponse(post);
+            return new PostResponse(post, tagResponses);
         }
         throw new IllegalArgumentException("작성자만 수정 가능합니다.");
     }

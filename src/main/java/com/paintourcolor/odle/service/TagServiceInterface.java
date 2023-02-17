@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface TagServiceInterface {
     void createTag(Long postId, TagCreateRequest tagCreateRequest);
-    List<TagResponse> getTag(String email, Long postId);
+    List<TagResponse> getTag(Long postId);
     void updateTag(Long postId, Long tagId, String username, TagUpdateRequest tagUpdateRequest);
     void deleteTag(Long postId, Long tagId, String username);
 }

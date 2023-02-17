@@ -5,6 +5,8 @@ import com.paintourcolor.odle.entity.OpenOrEndEnum;
 import com.paintourcolor.odle.entity.Post;
 import lombok.Getter;
 
+import java.util.List;
+
 @Getter
 public class PostResponse {
 
@@ -15,8 +17,9 @@ public class PostResponse {
     private final String content;
     private final OpenOrEndEnum openOrEnd;
     private final EmotionEnum emotion;
+    private final List<TagResponse> tagList;
 
-    public PostResponse(Post post) {
+    public PostResponse(Post post, List<TagResponse> tagList) {
         this.id = post.getId();
         this.user = post.getUser().getId();
         this.music = post.getMusic().getId();
@@ -24,5 +27,6 @@ public class PostResponse {
         this.content = post.getContent();
         this.openOrEnd = post.getOpenOrEnd();
         this.emotion = post.getEmotion();
+        this.tagList = tagList;
     }
 }

@@ -25,7 +25,7 @@ public class CommentController {
     public String createComment(@PathVariable Long postId,
                                 @RequestBody CommentCreateRequest commentCreateRequest,
                                 @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        String username = userDetails.getUsername();
+        String username = userDetails.getEmail();
         commentService.createComment(postId, commentCreateRequest, username);
         return "댓글 작성 완료";
     }
@@ -43,8 +43,8 @@ public class CommentController {
                                 @PathVariable Long commentId,
                                 @RequestBody CommentUpdateRequest commentUpdateRequest,
                                 @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        String username = userDetails.getUsername();
-        commentService.updateComment(postId, commentId, commentUpdateRequest, username);
+        Long userId = userDetails.getUserId();
+        commentService.updateComment(postId, commentId, commentUpdateRequest, userId);
         return "댓글 수정 완료";
     }
 
@@ -53,8 +53,8 @@ public class CommentController {
     public String deleteComment(@PathVariable Long postId,
                                 @PathVariable Long commentId,
                                 @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        String username = userDetails.getUsername();
-        commentService.deleteComment(postId, commentId, username);
+        Long userId = userDetails.getUserId();
+        commentService.deleteComment(postId, commentId, userId);
         return "댓글 삭제 완료";
     }
 

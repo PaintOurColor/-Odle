@@ -13,9 +13,9 @@ public interface CommentServiceInterface {
     // 댓글 조회
     Page<CommentResponse> getComment(Long postId, Pageable pageable);
     // 댓글 수정
-    void updateComment(Long postId, Long commentId, CommentUpdateRequest commentUpdateRequest, String username);
+    void updateComment(Long postId, Long commentId, CommentUpdateRequest commentUpdateRequest, Long userId);
     // 댓글 삭제
-    void deleteComment(Long postId, Long commentId, String username);
+    void deleteComment(Long postId, Long commentId, Long userId);
     // 댓글 개수 조회
     CommentCountResponse getCommentCount(Long postId);
 }

@@ -59,7 +59,7 @@ public class CommentService implements CommentServiceInterface{
     // 댓글 수정
     @Transactional
     @Override
-    public void updateComment(Long postId, Long commentId, CommentUpdateRequest commentUpdateRequest, String username) {
+    public void updateComment(Long postId, Long commentId, CommentUpdateRequest commentUpdateRequest, Long userId) {
         postRepository.findById(postId).orElseThrow(
                 () -> new IllegalArgumentException("해당 댓글이 작성된 게시글이 존재하지 않습니다.")
         );
@@ -68,21 +68,18 @@ public class CommentService implements CommentServiceInterface{
                 () -> new IllegalArgumentException("해당 댓글이 존재하지 않습니다.")
         );
 
-        User user = userRepository.findByUsername(username).orElseThrow(
-                () -> new IllegalArgumentException("해당 유저를 찾을 수 없습니다.")
-        );
-
-        if (!user.getId().equals(comment.getUser().getId())) {
+        if (!userId.equals(comment.getUser().getId())) {
             throw new IllegalArgumentException("댓글 작성자 본인만 수정이 가능합니다.");
         }
 
         comment.updateComment(commentUpdateRequest);
+        commentRepository.save(comment);
     }
 
     // 댓글 삭제
     @Transactional
     @Override
-    public void deleteComment(Long postId, Long commentId, String username) {
+    public void deleteComment(Long postId, Long commentId, Long userId) {
         Post post = postRepository.findById(postId).orElseThrow(
                 () -> new IllegalArgumentException("해당 댓글이 작성된 게시글이 존재하지 않습니다.")
         );
@@ -91,16 +88,13 @@ public class CommentService implements CommentServiceInterface{
                 () -> new IllegalArgumentException("해당 댓글이 존재하지 않습니다.")
         );
 
-        User user = userRepository.findByUsername(username).orElseThrow(
-                () -> new IllegalArgumentException("해당 유저를 찾을 수 없습니다.")
-        );
-
-        if (!user.getId().equals(comment.getUser().getId())) {
+        if (!userId.equals(comment.getUser().getId())) {
             throw new IllegalArgumentException("댓글 작성자 본인만 삭제가 가능합니다.");
         }
 
         post.minusComment();
         commentRepository.deleteById(commentId);
+        postRepository.save(post);
     }
 
     // 댓글 개수 조회

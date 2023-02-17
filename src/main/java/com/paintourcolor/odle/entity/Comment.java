@@ -30,6 +30,8 @@ public class Comment extends Timestamped{
         this.post = post;
         this.user = user;
         this.content = content;
+        this.likeCount = 0L;
+        this.parentId = 0L;
     }
 
     public void updateComment(CommentUpdateRequest commentUpdateRequest) {

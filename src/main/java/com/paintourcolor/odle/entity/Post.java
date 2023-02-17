@@ -1,5 +1,6 @@
 package com.paintourcolor.odle.entity;
 
+import com.paintourcolor.odle.dto.post.request.PostCreateRequest;
 import com.paintourcolor.odle.dto.post.request.PostUpdateRequest;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +19,9 @@ public class Post extends Timestamped{
     @ManyToOne
     @JoinColumn(name = "userId", nullable = false)
     private User user;
+
+
+
     @ManyToOne
     @JoinColumn(name = "musicId", nullable = false)
     private Music music;
@@ -41,5 +45,12 @@ public class Post extends Timestamped{
         this.content = postUpdateRequest.getContent();
         this.openOrEnd = postUpdateRequest.getOpenOrEndEnum();
         this.emotion = postUpdateRequest.getEmotionEnum();
+    }
+
+    public Post(PostCreateRequest postCreateRequest, String username) {
+        this.music = postCreateRequest.getMusic();
+        this.content = postCreateRequest.getContent();
+        this.openOrEnd = postCreateRequest.getOpenOrEnd();
+        this.emotion = postCreateRequest.getEmotion();
     }
 }

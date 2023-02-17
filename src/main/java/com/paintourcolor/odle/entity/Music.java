@@ -32,4 +32,41 @@ public class Music {
     private Long loveCount;
     @Column(nullable = false)
     private Long flexCount;
+
+    public Music(String title, String singer, String cover) {
+        this.title = title;
+        this.singer = singer;
+        this.cover = cover;
+        this.angryCount = 0L;
+        this.sadCount = 0L;
+        this.screamCount = 0L;
+        this.shyCount = 0L;
+        this.happyCount = 0L;
+        this.loveCount = 0L;
+        this.flexCount = 0L;
+    }
+
+    public void plusEmotionCount(EmotionEnum emotion) {
+        switch (emotion) {
+            case SAD -> sadCount++;
+            case SHY -> shyCount++;
+            case FLEX -> flexCount++;
+            case LOVE -> loveCount++;
+            case ANGRY -> angryCount++;
+            case HAPPY -> happyCount++;
+            case SCREAM -> screamCount++;
+        }
+    }
+
+    public void minusEmotionCount(EmotionEnum emotion) {
+        switch (emotion) {
+            case SAD -> sadCount--;
+            case SHY -> shyCount--;
+            case FLEX -> flexCount--;
+            case LOVE -> loveCount--;
+            case ANGRY -> angryCount--;
+            case HAPPY -> happyCount--;
+            case SCREAM -> screamCount--;
+        }
+    }
 }

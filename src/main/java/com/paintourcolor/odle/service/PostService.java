@@ -3,10 +3,11 @@ package com.paintourcolor.odle.service;
 import com.paintourcolor.odle.dto.post.request.PostCreateRequest;
 import com.paintourcolor.odle.dto.post.request.PostDeleteRequest;
 import com.paintourcolor.odle.dto.post.request.PostUpdateRequest;
-import com.paintourcolor.odle.dto.post.response.PostListResponse;
 import com.paintourcolor.odle.dto.post.response.PostResponse;
+import com.paintourcolor.odle.entity.Music;
 import com.paintourcolor.odle.dto.post.response.TagResponse;
 import com.paintourcolor.odle.entity.Post;
+import com.paintourcolor.odle.repository.MusicRepository;
 import com.paintourcolor.odle.entity.PostTag;
 import com.paintourcolor.odle.entity.Tag;
 import com.paintourcolor.odle.repository.PostRepository;
@@ -14,7 +15,6 @@ import com.paintourcolor.odle.repository.PostTagRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,10 +28,16 @@ public class PostService implements PostServiceInterface{
 
     private final PostRepository postRepository;
     private final TagServiceInterface tagService;
-
+    private final MusicRepository musicRepository;
     // 게시글 작성
     @Override
-    public void createPost(PostCreateRequest postCreateRequest, String username) {
+    public Long createPost(PostCreateRequest postCreateRequest, String username) {
+        Post post = postRepository.save(new Post(postCreateRequest, username));
+        Music music = new Music(postCreateRequest.getTitle(), postCreateRequest.getSinger(), postCreateRequest.getCover());
+        music.plusEmotionCount(postCreateRequest.getEmotion());
+        postRepository.save(post);
+        musicRepository.save(music);
+        return post.getId();
 
     }
 

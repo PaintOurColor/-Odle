@@ -4,6 +4,7 @@ import com.paintourcolor.odle.dto.post.request.*;
 import com.paintourcolor.odle.dto.post.response.PostResponse;
 import com.paintourcolor.odle.dto.post.response.TagResponse;
 import com.paintourcolor.odle.security.UserDetailsImpl;
+import com.paintourcolor.odle.service.MusicServiceInterface;
 import com.paintourcolor.odle.service.PostServiceInterface;
 import com.paintourcolor.odle.service.TagServiceInterface;
 import lombok.RequiredArgsConstructor;
@@ -18,22 +19,32 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PostController {
     private final PostServiceInterface postService;
+    private final TagServiceInterface tagService;
+    //private final MusicServiceInterface musicService;
 
     //게시글 작성
     @PostMapping
-    public PostCreateRequest createPost() {
-        return null;
+    public String createPost(@RequestBody PostCreateRequest postCreateRequest,
+                             @RequestBody TagCreateRequest tagCreateRequest,
+                             @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        String username = userDetails.getUsername();
+        //musicService.getMelonMusic(); //cover, singer, title 반환
+        Long postId = postService.createPost(postCreateRequest, username);
+        tagService.createTag(postId, tagCreateRequest);
+        return "게시글 작성 완료";
     }
 
     //게시글 목록 조회(메인피드)
     @GetMapping()
-    public List<PostResponse> getPostList(Pageable pageable) {
+    public List<PostResponse> getPostList(Pageable pageable,
+                                          @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return postService.getPostList(pageable);
     }
 
     //게시글 개별 조회
     @GetMapping("/{postId}")
-    public PostResponse getPost(@PathVariable Long postId) {
+    public PostResponse getPost(@PathVariable Long postId,
+                                @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return postService.getPost(postId);
     }
 

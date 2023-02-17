@@ -48,7 +48,7 @@ public class Post extends Timestamped{
     }
 
     public Post(PostCreateRequest postCreateRequest, String username) {
-        this.music = postCreateRequest.getMusic();
+//        this.music = postCreateRequest.getMusic();
         this.content = postCreateRequest.getContent();
         this.openOrEnd = postCreateRequest.getOpenOrEnd();
         this.emotion = postCreateRequest.getEmotion();

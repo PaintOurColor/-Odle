@@ -31,6 +31,8 @@ public class Post extends Timestamped{
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private OpenOrEndEnum openOrEnd;
+    @OneToMany(mappedBy = "post")
+    private Set<PostLike> postLikes = new LinkedHashSet<>();
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private EmotionEnum emotion;
@@ -56,5 +58,14 @@ public class Post extends Timestamped{
         this.content = postCreateRequest.getContent();
         this.openOrEnd = postCreateRequest.getOpenOrEnd();
         this.emotion = postCreateRequest.getEmotion();
+    }
+
+    public void plusLike(User user) {
+        this.likeCount++;
+        this.postLikes.add(new PostLike(user, this));
+    }
+
+    public void minusLike(User user) {
+        this.likeCount--;
     }
 }

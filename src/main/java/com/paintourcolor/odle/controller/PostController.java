@@ -4,6 +4,7 @@ import com.paintourcolor.odle.dto.post.request.*;
 import com.paintourcolor.odle.dto.post.response.PostResponse;
 import com.paintourcolor.odle.dto.post.response.TagResponse;
 import com.paintourcolor.odle.security.UserDetailsImpl;
+import com.paintourcolor.odle.service.LikeServiceInterface;
 import com.paintourcolor.odle.service.MusicServiceInterface;
 import com.paintourcolor.odle.service.PostServiceInterface;
 import com.paintourcolor.odle.service.TagServiceInterface;
@@ -21,6 +22,7 @@ public class PostController {
     private final PostServiceInterface postService;
     private final TagServiceInterface tagService;
     //private final MusicServiceInterface musicService;
+    private final LikeServiceInterface likeService;
 
     //게시글 작성
     @PostMapping
@@ -64,5 +66,21 @@ public class PostController {
                                          @AuthenticationPrincipal UserDetailsImpl userDetails) {
         String username = userDetails.getUsername();
         return postService.deletePost(postId, postDeleteRequest, username);
+    }
+
+    //게시글 좋아요
+    @PostMapping("/{postId}/like")
+    public void likePost(@PathVariable Long postId,
+                         @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        likeService.likePost(postId, userDetails.getUserId());
+    }
+
+
+
+    //게시글 좋아요 취소
+    @DeleteMapping("/{postId}/unlike")
+    public void unlikePost(@PathVariable Long postId,
+                           @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        likeService.unlikePost(postId, userDetails.getUserId());
     }
 }

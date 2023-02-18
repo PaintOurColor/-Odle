@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class MusicController {
     private final MusicServiceInterface musicService;
     // 노래 정보 조회
-    @GetMapping("/{musicId}")
-    public MusicResponse getMusic(@PathVariable Long musicId) {
-        return musicService.getMusic(musicId);
+    @GetMapping("/{melonId}")
+    public MusicResponse getMusic(@PathVariable Long melonId) {
+        return musicService.getMusic(melonId);
     }
 }

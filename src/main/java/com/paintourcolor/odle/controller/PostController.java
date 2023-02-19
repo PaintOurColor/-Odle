@@ -2,7 +2,7 @@ package com.paintourcolor.odle.controller;
 
 import com.paintourcolor.odle.dto.post.request.*;
 import com.paintourcolor.odle.dto.post.response.PostResponse;
-import com.paintourcolor.odle.dto.post.response.TagResponse;
+import com.paintourcolor.odle.entity.User;
 import com.paintourcolor.odle.security.UserDetailsImpl;
 import com.paintourcolor.odle.service.LikeServiceInterface;
 import com.paintourcolor.odle.service.MusicServiceInterface;
@@ -27,12 +27,11 @@ public class PostController {
     //게시글 작성
     @PostMapping
     public String createPost(@RequestBody PostCreateRequest postCreateRequest,
-                             @RequestBody TagCreateRequest tagCreateRequest,
+
                              @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        String username = userDetails.getUsername();
-        //musicService.getMelonMusic(); //cover, singer, title 반환
-        Long postId = postService.createPost(postCreateRequest, username);
-        tagService.createTag(postId, tagCreateRequest);
+        User user = userDetails.getUser();
+        postService.createPost(postCreateRequest, user);
+//        tagService.createTag(postId, tagCreateRequest);
         return "게시글 작성 완료";
     }
 

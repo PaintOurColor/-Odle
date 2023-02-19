@@ -22,9 +22,9 @@ public class Post extends Timestamped{
     @ManyToOne
     @JoinColumn(name = "musicId", nullable = false)
     private Music music;
-    @ManyToOne
-    @JoinColumn(name = "melonKoreaId", nullable = false)
-    private MelonKorea melonKorea;
+//    @ManyToOne
+//    @JoinColumn(name = "melonKoreaId", nullable = false)
+//    private MelonKorea melonKorea;
     @Column(nullable = false)
     private Long likeCount;
     private String content;
@@ -53,11 +53,14 @@ public class Post extends Timestamped{
         this.emotion = postUpdateRequest.getEmotionEnum();
     }
 
-    public Post(PostCreateRequest postCreateRequest, String username) {
-//        this.music = postCreateRequest.getMusic();
-        this.content = postCreateRequest.getContent();
-        this.openOrEnd = postCreateRequest.getOpenOrEnd();
-        this.emotion = postCreateRequest.getEmotion();
+    public Post(User user, Music music, String content, OpenOrEndEnum openOrEnd, EmotionEnum emotion) {
+        this.user = user;
+        this.music = music;
+        this.content = content;
+        this.openOrEnd = openOrEnd;
+        this.emotion = emotion;
+        this.likeCount = 0L;
+        this.commentCount = 0L;
     }
 
     public void plusLike(User user) {

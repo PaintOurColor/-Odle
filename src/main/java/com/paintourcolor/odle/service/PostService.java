@@ -1,17 +1,16 @@
 package com.paintourcolor.odle.service;
 
+import com.paintourcolor.odle.dto.mucis.response.MusicResponse;
 import com.paintourcolor.odle.dto.post.request.PostCreateRequest;
 import com.paintourcolor.odle.dto.post.request.PostDeleteRequest;
 import com.paintourcolor.odle.dto.post.request.PostUpdateRequest;
 import com.paintourcolor.odle.dto.post.response.PostResponse;
-import com.paintourcolor.odle.entity.Music;
+import com.paintourcolor.odle.entity.*;
 import com.paintourcolor.odle.dto.post.response.TagResponse;
-import com.paintourcolor.odle.entity.Post;
 import com.paintourcolor.odle.repository.MusicRepository;
-import com.paintourcolor.odle.entity.PostTag;
-import com.paintourcolor.odle.entity.Tag;
 import com.paintourcolor.odle.repository.PostRepository;
 import com.paintourcolor.odle.repository.PostTagRepository;
+import com.paintourcolor.odle.repository.TagRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -29,16 +27,19 @@ public class PostService implements PostServiceInterface{
     private final PostRepository postRepository;
     private final TagServiceInterface tagService;
     private final MusicRepository musicRepository;
+    private final PostTagRepository postTagRepository;
+    private final TagRepository tagRepository;
+    private final MusicServiceInterface musicService;
     // 게시글 작성
     @Override
-    public Long createPost(PostCreateRequest postCreateRequest, String username) {
-        Post post = postRepository.save(new Post(postCreateRequest, username));
-        Music music = new Music(postCreateRequest.getTitle(), postCreateRequest.getSinger(), postCreateRequest.getCover());
+    public void createPost(PostCreateRequest postCreateRequest, User user) {
+        Long musicId = postCreateRequest.getMelonId();
+        MusicResponse musicResponse = musicService.getMusic(musicId);
+        Music music = new Music(musicResponse.getTitle(), musicResponse.getSinger(), musicResponse.getCover());
         music.plusEmotionCount(postCreateRequest.getEmotion());
-        postRepository.save(post);
         musicRepository.save(music);
-        return post.getId();
-
+        Post post = new Post(user, music, postCreateRequest.getContent(), postCreateRequest.getOpenOrEnd(), postCreateRequest.getEmotion());
+        postRepository.save(post);
     }
 
     // 게시글 전체 조회

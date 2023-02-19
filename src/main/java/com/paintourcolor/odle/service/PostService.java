@@ -7,10 +7,7 @@ import com.paintourcolor.odle.dto.post.request.PostUpdateRequest;
 import com.paintourcolor.odle.dto.post.response.PostResponse;
 import com.paintourcolor.odle.entity.*;
 import com.paintourcolor.odle.dto.post.response.TagResponse;
-import com.paintourcolor.odle.repository.MusicRepository;
-import com.paintourcolor.odle.repository.PostRepository;
-import com.paintourcolor.odle.repository.PostTagRepository;
-import com.paintourcolor.odle.repository.TagRepository;
+import com.paintourcolor.odle.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,21 +27,26 @@ public class PostService implements PostServiceInterface {
     private final PostTagRepository postTagRepository;
     private final TagRepository tagRepository;
     private final MusicServiceInterface musicService;
+    private final MelonKoreaRepository melonKoreaRepository;
 
     // 게시글 작성
     @Override
     public void createPost(PostCreateRequest postCreateRequest, User user) {
-        Long musicId = postCreateRequest.getMelonId();
-        MusicResponse musicResponse = musicService.getMusic(musicId);
+        Long melonId = postCreateRequest.getMelonId();
+        MusicResponse musicResponse = musicService.getMusic(melonId);
 
-        // 가져온 MusicResponse 로 Music 객체 생성 후 저장
-        Music music = new Music(musicResponse.getTitle(), musicResponse.getSinger(), musicResponse.getCover());
-        music.plusEmotionCount(postCreateRequest.getEmotion());
-        musicRepository.save(music);
-
-        // Post 객체 생성 후 저장
-        Post post = new Post(user, music, postCreateRequest.getContent(), postCreateRequest.getOpenOrEnd(), postCreateRequest.getEmotion());
-        postRepository.save(post);
+        MelonKorea melonKorea = melonKoreaRepository.findById(melonId).get();
+        Music music1 = musicRepository.findMusicByMelonKoreaId(musicResponse.getMelonId());
+        if (music1 != null) {
+            music1.plusEmotionCount(postCreateRequest.getEmotion());
+            Post post = new Post(user, music1, postCreateRequest.getContent(), postCreateRequest.getOpenOrEnd(), postCreateRequest.getEmotion());
+            postRepository.save(post);
+        }else {
+            Music music = new Music(melonKorea, musicResponse.getTitle(), musicResponse.getSinger(), musicResponse.getCover());
+            musicRepository.save(music);
+            Post post = new Post(user, music, postCreateRequest.getContent(), postCreateRequest.getOpenOrEnd(), postCreateRequest.getEmotion());
+            postRepository.save(post);
+        }
 
         // Tag 가 있을 경우 tag 작성
         if (postCreateRequest.getTagCreateRequest() != null) {
@@ -60,7 +62,7 @@ public class PostService implements PostServiceInterface {
                 }
             }
         }
-        // tagCreateRequest 에 새로운 태그가 하나도 없을 경우 count 가 적용이 안 됨
+        // tagCreateRequest 에 새로운 태그가 하나도 없을 경우 tagCount 가 적용이 안 됨(Post 개수는 늘어남)
         // PostTag table 에 postId 와 tagId 가 저장이 안 됨
     }
 

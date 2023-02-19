@@ -24,9 +24,13 @@ public class Tag {
     @Column(nullable = false)
     private Long tagCount;
 
-    @JoinColumn(name = "tagId")
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "tag", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<PostTag> postTags = new LinkedHashSet<>();
+
+    public Tag(String tagName) {
+        this.tagName = tagName;
+        this.tagCount = 1L;
+    }
 
     public void plusTagCount() {
         this.tagCount += 1;
@@ -34,10 +38,5 @@ public class Tag {
 
     public void minusTagCount() {
         this.tagCount -= 1;
-    }
-
-    public Tag(String tagName) {
-        this.tagName = tagName;
-        this.tagCount = 1L;
     }
 }

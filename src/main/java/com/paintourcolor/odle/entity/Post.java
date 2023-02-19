@@ -39,6 +39,9 @@ public class Post extends Timestamped{
     @Column(nullable = false)
     private Long commentCount;
 
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<PostTag> postTags = new LinkedHashSet<>();
+
     public void plusComment() {
         this.commentCount += 1;
     }

@@ -27,7 +27,6 @@ public class PostController {
     //게시글 작성
     @PostMapping
     public String createPost(@RequestBody PostCreateRequest postCreateRequest,
-
                              @AuthenticationPrincipal UserDetailsImpl userDetails) {
         User user = userDetails.getUser();
         postService.createPost(postCreateRequest, user);

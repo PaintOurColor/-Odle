@@ -22,7 +22,7 @@ import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
-public class PostService implements PostServiceInterface{
+public class PostService implements PostServiceInterface {
 
     private final PostRepository postRepository;
     private final TagServiceInterface tagService;
@@ -30,16 +30,38 @@ public class PostService implements PostServiceInterface{
     private final PostTagRepository postTagRepository;
     private final TagRepository tagRepository;
     private final MusicServiceInterface musicService;
+
     // 게시글 작성
     @Override
     public void createPost(PostCreateRequest postCreateRequest, User user) {
         Long musicId = postCreateRequest.getMelonId();
         MusicResponse musicResponse = musicService.getMusic(musicId);
+
+        // 가져온 MusicResponse 로 Music 객체 생성 후 저장
         Music music = new Music(musicResponse.getTitle(), musicResponse.getSinger(), musicResponse.getCover());
         music.plusEmotionCount(postCreateRequest.getEmotion());
         musicRepository.save(music);
+
+        // Post 객체 생성 후 저장
         Post post = new Post(user, music, postCreateRequest.getContent(), postCreateRequest.getOpenOrEnd(), postCreateRequest.getEmotion());
         postRepository.save(post);
+
+        // Tag 가 있을 경우 tag 작성
+        if (postCreateRequest.getTagCreateRequest() != null) {
+            String tagList = postCreateRequest.getTagCreateRequest().getTagList();
+            String[] tagNameList = tagList.split(" ");
+            for (String tagName : tagNameList) {
+                Tag tag = tagRepository.findByTagName(tagName);
+                if (tag != null) {
+                    tag.plusTagCount();
+                } else {
+                    Tag tag1 = new Tag(tagName);
+                    tagRepository.save(tag1);
+                }
+            }
+        }
+        // tagCreateRequest 에 새로운 태그가 하나도 없을 경우 count 가 적용이 안 됨
+        // PostTag table 에 postId 와 tagId 가 저장이 안 됨
     }
 
     // 게시글 전체 조회

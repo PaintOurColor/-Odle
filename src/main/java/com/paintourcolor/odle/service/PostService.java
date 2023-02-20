@@ -38,7 +38,7 @@ public class PostService implements PostServiceInterface {
         Music music = musicRepository.findMusicByMelonKoreaId(musicResponse.getMelonId());
         if (music != null) {
             music.plusEmotionCount(postCreateRequest.getEmotion());
-        }else {
+        } else {
             music = new Music(musicResponse.getMelonId(), musicResponse.getTitle(), musicResponse.getSinger(), musicResponse.getCover());
             music.plusEmotionCount(postCreateRequest.getEmotion());
             musicRepository.save(music);
@@ -50,8 +50,15 @@ public class PostService implements PostServiceInterface {
         // Tag 가 있을 경우 tag 작성
         if (postCreateRequest.getTagCreateRequest() != null) {
             String tagList = postCreateRequest.getTagCreateRequest().getTagList();
-            List<Tag> tags = createTag(tagList);
-            for (Tag tag : tags) {
+            String[] tagNameList = tagList.split(" ");
+            for (String tagName : tagNameList) {
+                Tag tag = tagRepository.findByTagName(tagName);
+                if (tag != null) {
+                    tag.plusTagCount();
+                } else {
+                    tag = new Tag(tagName);
+                }
+                tagRepository.save(tag);
                 PostTag postTag = new PostTag(post, tag);
                 postTagRepository.save(postTag);
             }
@@ -103,12 +110,24 @@ public class PostService implements PostServiceInterface {
         // tagName 수정
         if (postUpdateRequest.getTagUpdateRequest() != null) {
             // 기존에 있던 태그 다 -1
-            deleteTag(postId);
+            List<PostTag> postTags = postTagRepository.findTagIdByPostId(postId);
+            for (PostTag postTag : postTags) {
+                Tag tag = tagRepository.findById(postTag.getTag().getId()).get();
+                tag.minusTagCount();
+                postTagRepository.delete(postTag);
+            }
 
             // 새로 들어온 태그
             String tagList = postUpdateRequest.getTagUpdateRequest().getTagList();
-            List<Tag> tags = createTag(tagList);
-            for (Tag tag : tags) {
+            String[] tagNameList = tagList.split(" ");
+            for (String tagName : tagNameList) {
+                Tag tag = tagRepository.findByTagName(tagName);
+                if (tag != null) {
+                    tag.plusTagCount();
+                } else {
+                    tag = new Tag(tagName);
+                }
+                tagRepository.save(tag);
                 PostTag postTag = new PostTag(post, tag);
                 postTagRepository.save(postTag);
             }
@@ -134,43 +153,22 @@ public class PostService implements PostServiceInterface {
         music.minusEmotionCount(post.getEmotion());
 
         // tag -1 시켜주기, 1일 경우 0으로 되고 삭제는 따로 안 됨
-        deleteTag(postId);
+        List<PostTag> postTags = postTagRepository.findTagIdByPostId(postId);
+        for (PostTag postTag : postTags) {
+            Tag tag = tagRepository.findById(postTag.getTag().getId()).get();
+            tag.minusTagCount();
+        }
 
         postRepository.deleteById(postId);
-        return  "게시글 삭제 성공";
-    }
-
-    public List<Tag> createTag(String tagList) {  // 이 메소드를 만들기 전에는 한 for문 안에서 PostTag도 해결했는데 메소드를 따로 두니까 for문을 한 번 더 돌려야 함
-        String[] tagNameList = tagList.split(" ");
-        List<Tag> tags = new ArrayList<>();
-        for (String tagName : tagNameList) {
-            Tag tag = tagRepository.findByTagName(tagName);
-            if (tag != null) {
-                tag.plusTagCount();
-            } else {
-                tag = new Tag(tagName);
-            }
-            tagRepository.save(tag);
-            tags.add(tag);
-        }
-        return tags;
+        return "게시글 삭제 성공";
     }
 
     public String getTag(Long postId) {
-        List<PostTag> postTags   = postTagRepository.findTagIdByPostId(postId);
+        List<PostTag> postTags = postTagRepository.findTagIdByPostId(postId);
         List<Tag> tags = new ArrayList<>();
         for (PostTag postTag : postTags) {
             tags.add(postTag.getTag());
         }
         return tags.stream().map(Tag::getTagName).collect(Collectors.joining(" "));
-    }
-
-    public void deleteTag(Long postId) {
-        List<PostTag> postTags = postTagRepository.findTagIdByPostId(postId);
-        for (PostTag postTag : postTags) {
-            Tag tag = tagRepository.findById(postTag.getTag().getId()).get();
-            tag.minusTagCount();
-            postTagRepository.delete(postTag); // 수정할 때는 필요한데 삭제할 때는 필요 없음
-        }
     }
 }

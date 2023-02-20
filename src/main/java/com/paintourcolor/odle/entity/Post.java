@@ -74,4 +74,8 @@ public class Post extends Timestamped{
     public void minusLike(User user) {
         this.likeCount--;
     }
+
+    public Long getUserId() {return user.getId();}
+    public Long getMusicId() {return music.getId();}
+
 }

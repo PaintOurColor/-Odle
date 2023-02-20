@@ -17,6 +17,6 @@ public class MusicService implements MusicServiceInterface {
                 () -> new IllegalArgumentException("존재하지 않는 음악입니다.")
         );
 
-        return new MusicResponse(melon.getTitle(), melon.getSinger(), melon.getCover());
+        return new MusicResponse(melon.getId(), melon.getTitle(), melon.getSinger(), melon.getCover());
     }
 }

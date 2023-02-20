@@ -1,17 +1,13 @@
 package com.paintourcolor.odle.service;
 
+import com.paintourcolor.odle.dto.mucis.response.MusicResponse;
 import com.paintourcolor.odle.dto.post.request.PostCreateRequest;
 import com.paintourcolor.odle.dto.post.request.PostDeleteRequest;
 import com.paintourcolor.odle.dto.post.request.PostUpdateRequest;
 import com.paintourcolor.odle.dto.post.response.PostResponse;
-import com.paintourcolor.odle.entity.Music;
+import com.paintourcolor.odle.entity.*;
 import com.paintourcolor.odle.dto.post.response.TagResponse;
-import com.paintourcolor.odle.entity.Post;
-import com.paintourcolor.odle.repository.MusicRepository;
-import com.paintourcolor.odle.entity.PostTag;
-import com.paintourcolor.odle.entity.Tag;
-import com.paintourcolor.odle.repository.PostRepository;
-import com.paintourcolor.odle.repository.PostTagRepository;
+import com.paintourcolor.odle.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,25 +16,54 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class PostService implements PostServiceInterface{
+public class PostService implements PostServiceInterface {
 
     private final PostRepository postRepository;
     private final TagServiceInterface tagService;
     private final MusicRepository musicRepository;
+    private final PostTagRepository postTagRepository;
+    private final TagRepository tagRepository;
+    private final MusicServiceInterface musicService;
+    private final MelonKoreaRepository melonKoreaRepository;
+
     // 게시글 작성
     @Override
-    public Long createPost(PostCreateRequest postCreateRequest, String username) {
-        Post post = postRepository.save(new Post(postCreateRequest, username));
-        Music music = new Music(postCreateRequest.getTitle(), postCreateRequest.getSinger(), postCreateRequest.getCover());
-        music.plusEmotionCount(postCreateRequest.getEmotion());
-        postRepository.save(post);
-        musicRepository.save(music);
-        return post.getId();
+    public void createPost(PostCreateRequest postCreateRequest, User user) {
+        Long melonId = postCreateRequest.getMelonId();
+        MusicResponse musicResponse = musicService.getMusic(melonId);
 
+        MelonKorea melonKorea = melonKoreaRepository.findById(melonId).get();
+        Music music1 = musicRepository.findMusicByMelonKoreaId(musicResponse.getMelonId());
+        if (music1 != null) {
+            music1.plusEmotionCount(postCreateRequest.getEmotion());
+            Post post = new Post(user, music1, postCreateRequest.getContent(), postCreateRequest.getOpenOrEnd(), postCreateRequest.getEmotion());
+            postRepository.save(post);
+        }else {
+            Music music = new Music(melonKorea, musicResponse.getTitle(), musicResponse.getSinger(), musicResponse.getCover());
+            musicRepository.save(music);
+            Post post = new Post(user, music, postCreateRequest.getContent(), postCreateRequest.getOpenOrEnd(), postCreateRequest.getEmotion());
+            postRepository.save(post);
+        }
+
+        // Tag 가 있을 경우 tag 작성
+        if (postCreateRequest.getTagCreateRequest() != null) {
+            String tagList = postCreateRequest.getTagCreateRequest().getTagList();
+            String[] tagNameList = tagList.split(" ");
+            for (String tagName : tagNameList) {
+                Tag tag = tagRepository.findByTagName(tagName);
+                if (tag != null) {
+                    tag.plusTagCount();
+                } else {
+                    Tag tag1 = new Tag(tagName);
+                    tagRepository.save(tag1);
+                }
+            }
+        }
+        // tagCreateRequest 에 새로운 태그가 하나도 없을 경우 tagCount 가 적용이 안 됨(Post 개수는 늘어남)
+        // PostTag table 에 postId 와 tagId 가 저장이 안 됨
     }
 
     // 게시글 전체 조회

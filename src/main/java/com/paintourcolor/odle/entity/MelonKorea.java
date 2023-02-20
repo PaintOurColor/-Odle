@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Getter
 @NoArgsConstructor
@@ -18,4 +20,6 @@ public class MelonKorea {
     private String singer;
     @Column(nullable = false)
     private String cover;
+    @OneToMany(mappedBy = "melonKorea", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Music> music = new LinkedHashSet<>();
 }

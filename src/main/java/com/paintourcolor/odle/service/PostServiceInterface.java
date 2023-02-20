@@ -1,7 +1,6 @@
 package com.paintourcolor.odle.service;
 
 import com.paintourcolor.odle.dto.post.request.PostCreateRequest;
-import com.paintourcolor.odle.dto.post.request.PostDeleteRequest;
 import com.paintourcolor.odle.dto.post.request.PostUpdateRequest;
 import com.paintourcolor.odle.dto.post.response.PostResponse;
 import com.paintourcolor.odle.entity.User;

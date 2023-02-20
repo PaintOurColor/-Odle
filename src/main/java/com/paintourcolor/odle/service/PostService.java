@@ -1,6 +1,5 @@
 package com.paintourcolor.odle.service;
 
-import com.paintourcolor.odle.dto.mucis.response.MusicResponse;
 import com.paintourcolor.odle.dto.post.request.PostCreateRequest;
 import com.paintourcolor.odle.dto.post.request.PostUpdateRequest;
 import com.paintourcolor.odle.dto.post.response.PostResponse;
@@ -22,12 +21,9 @@ import java.util.stream.Collectors;
 public class PostService implements PostServiceInterface {
 
     private final PostRepository postRepository;
-    private final TagServiceInterface tagService;
     private final MusicRepository musicRepository;
     private final PostTagRepository postTagRepository;
     private final TagRepository tagRepository;
-    private final MusicServiceInterface musicService;
-    private final MelonKoreaRepository melonKoreaRepository;
 
     // 게시글 작성
     @Override

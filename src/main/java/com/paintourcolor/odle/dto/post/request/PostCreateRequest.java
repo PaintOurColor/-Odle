@@ -1,7 +1,6 @@
 package com.paintourcolor.odle.dto.post.request;
 
 import com.paintourcolor.odle.entity.EmotionEnum;
-import com.paintourcolor.odle.entity.MelonKorea;
 import com.paintourcolor.odle.entity.OpenOrEndEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

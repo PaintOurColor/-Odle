@@ -14,9 +14,8 @@ public class Music {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
-    @JoinColumn(name = "melonKoreaId", nullable = false)
-    private MelonKorea melonKorea;
+    @Column(nullable = false)
+    private Long melonKoreaId;
     @OneToMany(mappedBy = "music", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Post> posts = new LinkedHashSet<>();
     @Column(nullable = false)
@@ -40,8 +39,8 @@ public class Music {
     @Column(nullable = false)
     private Long flexCount;
 
-    public Music(MelonKorea melonKorea, String title, String singer, String cover) {
-        this.melonKorea = melonKorea;
+    public Music(Long melonKoreaId, String title, String singer, String cover) {
+        this.melonKoreaId = melonKoreaId;
         this.title = title;
         this.singer = singer;
         this.cover = cover;

@@ -3,20 +3,26 @@ package com.paintourcolor.odle.service;
 import com.paintourcolor.odle.dto.user.request.UserLoginRequest;
 import com.paintourcolor.odle.dto.user.request.UserSignupRequest;
 import com.paintourcolor.odle.dto.user.request.UserInactivateRequest;
+import com.paintourcolor.odle.dto.user.response.PostCountResponse;
+import com.paintourcolor.odle.dto.user.response.ProfilePostResponse;
 import com.paintourcolor.odle.dto.user.response.UserResponse;
 import com.paintourcolor.odle.entity.*;
 import com.paintourcolor.odle.repository.LogoutTokenRepository;
+import com.paintourcolor.odle.repository.PostRepository;
 import com.paintourcolor.odle.repository.RefreshTokenRepository;
 import com.paintourcolor.odle.repository.UserRepository;
 import com.paintourcolor.odle.util.jwtutil.JwtUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +33,7 @@ public class UserService implements UserServiceInterface {
 
     private final LogoutTokenRepository logoutTokenRepository;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final PostRepository postRepository;
 
     // 유저 회원가입
     @Transactional
@@ -99,7 +106,26 @@ public class UserService implements UserServiceInterface {
 
     // 유저 전체 조회
     @Override
-    public UserResponse getUser(int page) {
-        return null;
+    public List<UserResponse> getUsers(Pageable pageable) {
+        Page<User> users = userRepository.findAll(pageable);
+        return users
+                .stream()
+                .map(UserResponse::new)
+                .collect(Collectors.toList());
     }
+
+    @Override
+    public List<ProfilePostResponse> getProfilePosts(Long userId, Pageable pageable) {
+        Page<Post> Posts = postRepository.findAllByUserId(userId, pageable);
+        return Posts
+                .stream()
+                .map(ProfilePostResponse::new)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public PostCountResponse getPostCount(Long userId){
+        return new PostCountResponse(postRepository.countByUserId(userId));
+    }
+
 }

@@ -63,7 +63,7 @@
 					document.cookie =
 							'Authorization' + '=' + xhr.getResponseHeader('Authorization') + ';path=/';
 					location.href = "feed.html";
-				} else if (response.status("NOT_FOUND")){
+				} else {
 					alert('이메일 또는 비밀번호를 확인해주세요.')
 					window.location.reload();
 				}

@@ -1,12 +1,9 @@
 package com.paintourcolor.odle.service;
 
-import com.paintourcolor.odle.dto.mucis.response.MusicResponse;
 import com.paintourcolor.odle.dto.post.request.PostCreateRequest;
-import com.paintourcolor.odle.dto.post.request.PostDeleteRequest;
 import com.paintourcolor.odle.dto.post.request.PostUpdateRequest;
 import com.paintourcolor.odle.dto.post.response.PostResponse;
 import com.paintourcolor.odle.entity.*;
-import com.paintourcolor.odle.dto.post.response.TagResponse;
 import com.paintourcolor.odle.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -24,24 +21,18 @@ import java.util.stream.Collectors;
 public class PostService implements PostServiceInterface {
 
     private final PostRepository postRepository;
-    private final TagServiceInterface tagService;
     private final MusicRepository musicRepository;
     private final PostTagRepository postTagRepository;
     private final TagRepository tagRepository;
-    private final MusicServiceInterface musicService;
-    private final MelonKoreaRepository melonKoreaRepository;
 
     // 게시글 작성
     @Override
     public void createPost(PostCreateRequest postCreateRequest, User user) {
-        Long melonId = postCreateRequest.getMelonId();
-        MusicResponse musicResponse = musicService.getMusic(melonId);
-
-        Music music = musicRepository.findMusicByMelonKoreaId(musicResponse.getMelonId());
+        Music music = musicRepository.findMusicByMelonKoreaId(postCreateRequest.getMelonId());
         if (music != null) {
             music.plusEmotionCount(postCreateRequest.getEmotion());
-        }else {
-            music = new Music(musicResponse.getMelonId(), musicResponse.getTitle(), musicResponse.getSinger(), musicResponse.getCover());
+        } else {
+            music = new Music(postCreateRequest.getMelonId(), postCreateRequest.getTitle(), postCreateRequest.getSinger(), postCreateRequest.getCover());
             music.plusEmotionCount(postCreateRequest.getEmotion());
             musicRepository.save(music);
         }
@@ -75,14 +66,7 @@ public class PostService implements PostServiceInterface {
         List<PostResponse> postResponses = new ArrayList<>();
 
         for (Post post : posts) {
-            List<PostTag> postTags   = postTagRepository.findTagIdByPostId(post.getId());
-            List<Tag> tags = new ArrayList<>();
-
-            for (PostTag postTag : postTags) {
-                tags.add(postTag.getTag());
-            }
-
-            String tagList = tags.stream().map(Tag::getTagName).collect(Collectors.joining(" "));
+            String tagList = getTag(post.getId());
             postResponses.add(new PostResponse(post, tagList));
         }
         return postResponses;
@@ -93,14 +77,10 @@ public class PostService implements PostServiceInterface {
     @Override
     public PostResponse getPost(Long postId) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new NoSuchElementException("해당 게시글은 존재하지 않습니다."));
-        List<TagResponse> tagResponses = tagService.getTag(postId);
-        List<PostTag> postTags   = postTagRepository.findTagIdByPostId(postId);
-        List<Tag> tags = new ArrayList<>();
-        for (PostTag postTag : postTags) {
-            tags.add(postTag.getTag());
-        }//
-        String tagList = tags.stream().map(Tag::getTagName).collect(Collectors.joining(" "));
-        return new PostResponse(post, tagList);//
+
+        String tagList = getTag(postId);
+
+        return new PostResponse(post, tagList);
     }
 
     // 게시글 수정
@@ -108,25 +88,80 @@ public class PostService implements PostServiceInterface {
     @Override
     public PostResponse updatePost(Long postId, PostUpdateRequest postUpdateRequest, String username) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new NoSuchElementException("해당 게시글은 존재하지 않습니다."));
-        String tagResponses = tagService.getTag(postId).toString();  // PostResponse에 tagResponses를 넣어줘야해서 우선 작성함, 구현은 아직 X
-        //username이 다르다면 수정권한x
-        if (post.getUser().getUsername().equals(username)) {
-            post.update(postUpdateRequest);
-            return new PostResponse(post, tagResponses);
+
+        if (!post.getUser().getUsername().equals(username)) {
+            throw new IllegalArgumentException("작성자만 수정 가능합니다.");
         }
-        throw new IllegalArgumentException("작성자만 수정 가능합니다.");
+
+        // emotion 수정됐을 때 수정된 emotion -1, 추가된 emotion +1
+        Music music = musicRepository.findMusicByMelonKoreaId(post.getMusic().getMelonKoreaId());
+        music.minusEmotionCount(post.getEmotion());
+
+        post.update(postUpdateRequest.getContent(), postUpdateRequest.getOpenOrEnd(), postUpdateRequest.getEmotion());
+        music.plusEmotionCount(postUpdateRequest.getEmotion());
+
+        // tagName 수정
+        if (postUpdateRequest.getTagUpdateRequest() != null) {
+            // 기존에 있던 태그 다 -1
+            List<PostTag> postTags = postTagRepository.findTagIdByPostId(postId);
+            for (PostTag postTag : postTags) {
+                Tag tag = tagRepository.findById(postTag.getTag().getId()).get();
+                tag.minusTagCount();
+                postTagRepository.delete(postTag);
+            }
+
+            // 새로 들어온 태그
+            String tagList = postUpdateRequest.getTagUpdateRequest().getTagList();
+            String[] tagNameList = tagList.split(" ");
+            for (String tagName : tagNameList) {
+                Tag tag = tagRepository.findByTagName(tagName);
+                if (tag != null) {
+                    tag.plusTagCount();
+                } else {
+                    tag = new Tag(tagName);
+                }
+                tagRepository.save(tag);
+                PostTag postTag = new PostTag(post, tag);
+                postTagRepository.save(postTag);
+            }
+        }
+        // 새로 작성된 태그 가져오기
+        String tagList = getTag(postId);
+
+        return new PostResponse(post, tagList);
     }
 
     // 게시글 삭제
     @Transactional
     @Override
-    public String deletePost(Long postId, PostDeleteRequest postDeleteRequest, String username) {
+    public String deletePost(Long postId, String username) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new NoSuchElementException("해당 게시글은 존재하지 않습니다."));
-        if (post.getUser().getUsername().equals(username)) {
-            postRepository.deleteById(postId);
-            return  "게시글 삭제 성공";
+
+        if (!post.getUser().getUsername().equals(username)) {
+            return "작성자만 삭제 가능합니다";
         }
-        return "작성자만 삭제 가능합니다";
+
+        //emotionCount 가 0이 될 뿐 삭제는 안 됨
+        Music music = musicRepository.findMusicByMelonKoreaId(post.getMusic().getMelonKoreaId());
+        music.minusEmotionCount(post.getEmotion());
+
+        // tag -1 시켜주기, 1일 경우 0으로 되고 삭제는 따로 안 됨
+        List<PostTag> postTags = postTagRepository.findTagIdByPostId(postId);
+        for (PostTag postTag : postTags) {
+            Tag tag = tagRepository.findById(postTag.getTag().getId()).get();
+            tag.minusTagCount();
+        }
+
+        postRepository.deleteById(postId);
+        return "게시글 삭제 성공";
     }
 
+    public String getTag(Long postId) {
+        List<PostTag> postTags = postTagRepository.findTagIdByPostId(postId);
+        List<Tag> tags = new ArrayList<>();
+        for (PostTag postTag : postTags) {
+            tags.add(postTag.getTag());
+        }
+        return tags.stream().map(Tag::getTagName).collect(Collectors.joining(" "));
+    }
 }

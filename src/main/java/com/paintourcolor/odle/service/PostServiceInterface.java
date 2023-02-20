@@ -1,7 +1,6 @@
 package com.paintourcolor.odle.service;
 
 import com.paintourcolor.odle.dto.post.request.PostCreateRequest;
-import com.paintourcolor.odle.dto.post.request.PostDeleteRequest;
 import com.paintourcolor.odle.dto.post.request.PostUpdateRequest;
 import com.paintourcolor.odle.dto.post.response.PostResponse;
 import com.paintourcolor.odle.entity.User;
@@ -20,5 +19,5 @@ public interface PostServiceInterface {
     // 게시글 수정
     PostResponse updatePost(Long postId, PostUpdateRequest postUpdateRequest, String username);
     // 게시글 삭제
-    String deletePost(Long postId, PostDeleteRequest postDeleteRequest, String username);
+    String deletePost(Long postId, String username);
 }

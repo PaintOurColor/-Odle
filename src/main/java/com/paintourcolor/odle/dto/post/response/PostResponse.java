@@ -5,8 +5,6 @@ import com.paintourcolor.odle.entity.OpenOrEndEnum;
 import com.paintourcolor.odle.entity.Post;
 import lombok.Getter;
 
-import java.util.List;
-
 @Getter
 public class PostResponse {
 

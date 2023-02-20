@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PostUpdateRequest {
     private String content;
-    private OpenOrEndEnum openOrEndEnum;
-    private EmotionEnum emotionEnum;
+    private OpenOrEndEnum openOrEnd;
+    private EmotionEnum emotion;
+    private TagUpdateRequest tagUpdateRequest;
 }

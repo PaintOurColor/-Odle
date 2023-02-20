@@ -14,8 +14,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -70,7 +72,8 @@ public class PostService implements PostServiceInterface {
     @Override
     public List<PostResponse> getPostList(Pageable pageable) {
         Page<Post> posts = postRepository.findAll(pageable);
-        return posts.stream().map(post -> new PostResponse(post, tagService.getTag(post.getId()))).toList();
+        String tagList = "";
+        return posts.stream().map(post -> new PostResponse(post, tagList)).toList();
     }
 
     // 게시글 개별 조회
@@ -79,7 +82,13 @@ public class PostService implements PostServiceInterface {
     public PostResponse getPost(Long postId) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new NoSuchElementException("해당 게시글은 존재하지 않습니다."));
         List<TagResponse> tagResponses = tagService.getTag(postId);
-        return new PostResponse(post, tagResponses);
+        List<PostTag> postTags   = postTagRepository.findTagIdByPostId(postId);
+        List<Tag> tags = new ArrayList<>();
+        for (PostTag postTag : postTags) {
+            tags.add(postTag.getTag());
+        }//
+        String tagList = tags.stream().map(Tag::getTagName).collect(Collectors.joining(" "));
+        return new PostResponse(post, tagList);//
     }
 
     // 게시글 수정
@@ -87,7 +96,7 @@ public class PostService implements PostServiceInterface {
     @Override
     public PostResponse updatePost(Long postId, PostUpdateRequest postUpdateRequest, String username) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new NoSuchElementException("해당 게시글은 존재하지 않습니다."));
-        List<TagResponse> tagResponses = tagService.getTag(postId);  // PostResponse에 tagResponses를 넣어줘야해서 우선 작성함, 구현은 아직 X
+        String tagResponses = tagService.getTag(postId).toString();  // PostResponse에 tagResponses를 넣어줘야해서 우선 작성함, 구현은 아직 X
         //username이 다르다면 수정권한x
         if (post.getUser().getUsername().equals(username)) {
             post.update(postUpdateRequest);

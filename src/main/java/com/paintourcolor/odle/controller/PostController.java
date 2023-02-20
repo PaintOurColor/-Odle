@@ -60,10 +60,9 @@ public class PostController {
     //게시글 삭제
     @DeleteMapping("/{postId}")
     public String  deleteBoard(@PathVariable Long postId,
-                                         @RequestBody PostDeleteRequest postDeleteRequest,
                                          @AuthenticationPrincipal UserDetailsImpl userDetails) {
         String username = userDetails.getUsername();
-        return postService.deletePost(postId, postDeleteRequest, username);
+        return postService.deletePost(postId, username);
     }
 
     //게시글 좋아요

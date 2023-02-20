@@ -2,7 +2,6 @@ package com.paintourcolor.odle.service;
 
 import com.paintourcolor.odle.dto.mucis.response.MusicResponse;
 import com.paintourcolor.odle.dto.post.request.PostCreateRequest;
-import com.paintourcolor.odle.dto.post.request.PostDeleteRequest;
 import com.paintourcolor.odle.dto.post.request.PostUpdateRequest;
 import com.paintourcolor.odle.dto.post.response.PostResponse;
 import com.paintourcolor.odle.entity.*;
@@ -93,14 +92,15 @@ public class PostService implements PostServiceInterface {
     @Override
     public PostResponse getPost(Long postId) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new NoSuchElementException("해당 게시글은 존재하지 않습니다."));
-        List<TagResponse> tagResponses = tagService.getTag(postId);
+
         List<PostTag> postTags   = postTagRepository.findTagIdByPostId(postId);
         List<Tag> tags = new ArrayList<>();
         for (PostTag postTag : postTags) {
             tags.add(postTag.getTag());
-        }//
+        }
         String tagList = tags.stream().map(Tag::getTagName).collect(Collectors.joining(" "));
-        return new PostResponse(post, tagList);//
+
+        return new PostResponse(post, tagList);
     }
 
     // 게시글 수정
@@ -120,13 +120,37 @@ public class PostService implements PostServiceInterface {
     // 게시글 삭제
     @Transactional
     @Override
-    public String deletePost(Long postId, PostDeleteRequest postDeleteRequest, String username) {
+    public String deletePost(Long postId, String username) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new NoSuchElementException("해당 게시글은 존재하지 않습니다."));
-        if (post.getUser().getUsername().equals(username)) {
-            postRepository.deleteById(postId);
-            return  "게시글 삭제 성공";
-        }
-        return "작성자만 삭제 가능합니다";
-    }
 
+        if (!post.getUser().getUsername().equals(username)) {
+            return "작성자만 삭제 가능합니다";
+        }
+
+        //emotionCount 가 0이 될 뿐 삭제는 안 됨
+        Music music = musicRepository.findMusicByMelonKoreaId(post.getMusic().getMelonKoreaId());
+        music.minusEmotionCount(post.getEmotion());
+
+        // tag 삭제
+        List<PostTag> postTags = postTagRepository.findTagIdByPostId(postId);
+        List<Tag> tags = new ArrayList<>();
+        for (PostTag postTag : postTags) {
+            tags.add(postTag.getTag());
+        }
+
+        List<TagResponse> tagResponses = tags.stream().map(tag -> new TagResponse(tag.getTagName())).toList();
+        for (TagResponse tagResponse : tagResponses) {
+            Tag tag = tagRepository.findByTagName(tagResponse.getTagName());
+            if (tag.getTagCount() != 1) {
+                tag.minusTagCount();
+            } else {
+                tagRepository.delete(tag);
+            }
+            PostTag postTag = new PostTag(post, tag);
+            postTagRepository.delete(postTag);
+        }
+
+        postRepository.deleteById(postId);
+        return  "게시글 삭제 성공";
+    }
 }

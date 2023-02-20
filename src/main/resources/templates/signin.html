@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Instagram Login Page</title>
-    <link rel="stylesheet" type="text/css" href="../static/css/styles.css">
+	<title>오늘 뭐들었니?</title>
+	<link rel="stylesheet" type="text/css" href="../static/css/styles.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
 </head>
@@ -30,10 +30,10 @@
 				<div class="line"></div>
 			</div>
 			<div class="dif">
-				<div class="fb">
+				<!-- <div class="fb">
 					<img src="../static/images/kakao.png" alt="facebook">
 					<p>카카오톡으로 로그인</p>
-				</div>
+				</div> -->
 				<div class="forgot">
 					<a href="#">비밀번호 찾기</a>
 				</div>
@@ -57,9 +57,16 @@
 				password: $(`#password`).val()
 			}),
 			contentType: "application/json; charset=UTF-8",
-			success: function () {
-				alert("로그인 완료")
-				location.href="feed.html"
+			success: function (response, status, xhr) {
+				if (response === "로그인 완료") {
+					alert("로그인 완료");
+					document.cookie =
+							'Authorization' + '=' + xhr.getResponseHeader('Authorization') + ';path=/';
+					location.href = "feed.html";
+				} else if (response.status("NOT_FOUND")){
+					alert('이메일 또는 비밀번호를 확인해주세요.')
+					window.location.reload();
+				}
 			}
 		})
 	}

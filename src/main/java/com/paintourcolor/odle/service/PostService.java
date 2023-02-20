@@ -5,7 +5,6 @@ import com.paintourcolor.odle.dto.post.request.PostCreateRequest;
 import com.paintourcolor.odle.dto.post.request.PostUpdateRequest;
 import com.paintourcolor.odle.dto.post.response.PostResponse;
 import com.paintourcolor.odle.entity.*;
-import com.paintourcolor.odle.dto.post.response.TagResponse;
 import com.paintourcolor.odle.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -131,23 +130,11 @@ public class PostService implements PostServiceInterface {
         Music music = musicRepository.findMusicByMelonKoreaId(post.getMusic().getMelonKoreaId());
         music.minusEmotionCount(post.getEmotion());
 
-        // tag 삭제
+        // tag -1 시켜주기, 1일 경우 0으로 되고 삭제는 따로 안 됨
         List<PostTag> postTags = postTagRepository.findTagIdByPostId(postId);
-        List<Tag> tags = new ArrayList<>();
         for (PostTag postTag : postTags) {
-            tags.add(postTag.getTag());
-        }
-
-        List<TagResponse> tagResponses = tags.stream().map(tag -> new TagResponse(tag.getTagName())).toList();
-        for (TagResponse tagResponse : tagResponses) {
-            Tag tag = tagRepository.findByTagName(tagResponse.getTagName());
-            if (tag.getTagCount() != 1) {
-                tag.minusTagCount();
-            } else {
-                tagRepository.delete(tag);
-            }
-            PostTag postTag = new PostTag(post, tag);
-            postTagRepository.delete(postTag);
+            Tag tag = tagRepository.findById(postTag.getTag().getId()).get();
+            tag.minusTagCount();
         }
 
         postRepository.deleteById(postId);

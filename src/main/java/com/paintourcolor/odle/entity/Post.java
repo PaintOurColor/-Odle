@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -31,8 +32,8 @@ public class Post extends Timestamped{
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private OpenOrEndEnum openOrEnd;
-    @OneToMany(mappedBy = "post")
-    private Set<PostLike> postLikes = new LinkedHashSet<>();
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<PostLike> postLikes = new HashSet<>();
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private EmotionEnum emotion;
@@ -67,15 +68,31 @@ public class Post extends Timestamped{
     }
 
     public void plusLike(User user) {
-        this.likeCount++;
-        this.postLikes.add(new PostLike(user, this));
+        if (!this.postLikes.stream().anyMatch(postLike -> postLike.getUser().equals(user))) {
+            this.likeCount++;
+            this.postLikes.add(new PostLike(user, this));
+        }
+    }
+
+    public boolean likedBy(User user) {
+        return postLikes.stream().anyMatch(postLike -> postLike.getUser().equals(user));
     }
 
     public void minusLike(User user) {
-        this.likeCount--;
+        if (likeCount > 0) {
+            this.likeCount--;
+            PostLike postLike = postLikes.stream().filter(pl -> pl.getUser().equals(user)).findFirst().orElse(null);
+            if (postLike != null) {
+                postLikes.remove(postLike);
+            }
+        } else {
+            this.likeCount = 0L;
+        }
     }
-
     public Long getUserId() {return user.getId();}
     public Long getMusicId() {return music.getId();}
+    public Long getLikeCount() {
+        return likeCount;
+    }
 
 }

@@ -107,13 +107,52 @@ public class PostService implements PostServiceInterface {
     @Override
     public PostResponse updatePost(Long postId, PostUpdateRequest postUpdateRequest, String username) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new NoSuchElementException("해당 게시글은 존재하지 않습니다."));
-        String tagResponses = tagService.getTag(postId).toString();  // PostResponse에 tagResponses를 넣어줘야해서 우선 작성함, 구현은 아직 X
-        //username이 다르다면 수정권한x
-        if (post.getUser().getUsername().equals(username)) {
-            post.update(postUpdateRequest);
-            return new PostResponse(post, tagResponses);
+
+        if (!post.getUser().getUsername().equals(username)) {
+            throw new IllegalArgumentException("작성자만 수정 가능합니다.");
         }
-        throw new IllegalArgumentException("작성자만 수정 가능합니다.");
+
+        // emotion 수정됐을 때 수정된 emotion -1, 추가된 emotion +1
+        Music music = musicRepository.findMusicByMelonKoreaId(post.getMusic().getMelonKoreaId());
+        music.minusEmotionCount(post.getEmotion());
+
+        post.update(postUpdateRequest.getContent(), postUpdateRequest.getOpenOrEnd(), postUpdateRequest.getEmotion());
+        music.plusEmotionCount(postUpdateRequest.getEmotion());
+
+        // tagName 수정
+        if (postUpdateRequest.getTagUpdateRequest() != null) {
+            // 기존에 있던 태그 다 -1
+            List<PostTag> postTags = postTagRepository.findTagIdByPostId(postId);
+            for (PostTag postTag : postTags) {
+                Tag tag = tagRepository.findById(postTag.getTag().getId()).get();
+                tag.minusTagCount();
+                postTagRepository.delete(postTag);
+            }
+
+            // 새로 들어온 태그
+            String tagList = postUpdateRequest.getTagUpdateRequest().getTagList();
+            String[] tagNameList = tagList.split(" ");
+            for (String tagName : tagNameList) {
+                Tag tag = tagRepository.findByTagName(tagName);
+                if (tag != null) {
+                    tag.plusTagCount();
+                } else {
+                    tag = new Tag(tagName);
+                }
+                tagRepository.save(tag);
+                PostTag postTag = new PostTag(post, tag);
+                postTagRepository.save(postTag);
+            }
+        }
+        // 새로 작성된 태그 가져오기
+        List<PostTag> postTags   = postTagRepository.findTagIdByPostId(postId);
+        List<Tag> tags = new ArrayList<>();
+        for (PostTag postTag : postTags) {
+            tags.add(postTag.getTag());
+        }
+        String tagList = tags.stream().map(Tag::getTagName).collect(Collectors.joining(" "));
+
+        return new PostResponse(post, tagList);
     }
 
     // 게시글 삭제

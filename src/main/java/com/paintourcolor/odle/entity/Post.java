@@ -50,10 +50,10 @@ public class Post extends Timestamped{
         this.commentCount -= 1;
     }
 
-    public void update(PostUpdateRequest postUpdateRequest) {
-        this.content = postUpdateRequest.getContent();
-        this.openOrEnd = postUpdateRequest.getOpenOrEndEnum();
-        this.emotion = postUpdateRequest.getEmotionEnum();
+    public void update(String content, OpenOrEndEnum openOrEnd, EmotionEnum emotion) {
+        this.content = content;
+        this.openOrEnd = openOrEnd;
+        this.emotion = emotion;
     }
 
     public Post(User user, Music music, String content, OpenOrEndEnum openOrEnd, EmotionEnum emotion) {

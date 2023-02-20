@@ -3,9 +3,11 @@ package com.paintourcolor.odle.controller;
 import com.paintourcolor.odle.dto.comment.request.CommentCreateRequest;
 import com.paintourcolor.odle.dto.comment.request.CommentUpdateRequest;
 import com.paintourcolor.odle.dto.comment.response.CommentCountResponse;
+import com.paintourcolor.odle.dto.comment.response.CommentLikeCountResponse;
 import com.paintourcolor.odle.dto.comment.response.CommentResponse;
 import com.paintourcolor.odle.security.UserDetailsImpl;
 import com.paintourcolor.odle.service.CommentServiceInterface;
+import com.paintourcolor.odle.service.LikeServiceInterface;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/posts")
 public class CommentController {
     private final CommentServiceInterface commentService;
+    private final LikeServiceInterface likeService;
 
     // 댓글 작성
     @PostMapping("/{postId}/comments")
@@ -62,5 +65,31 @@ public class CommentController {
     @GetMapping("{postId}/comment-count")
     public CommentCountResponse getCommentCount(@PathVariable Long postId) {
         return commentService.getCommentCount(postId);
+    }
+
+    //댓글 좋아요
+    @PostMapping("/{postId}/comments/{commentId}/like")
+    public String likeComment(@PathVariable Long postId,
+                              @PathVariable Long commentId,
+                              @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        Long userId = userDetails.getUserId();
+        likeService.likeComment(postId, commentId, userId);
+        return "댓글 좋아요 완료";
+    }
+
+    //    댓글 좋아요 취소
+    @DeleteMapping("/{postId}/comments/{commentId}/unlike")
+    public String unLikeComment(@PathVariable Long postId,
+                                @PathVariable Long commentId,
+                                @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        Long userId = userDetails.getUserId();
+        likeService.unlikeComment(postId, commentId, userId);
+        return "댓글 좋아요 취소 완료";
+    }
+
+    //댓글 좋아요 개수 조회
+    @GetMapping("/{postId}/comments/{commentId}/like-count")
+    public CommentLikeCountResponse getCommentLikeCount(@PathVariable Long commentId){
+        return likeService.getCommentLikeCount(commentId);
     }
 }

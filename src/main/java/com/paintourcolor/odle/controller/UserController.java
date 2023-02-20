@@ -1,16 +1,14 @@
 package com.paintourcolor.odle.controller;
 
-import com.paintourcolor.odle.dto.user.request.AdminSignupRequest;
-import com.paintourcolor.odle.dto.user.request.ProfileUpdateRequest;
-import com.paintourcolor.odle.dto.user.request.UserLoginRequest;
-import com.paintourcolor.odle.dto.user.request.UserSignupRequest;
+import com.paintourcolor.odle.dto.user.request.*;
 import com.paintourcolor.odle.dto.user.response.*;
 import com.paintourcolor.odle.security.UserDetailsImpl;
 import com.paintourcolor.odle.service.*;
 import com.paintourcolor.odle.util.jwtutil.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -65,6 +63,43 @@ public class UserController {
         String refreshToken = jwtUtil.getRefreshToken(httpServletRequest);
         userService.reissueToken(refreshToken, response);
         return new ResponseEntity<>("토큰 재발급 완료",HttpStatus.OK);
+    }
+
+    //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ로그인 및 회원가입 외 유저 기능 여기서부터ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ//
+    @GetMapping("")
+    public ResponseEntity<List<UserResponse>> getUsers(@PageableDefault(sort = "userId",direction = Sort.Direction.DESC) Pageable pageable,
+                                                 @AuthenticationPrincipal UserDetailsImpl userDetails){
+        List<UserResponse> userList = userService.getUsers(pageable);
+        return new ResponseEntity<>(userList,HttpStatus.OK);
+    }
+    @GetMapping("/{userId}/profile/posts")
+    public ResponseEntity<List<ProfilePostResponse>> getProfilePosts(@PageableDefault(sort = "createdAt",direction = Sort.Direction.ASC) Pageable pageable,
+                                                                     @PathVariable Long userId,
+                                                                     @AuthenticationPrincipal UserDetailsImpl userDetails){
+        List<ProfilePostResponse> profilePostList = userService.getProfilePosts(userId, pageable);
+        return new ResponseEntity<>(profilePostList,HttpStatus.OK);
+    }
+    @GetMapping("/{userId}/post-count")
+    public ResponseEntity<PostCountResponse> getPostCount(@PathVariable Long userId,
+                                                          @AuthenticationPrincipal UserDetailsImpl userDetails){
+        return new ResponseEntity<>(userService.getPostCount(userId),HttpStatus.OK);
+    }
+
+    //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ관리자의 전용 기능 여기서부터ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ//
+    @PatchMapping("/{userId}/activation/admin")
+    public ResponseEntity<String> activateUser(@PathVariable Long userId,
+                                               @AuthenticationPrincipal UserDetailsImpl userDetails,
+                                               @RequestBody UserActivateRequest userActivateRequest) {
+        adminService.activateUser(userId, userDetails.getUser(), userActivateRequest.getPassword());
+        return new ResponseEntity<>("유저 활성화 완료",HttpStatus.OK);
+    }
+
+    @PatchMapping("/{userId}/inactivation/admin")
+    public ResponseEntity<String> inactivateUser(@PathVariable Long userId,
+                                               @AuthenticationPrincipal UserDetailsImpl userDetails,
+                                               @RequestBody UserActivateRequest userActivateRequest) {
+        adminService.inactivateUser(userId, userDetails.getUser(), userActivateRequest.getPassword());
+        return new ResponseEntity<>("유저 비활성화 완료",HttpStatus.OK);
     }
 
     //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ유저 프로필 기능 여기서부터ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ//

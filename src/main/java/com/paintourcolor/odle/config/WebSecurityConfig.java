@@ -41,6 +41,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.authorizeRequests()
+                .antMatchers("/**/admin").hasRole("ADMIN")
                 .antMatchers("/users/**").permitAll()
                 .antMatchers("/posts/**").permitAll()
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll() // 프론트 CORS 오류 뜰 때

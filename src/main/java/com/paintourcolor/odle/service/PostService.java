@@ -35,18 +35,17 @@ public class PostService implements PostServiceInterface {
         Long melonId = postCreateRequest.getMelonId();
         MusicResponse musicResponse = musicService.getMusic(melonId);
 
-        MelonKorea melonKorea = melonKoreaRepository.findById(melonId).get();
-        Music music1 = musicRepository.findMusicByMelonKoreaId(musicResponse.getMelonId());
-        if (music1 != null) {
-            music1.plusEmotionCount(postCreateRequest.getEmotion());
-            Post post = new Post(user, music1, postCreateRequest.getContent(), postCreateRequest.getOpenOrEnd(), postCreateRequest.getEmotion());
-            postRepository.save(post);
+        Music music = musicRepository.findMusicByMelonKoreaId(musicResponse.getMelonId());
+        if (music != null) {
+            music.plusEmotionCount(postCreateRequest.getEmotion());
         }else {
-            Music music = new Music(melonKorea, musicResponse.getTitle(), musicResponse.getSinger(), musicResponse.getCover());
+            music = new Music(musicResponse.getMelonId(), musicResponse.getTitle(), musicResponse.getSinger(), musicResponse.getCover());
+            music.plusEmotionCount(postCreateRequest.getEmotion());
             musicRepository.save(music);
-            Post post = new Post(user, music, postCreateRequest.getContent(), postCreateRequest.getOpenOrEnd(), postCreateRequest.getEmotion());
-            postRepository.save(post);
         }
+
+        Post post = new Post(user, music, postCreateRequest.getContent(), postCreateRequest.getOpenOrEnd(), postCreateRequest.getEmotion());
+        postRepository.save(post);
 
         // Tag 가 있을 경우 tag 작성
         if (postCreateRequest.getTagCreateRequest() != null) {
@@ -57,13 +56,13 @@ public class PostService implements PostServiceInterface {
                 if (tag != null) {
                     tag.plusTagCount();
                 } else {
-                    Tag tag1 = new Tag(tagName);
-                    tagRepository.save(tag1);
+                    tag = new Tag(tagName);
                 }
+                tagRepository.save(tag);
+                PostTag postTag = new PostTag(post, tag);
+                postTagRepository.save(postTag);
             }
         }
-        // tagCreateRequest 에 새로운 태그가 하나도 없을 경우 tagCount 가 적용이 안 됨(Post 개수는 늘어남)
-        // PostTag table 에 postId 와 tagId 가 저장이 안 됨
     }
 
     // 게시글 전체 조회

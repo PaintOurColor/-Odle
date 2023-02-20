@@ -5,8 +5,8 @@ import com.paintourcolor.odle.dto.user.response.ProfileResponse;
 import com.paintourcolor.odle.dto.user.response.ProfileSimpleResponse;
 
 public interface ProfileServiceInterface {
-    void updateProfile(String username, ProfileUpdateRequest profileUpdateRequest);
-    ProfileResponse getProfile(Long userId, String username);
+    void updateProfile(Long userId, ProfileUpdateRequest profileUpdateRequest);
+    ProfileResponse getProfile(Long userId);
     ProfileSimpleResponse getSimpleProfile(Long userId);
 
 }

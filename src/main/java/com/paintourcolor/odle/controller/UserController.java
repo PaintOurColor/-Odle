@@ -1,12 +1,10 @@
 package com.paintourcolor.odle.controller;
 
 import com.paintourcolor.odle.dto.user.request.AdminSignupRequest;
+import com.paintourcolor.odle.dto.user.request.ProfileUpdateRequest;
 import com.paintourcolor.odle.dto.user.request.UserLoginRequest;
 import com.paintourcolor.odle.dto.user.request.UserSignupRequest;
-import com.paintourcolor.odle.dto.user.response.FollowerCountResponse;
-import com.paintourcolor.odle.dto.user.response.FollowerResponse;
-import com.paintourcolor.odle.dto.user.response.FollowingCountResponse;
-import com.paintourcolor.odle.dto.user.response.FollowingResponse;
+import com.paintourcolor.odle.dto.user.response.*;
 import com.paintourcolor.odle.security.UserDetailsImpl;
 import com.paintourcolor.odle.service.*;
 import com.paintourcolor.odle.util.jwtutil.JwtUtil;
@@ -30,6 +28,7 @@ public class UserController {
     private final UserServiceInterface userService;
     private final AdminServiceInterface adminService;
     private final FollowServiceInterface followService;
+    private final ProfileServiceInterface profileService;
     private final JwtUtil jwtUtil;
 
     @PostMapping("/signup")
@@ -68,6 +67,30 @@ public class UserController {
         return new ResponseEntity<>("토큰 재발급 완료",HttpStatus.OK);
     }
 
+    //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ유저 프로필 기능 여기서부터ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ//
+
+    // AccessToken 재발급
+    @PatchMapping("/profile")
+    public ResponseEntity<String> updateProfile(@RequestBody ProfileUpdateRequest profileUpdateRequest, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        profileService.updateProfile(userDetails.getUserId(), profileUpdateRequest);
+        return new ResponseEntity<>("프로필 수정 완료",HttpStatus.OK);
+    }
+
+    @GetMapping("/{userId}/profile")
+    public ResponseEntity<ProfileResponse> getProfile(@PathVariable Long userId, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        ProfileResponse profile = profileService.getProfile(userId);
+        return new ResponseEntity<>(profile,HttpStatus.OK);
+    }
+    @GetMapping("/{userId}/profile/simple")
+    public ResponseEntity<ProfileSimpleResponse> getSimpleProfile(@PathVariable Long userId, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        ProfileSimpleResponse profileSimple = profileService.getSimpleProfile(userId);
+        return new ResponseEntity<>(profileSimple,HttpStatus.OK);
+    }
+
+
+
+    //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ팔로우 기능 여기서부터ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ//
+
     @PostMapping("/{userId}/follow")
     public ResponseEntity<String> followUser(@PathVariable Long userId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         followService.followUser(userDetails.getUserId(), userId);
@@ -104,5 +127,7 @@ public class UserController {
         FollowingCountResponse followingCount = followService.countFollowing(userId);
         return new ResponseEntity<>(followingCount,HttpStatus.OK);
     }
+
+    //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ팔로우 기능 여기까지ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ//
 
 }

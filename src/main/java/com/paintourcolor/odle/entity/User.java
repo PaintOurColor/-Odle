@@ -67,4 +67,10 @@ public class User {
             throw new BadCredentialsException("아이디 혹은 비밀번호가 일치하지 않습니다.");
         }
     }
+
+    public void updateProfile(String profileImage, String introduction, String username){
+        this.profileImage = profileImage;
+        this.introduction = introduction;
+        this.username = username;
+    }
 }

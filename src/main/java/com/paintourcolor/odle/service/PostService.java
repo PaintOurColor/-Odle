@@ -72,8 +72,20 @@ public class PostService implements PostServiceInterface {
     @Override
     public List<PostResponse> getPostList(Pageable pageable) {
         Page<Post> posts = postRepository.findAll(pageable);
-        String tagList = "";
-        return posts.stream().map(post -> new PostResponse(post, tagList)).toList();
+        List<PostResponse> postResponses = new ArrayList<>();
+
+        for (Post post : posts) {
+            List<PostTag> postTags   = postTagRepository.findTagIdByPostId(post.getId());
+            List<Tag> tags = new ArrayList<>();
+
+            for (PostTag postTag : postTags) {
+                tags.add(postTag.getTag());
+            }
+
+            String tagList = tags.stream().map(Tag::getTagName).collect(Collectors.joining(" "));
+            postResponses.add(new PostResponse(post, tagList));
+        }
+        return postResponses;
     }
 
     // 게시글 개별 조회

@@ -32,14 +32,11 @@ public class PostService implements PostServiceInterface {
     // 게시글 작성
     @Override
     public void createPost(PostCreateRequest postCreateRequest, User user) {
-        Long melonId = postCreateRequest.getMelonId();
-        MusicResponse musicResponse = musicService.getMusic(melonId);
-
-        Music music = musicRepository.findMusicByMelonKoreaId(musicResponse.getMelonId());
+        Music music = musicRepository.findMusicByMelonKoreaId(postCreateRequest.getMelonId());
         if (music != null) {
             music.plusEmotionCount(postCreateRequest.getEmotion());
         } else {
-            music = new Music(musicResponse.getMelonId(), musicResponse.getTitle(), musicResponse.getSinger(), musicResponse.getCover());
+            music = new Music(postCreateRequest.getMelonId(), postCreateRequest.getTitle(), postCreateRequest.getSinger(), postCreateRequest.getCover());
             music.plusEmotionCount(postCreateRequest.getEmotion());
             musicRepository.save(music);
         }

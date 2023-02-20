@@ -12,6 +12,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PostCreateRequest {
     private Long melonId;
+    private String title;
+    private String singer;
+    private String cover;
     private String content;
     private OpenOrEndEnum openOrEnd;
     private EmotionEnum emotion;

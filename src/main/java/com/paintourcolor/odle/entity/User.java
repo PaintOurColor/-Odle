@@ -62,6 +62,12 @@ public class User {
         }
     }
 
+    public void isInactivation( ) {
+        if(!this.activation.equals(ActivationEnum.INACTIVE)) {
+            throw new DisabledException("활성화 된 계정입니다.");
+        }
+    }
+
     public void matchPassword(String requestPassword, PasswordEncoder passwordEncoder) {
         if (!passwordEncoder.matches(requestPassword, this.password)){
             throw new BadCredentialsException("아이디 혹은 비밀번호가 일치하지 않습니다.");
@@ -73,4 +79,9 @@ public class User {
         this.introduction = introduction;
         this.username = username;
     }
+
+    public void updateActivation(ActivationEnum activation){
+        this.activation = activation;
+    }
+
 }

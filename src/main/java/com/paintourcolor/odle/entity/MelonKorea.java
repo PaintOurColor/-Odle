@@ -18,4 +18,10 @@ public class MelonKorea {
     private String singer;
     @Column(nullable = false)
     private String cover;
+
+    public MelonKorea(String title, String singer, String cover) {
+        this.title = title;
+        this.singer = singer;
+        this.cover = cover;
+    }
 }

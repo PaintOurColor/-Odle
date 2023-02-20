@@ -17,9 +17,9 @@ public class PostResponse {
     private final String content;
     private final OpenOrEndEnum openOrEnd;
     private final EmotionEnum emotion;
-    private final List<TagResponse> tagList;
+    private final String tagList;
 
-    public PostResponse(Post post, List<TagResponse> tagList) {
+    public PostResponse(Post post, String tagList) {
         this.id = post.getId();
         this.user = post.getUser().getId();
         this.music = post.getMusic().getId();

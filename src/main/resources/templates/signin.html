@@ -62,6 +62,8 @@
 					alert("로그인 완료");
 					document.cookie =
 							'Authorization' + '=' + xhr.getResponseHeader('Authorization') + ';path=/';
+					document.cookie =
+							'RefreshToken' + '=' + xhr.getResponseHeader('RefreshToken') + ';path=/';
 					location.href = "feed.html";
 				} else {
 					alert('이메일 또는 비밀번호를 확인해주세요.')

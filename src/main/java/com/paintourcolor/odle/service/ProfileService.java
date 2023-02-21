@@ -52,4 +52,9 @@ public class ProfileService implements ProfileServiceInterface{
         );
         return new ProfileSimpleResponse(user);
     }
+
+    @Override
+    public ProfileSimpleResponse getMySimpleProfile(User user) {
+    return new ProfileSimpleResponse(user);
+    }
 }

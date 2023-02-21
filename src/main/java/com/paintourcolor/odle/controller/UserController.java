@@ -122,6 +122,12 @@ public class UserController {
         return new ResponseEntity<>(profileSimple,HttpStatus.OK);
     }
 
+    @GetMapping("/profile/simple")
+    public ResponseEntity<ProfileSimpleResponse> getMySimpleProfile(@AuthenticationPrincipal UserDetailsImpl userDetails){
+        ProfileSimpleResponse profileSimple = profileService.getMySimpleProfile(userDetails.getUser());
+        return new ResponseEntity<>(profileSimple,HttpStatus.OK);
+    }
+
 
 
     //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ팔로우 기능 여기서부터ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ//

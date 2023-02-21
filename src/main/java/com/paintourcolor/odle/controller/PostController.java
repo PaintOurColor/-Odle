@@ -1,12 +1,12 @@
 package com.paintourcolor.odle.controller;
 
 import com.paintourcolor.odle.dto.post.request.*;
+import com.paintourcolor.odle.dto.post.response.PostLikeCountResponse;
 import com.paintourcolor.odle.dto.post.response.PostResponse;
-import com.paintourcolor.odle.dto.post.response.TagResponse;
+import com.paintourcolor.odle.entity.User;
 import com.paintourcolor.odle.security.UserDetailsImpl;
-import com.paintourcolor.odle.service.MusicServiceInterface;
+import com.paintourcolor.odle.service.LikeServiceInterface;
 import com.paintourcolor.odle.service.PostServiceInterface;
-import com.paintourcolor.odle.service.TagServiceInterface;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,18 +19,14 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PostController {
     private final PostServiceInterface postService;
-    private final TagServiceInterface tagService;
-    //private final MusicServiceInterface musicService;
+    private final LikeServiceInterface likeService;
 
     //게시글 작성
     @PostMapping
     public String createPost(@RequestBody PostCreateRequest postCreateRequest,
-                             @RequestBody TagCreateRequest tagCreateRequest,
                              @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        String username = userDetails.getUsername();
-        //musicService.getMelonMusic(); //cover, singer, title 반환
-        Long postId = postService.createPost(postCreateRequest, username);
-        tagService.createTag(postId, tagCreateRequest);
+        User user = userDetails.getUser();
+        postService.createPost(postCreateRequest, user);
         return "게시글 작성 완료";
     }
 
@@ -60,9 +56,32 @@ public class PostController {
     //게시글 삭제
     @DeleteMapping("/{postId}")
     public String  deleteBoard(@PathVariable Long postId,
-                                         @RequestBody PostDeleteRequest postDeleteRequest,
                                          @AuthenticationPrincipal UserDetailsImpl userDetails) {
         String username = userDetails.getUsername();
-        return postService.deletePost(postId, postDeleteRequest, username);
+        return postService.deletePost(postId, username);
+    }
+
+    //게시글 좋아요
+    @PostMapping("/{postId}/like")
+    public String likePost(@PathVariable Long postId,
+                           @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        likeService.likePost(postId, userDetails.getUserId());
+        return "게시글 좋아요 완료";
+    }
+
+
+
+    //게시글 좋아요 취소
+    @DeleteMapping("/{postId}/unlike")
+    public String unlikePost(@PathVariable Long postId,
+                             @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        likeService.unlikePost(postId, userDetails.getUserId());
+        return "게시글 좋아요 취소 완료";
+    }
+
+    //게시글 좋아요 개수 호출
+    @GetMapping("/{postId}/like-count")
+    public PostLikeCountResponse getPostLikeCount(@PathVariable Long postId){
+        return likeService.getPostLikeCount(postId);
     }
 }

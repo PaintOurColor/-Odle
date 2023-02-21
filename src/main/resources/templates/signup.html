@@ -3,50 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Odle</title>
+    <title>오늘 뭐들었니?</title>
     <link rel="stylesheet" type="text/css" href="../static/css/styles.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
 </head>
 <body>
-    <div class="signupcontainer">
-        <div class="container">
-            <div id="image">
-                <h1><img src="../static/images/low-res-logo.png" alt="Instagram"></h1>
-            </div>
-            <div class="signupcontentcontainer">
-                <div class="_fblgn">
-                    <i class="fab fa-facebook-square"></i>  카카오톡으로 로그인
-                </div>
-                <div class="_opsgn">
-                    <div class="_ftptlbr"><p></p></div>
-                    <div class="_opalr">OR</div>
-                    <div class="_sdptlbr"></div>
-                </div>
-                <div class="_infr">
-                    <div class="input">
-                        <input type="text" name="email" id="email" placeholder="이메일을 입력하세요">
-                    </div>
-                    <div class="input">
-                        <input type="text" name="username" id="username" placeholder="닉네임을 입력하세요">
-                    </div>
-                    <div class="input">
-                        <input type="password" name="password" id="password" placeholder="비밀번호를 입력하세요">
-                    </div>
-                </div>
-                <div class="signup-btn" onclick="signUp()">
-                    회원 가입
-                </div>
-                <div class="_tpadc">
-                     <span class="alfdi"></span><span class="alfdi"></span>  <span class="alfdi"></span> 
-                </div>
-            </div>
+<div class="signupcontainer">
+    <div class="container">
+        <div id="image">
+            <h1><img src="../static/images/low-res-logo.png" alt="Instagram"></h1>
         </div>
-        <div class="loginfromsignup">
-            이미 가입하셨나요? <a href="signin.html">로그인</a>
+        <div class="signupcontentcontainer">
+            <!-- <div class="_fblgn">
+                <i class="fab fa-facebook-square"></i>  카카오톡으로 로그인
+            </div> -->
+            <div class="_opsgn">
+                <div class="_ftptlbr"><p></p></div>
+                <div class="_opalr"></div>
+                <div class="_sdptlbr"></div>
+            </div>
+            <div class="_infr">
+                <div class="input">
+                    <input type="text" name="email" id="email" placeholder="이메일을 입력하세요">
+                </div>
+                <div class="input">
+                    <input type="text" name="username" id="username" placeholder="닉네임을 입력하세요">
+                </div>
+                <div class="input">
+                    <input type="password" name="password" id="password" placeholder="비밀번호를 입력하세요">
+                </div>
+            </div>
+            <div class="signup-btn" onclick="signUp()">
+                회원 가입
+            </div>
+            <div class="_tpadc">
+                <span class="alfdi"></span><span class="alfdi"></span>  <span class="alfdi"></span>
+            </div>
         </div>
     </div>
-    </footer>
+    <div class="loginfromsignup">
+        이미 가입하셨나요? <a href="signin.html">로그인</a>
+    </div>
+</div>
+</footer>
 </body>
 
 <script>

@@ -11,6 +11,10 @@ import com.paintourcolor.odle.repository.CommentRepository;
 import com.paintourcolor.odle.repository.PostRepository;
 import com.paintourcolor.odle.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,26 +45,65 @@ public class CommentService implements CommentServiceInterface{
     }
 
     // 댓글 조회
+    @Transactional
     @Override
-    public CommentResponse getComment(Long postId, int page) {
-        return null;
+    public Page<CommentResponse> getComment(Long postId, Pageable pageable) {
+        postRepository.findById(postId).orElseThrow(
+                () -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다.")
+        );
+
+        Page<Comment> comments = commentRepository.findAllByPostId(postId, pageable);
+        return comments.map(CommentResponse::new);
     }
 
     // 댓글 수정
+    @Transactional
     @Override
-    public void updateComment(Long postId, Long commentId, CommentUpdateRequest commentUpdateRequest, String username) {
+    public void updateComment(Long postId, Long commentId, CommentUpdateRequest commentUpdateRequest, Long userId) {
+        postRepository.findById(postId).orElseThrow(
+                () -> new IllegalArgumentException("해당 댓글이 작성된 게시글이 존재하지 않습니다.")
+        );
 
+        Comment comment = commentRepository.findById(commentId).orElseThrow(
+                () -> new IllegalArgumentException("해당 댓글이 존재하지 않습니다.")
+        );
+
+        if (!userId.equals(comment.getUser().getId())) {
+            throw new IllegalArgumentException("댓글 작성자 본인만 수정이 가능합니다.");
+        }
+
+        comment.updateComment(commentUpdateRequest);
+        commentRepository.save(comment);
     }
 
     // 댓글 삭제
+    @Transactional
     @Override
-    public void deleteComment(Long postId, Long commentId, String username) {
+    public void deleteComment(Long postId, Long commentId, Long userId) {
+        Post post = postRepository.findById(postId).orElseThrow(
+                () -> new IllegalArgumentException("해당 댓글이 작성된 게시글이 존재하지 않습니다.")
+        );
 
+        Comment comment = commentRepository.findById(commentId).orElseThrow(
+                () -> new IllegalArgumentException("해당 댓글이 존재하지 않습니다.")
+        );
+
+        if (!userId.equals(comment.getUser().getId())) {
+            throw new IllegalArgumentException("댓글 작성자 본인만 삭제가 가능합니다.");
+        }
+
+        post.minusComment();
+        commentRepository.deleteById(commentId);
+        postRepository.save(post);
     }
 
     // 댓글 개수 조회
     @Override
     public CommentCountResponse getCommentCount(Long postId) {
-        return null;
+        Post post = postRepository.findById(postId).orElseThrow(
+                () -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다.")
+        );
+
+        return new CommentCountResponse(post.getCommentCount());
     }
 }

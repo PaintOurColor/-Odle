@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="../static/css/styles.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../static/css/styles.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
 </head>
 
 <body>
@@ -93,11 +96,15 @@
         <li class="list">
             <b></b>
             <b></b>
-            <a href="signin.html">
+                <a>
+                    <span class="icon" onclick="logOut()"><ion-icon name="log-out-outline"></ion-icon></span>
+                    <span class="title">로그아웃</span>
+                </a>
+            <!-- <a href="signin.html">
                 <span class="icon"><ion-icon name="log-out-outline"></ion-icon></span>
                 <span class="title">로그아웃</span>
-            </a>
-        </li>
+            </a> -->
+        
         </li>
     </ul>
 </aside>
@@ -157,21 +164,11 @@
 <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 <script src="../static/js/sidebar.js"></script>
-<script>
-    function getSimpleProfile(){
-        var settings = {
-            "url": "localhost:8080/users/1/profile/simple",
-            "method": "GET",
-            "timeout": 0,
-            "headers": {
-                "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyMUBnbWFpbC5jb20iLCJhdXRoIjoiVVNFUiIsImV4cCI6MTY3Njg3Njk2NiwiaWF0IjoxNjc2ODczMzY2fQ.txro07KVP4besAMuM8ljnQqfV9vhIIWixLR9sTAWjos"
-            },
-        };
 
-        $.ajax(settings).done(function (response) {
-            console.log(response);
-        });
-    }
-</script>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+
 </body>
+
+<script src="../static/js/logout.js"></script>
+
 </html>

@@ -9,41 +9,36 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="../static/css/styles.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- JQuery 사용 설정 -->
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+
 </head>
 
 <body>
-
+    <!-- 여기서부터 상단 검색 바 -->
     <nav class="navigation">
         <div class="navigation__column">
             <a href="index.html">
                 <img src="../static/images/main_logo.jpg" />
-
             </a>
         </div>
         <div class="navigation__column">
             <i class="fa fa-search"></i>
             <input type="text" placeholder="검색">
         </div>
-        <div class="navigation__column">
-            <ul class="navigations__links">
-                <li class="navigation__list-item">
-                    <a href="explore.html" class="navigation__link">
-                        <i class="fa fa-compass fa-lg"></i>
-                    </a>
-                </li>
-                <li class="navigation__list-item">
-                    <a href="#" class="navigation__link">
-                        <i class="fa fa-heart-o fa-lg"></i>
-                    </a>
-                </li>
-                <li class="navigation__list-item">
-                    <a href="profile.html" class="navigation__link">
-                        <i class="fa fa-user-o fa-lg"></i>
-                    </a>
-                </li>
-            </ul>
+        <div class="navigation__profile">
+            <div id="getSimpleProfile" class="photo__user-info">
+                <!-- 로그인 유저 아이디 들어갈 곳 -->
+                <p id="my_userId" style="display: none"></p>
+                <!-- 로그인 유저 프로필 이미지 들어갈 곳 -->
+                <p id="my_profileImage"></p>
+                <!-- 로그인 유저 이름 들어갈 곳 -->
+                <span id="my_username"></span>
+            </div>
         </div>
     </nav>
+    <!-- 여기까지 상단 검색 바 -->
     <!-- 여기서부터 사이드바 -->
     <aside class="sidebar">
         <ul>
@@ -115,36 +110,55 @@
         </ul>
     </aside>
     <!-- 여기까지 사이드바 -->
+    <!-- 여기서부터 본문 -->
     <main id="profile">
         <div class="profile__container">
+            <!-- 여기서부터 상단 프로필 -->
             <header class="profile__header">
-                <div class="profile__column">
-                    <img src="../static/images/avatar.jpg" />
+                <div class="profile__profileImage">
+                    <!-- 유저 프로필이미지 들어갈 곳 -->
+                    <p id="profile__profileImage"></p>
                 </div>
                 <div class="profile__column">
+                    <p class="profile__bio">
+                        <!-- 유저 이메일 들어갈 곳 -->
+                        <span id="profile__email"></span>
+                    </p>
                     <div class="profile__title">
-                        <h3 class="profile__username">오들매니저</h3>
-                        <a href="edit-profile.html">프로필 편집</a>
+                        <h3 class='profile__username'>
+                            <!-- 유저 이름 들어갈 곳 -->
+                            <span id="profile__username"></span>
+                        </h3>
+                        <!-- 프로필 편집 or 팔로우 or 팔로우 취소 버튼 들어갈 곳 -->
+                        <p id="profile_button"></p>
                     </div>
+
                     <ul class="profile__stats">
                         <li class="profile__stat">
                             <a>게시글</a>
-                            <span class="stat__number">100</span>
+                            <!-- 게시글 수 들어갈 곳 -->
+                            <span id="post_count" class="stat__number"></span>
                         </li>
                         <li class="profile__stat">
                             <a href="#팔로워창">팔로워</a>
-                            <span class="stat__number">100</span>
+                            <!-- 팔로워 수 들어갈 곳 -->
+                            <span id="follower_count" class="stat__number"></span>
                         </li>
                         <li class="profile__stat">
                             <a href="#팔로워창">팔로잉</a>
-                            <span class="stat__number">100</span>
+                            <!-- 팔로잉 수 들어갈 곳 -->
+                            <span id="following_count" class="stat__number"></span>
                         </li>
                     </ul>
                     <p class="profile__bio">
-                        <span>안녕하세요. 자기소개를 적는 공간입니다.</span>
+                        <!-- 유저 자기소개 들어갈 곳 -->
+                        <span id=profile__introduction></span>
                     </p>
                 </div>
             </header>
+            <!-- 여기까지 상단프로필 -->
+            <hr style="border: solid 1px lightgray; margin-bottom: 5%;">
+            <!-- 여기서부터 프로필 게시글 -->
             <section id="profile-posts" class="profile__photos">
                 <div class="profile__photo">
                     <a href="#개별게시글링크">
@@ -177,10 +191,97 @@
                     </a>
                 </div>
             </section>
+            <!-- 여기까지 프로필 게시글 -->
         </div>
+        <!-- 여기서부터 모달 팝업 -->
+        <div id="post_modal" class="modal">
+            <div id="post_popup" class="modal-content">
+                <span class="close" onclick="close_button()">&times;</span>
+                <div class="post_container">
+                <div class="post_info_container">
+                    <p id="my_userId" style="display: none"></p>
+                    <p id="my_profileImage">
+                        <img src="../static/images/avatar.jpg"></a>
+                    </p>
+                    <div class="post_info">
+                        <span id="my_username">유저 아이디</span>
+                        <div class="post_time">
+                            <span>작성일: </span>
+                            <span id=created_at></span>
+                            <span>마지막 변경일: </span>
+                            <span id=modified_at></span>
+                        </div>
+                    </div>
+                </div>
+                <hr style="border: solid 1px lightgray; margin-bottom: 3%; margin-top: 3%;">
+                <div class=post_music_container>
+                    <div>
+                        <span id="open_end" class="music_open_end">여는 노래 / 닫는 노래</span>
+                    </div>
+                    <p>
+                        <img src="../static/images/avatar.jpg">
+                    </p>
+                    <p id="post_music_info">노래 제목 - 가수</p>
+                </div>
+                <hr style="border: solid 1px lightgray; margin-bottom: 3%; margin-top: 3%;">
+                <div class="action_button_container">
+                    <ion-icon name="heart-outline">좋아요 누르기 전</ion-icon>
+                    <ion-icon name="heart" style="color: red;">좋아요 누른 후</ion-icon>
+                    <ion-icon name="chatbox-outline">댓글 작성</ion-icon>
+                </div>
+                <div class="post_content_container">
+                    <p id="like_count" class="post_like_count">좋아요 수</p>
+                    <p id="post_content">내용</p>
+                    <p id="post_tag_list">태그 리스트</p>
+                </div>
+                <hr style="border: solid 1px lightgray; margin-bottom: 3%; margin-top: 3%;">
+                <div class="post_comment_container">
+                    <p id="comment_count">댓글 수</p>
+                    <div class="photo__add-comment-container">
+                        <textarea id = "comment_textbox" name="comment" placeholder="댓글을 입력..."></textarea>
+                        <i class="fa fa-ellipsis-h"></i>
+                    </div>
+                    <div id="comment_list" class="comment_list">
+                        <div class="comment_box">
+                            <div class="comment_info">
+                            <span class="comment_profile">
+                                <img src="../static/images/avatar.jpg">
+                            </span>
+                            <span class="comment_username">유저 이름</span>
+                            <span class="comment_content">댓글 내용</span>
+                            </div>
+                            <span id="comment_like" class="comment_like">
+                                <ion-icon name="heart-outline">좋아요 누르기 전</ion-icon>
+                                <ion-icon name="heart" style="color: red;">좋아요 누른 후</ion-icon>
+                            </span>
+                        </div>
+                        <div class="comment_box">
+                            <div class="comment_info">
+                            <span class="comment_profile">
+                                <img src="../static/images/avatar.jpg">
+                            </span>
+                            <span class="comment_username">유저 이름</span>
+                            <span class="comment_content">댓글 내용</span>
+                            </div>
+                            <span id="comment_like" class="comment_like">
+                                <ion-icon name="heart-outline">좋아요 누르기 전</ion-icon>
+                                <ion-icon name="heart" style="color: red;">좋아요 누른 후</ion-icon>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+            <!-- 여기서까지 모달 내용 -->
+        </div>
+        <!-- 여기까지 모달 팝업 -->
     </main>
+    <!-- 여기까지 본문 -->
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
     <script src="../static/js/sidebar.js"></script>
+    <script src="../static/js/profile.js"></script>
+    <script src="../static/js/post_popup.js"></script>
 </body>
+
 </html>

@@ -1,8 +1,7 @@
 
 function logOut() {
 const accessToken = localStorage.getItem('accessToken');
-const refreshToken = getCookie('RefreshToken');// document.cookie getCookie('RefreshToken')
-    console.log(refreshToken)
+const refreshToken = getCookie('RefreshToken');
 const settings = {
     "url": "http://localhost:8080/users/logout",
     "method": "POST",

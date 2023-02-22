@@ -44,9 +44,6 @@ public class LikeService implements LikeServiceInterface {
             throw new IllegalArgumentException("이미 좋아요를 누르셨습니다.");
         }
 
-        PostLike postLike = new PostLike(user, post);
-        postLikeRepository.save(postLike);
-
         post.plusLike(user); // likeCount 증가
         postRepository.save(post); //likeCount가 증가된 Post를 레파지토리에 반영
     }
@@ -64,13 +61,11 @@ public class LikeService implements LikeServiceInterface {
 
         PostLike postLike = postLikeRepository.findByUserIdAndPostId(user.getId(), post.getId());
         if (postLike != null) {
-            postLikeRepository.delete(postLike);
             post.minusLike(user);
             postRepository.save(post);
         } else {
             throw new IllegalArgumentException("해당 게시글을 좋아요한 적이 없습니다.");
         }
-        postRepository.save(post);// likeCount가 감소된 Post를 레파지토리에 반영
     }
 
 
@@ -109,14 +104,11 @@ public class LikeService implements LikeServiceInterface {
         if (commentLike != null) {
             commentLikeRepository.delete(commentLike);
             comment.minusLikeComment(user); // Comment 객체의 좋아요 수를 감소시킴
+            commentRepository.save(comment);// likeCount가 감소된 comment를 레파지토리에 반영
         } else {
             throw new IllegalArgumentException("좋아요를 찾을 수 없습니다.");
         }
 
-        commentLikeRepository.delete(commentLike);
-
-        comment.minusLikeComment(user); // Comment 객체의 좋아요 수를 감소시킴
-        commentRepository.save(comment);// likeCount가 감소된 comment를 레파지토리에 반영
     }
 
 

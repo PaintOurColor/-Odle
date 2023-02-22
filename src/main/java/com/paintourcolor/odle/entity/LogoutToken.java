@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Entity(name="BLACKLIST")
 public class LogoutToken {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(nullable = false)

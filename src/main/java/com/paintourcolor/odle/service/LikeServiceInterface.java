@@ -1,7 +1,9 @@
 package com.paintourcolor.odle.service;
 
 import com.paintourcolor.odle.dto.comment.response.CommentLikeCountResponse;
+import com.paintourcolor.odle.dto.comment.response.CommentLikeOrUnlikeResponse;
 import com.paintourcolor.odle.dto.post.response.PostLikeCountResponse;
+import com.paintourcolor.odle.dto.post.response.PostLikeOrUnlikeResponse;
 
 public interface LikeServiceInterface {
     //     게시글 좋아요
@@ -21,4 +23,9 @@ public interface LikeServiceInterface {
 
     //    게시글 좋아요 개수 조회
     PostLikeCountResponse getPostLikeCount(Long postId);
-}
+
+    PostLikeOrUnlikeResponse getPostLikeOrUnlikeResponse(Long postId, Long userId);
+    CommentLikeOrUnlikeResponse getCommentLikeOrUnlikeResponse(Long commentId, Long userId);
+
+
+    }

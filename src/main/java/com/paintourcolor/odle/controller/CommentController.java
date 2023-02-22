@@ -4,6 +4,7 @@ import com.paintourcolor.odle.dto.comment.request.CommentCreateRequest;
 import com.paintourcolor.odle.dto.comment.request.CommentUpdateRequest;
 import com.paintourcolor.odle.dto.comment.response.CommentCountResponse;
 import com.paintourcolor.odle.dto.comment.response.CommentLikeCountResponse;
+import com.paintourcolor.odle.dto.comment.response.CommentLikeOrUnlikeResponse;
 import com.paintourcolor.odle.dto.comment.response.CommentResponse;
 import com.paintourcolor.odle.security.UserDetailsImpl;
 import com.paintourcolor.odle.service.CommentServiceInterface;
@@ -89,7 +90,14 @@ public class CommentController {
 
     //댓글 좋아요 개수 조회
     @GetMapping("/{postId}/comments/{commentId}/like-count")
-    public CommentLikeCountResponse getCommentLikeCount(@PathVariable Long commentId){
+    public CommentLikeCountResponse getCommentLikeCount(@PathVariable Long commentId) {
         return likeService.getCommentLikeCount(commentId);
+    }
+
+    //댓글 좋아요 여부 확인
+    @GetMapping("/{postId}/comments/{commentId}/like-or-unlike")
+    public CommentLikeOrUnlikeResponse getCommentLikeOrUnlikeResponse(@PathVariable Long commentId,
+                                                                      @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return likeService.getCommentLikeOrUnlikeResponse(commentId, userDetails.getUserId());
     }
 }

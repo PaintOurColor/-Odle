@@ -1,7 +1,9 @@
 package com.paintourcolor.odle.controller;
 
+import com.paintourcolor.odle.dto.comment.response.CommentLikeOrUnlikeResponse;
 import com.paintourcolor.odle.dto.post.request.*;
 import com.paintourcolor.odle.dto.post.response.PostLikeCountResponse;
+import com.paintourcolor.odle.dto.post.response.PostLikeOrUnlikeResponse;
 import com.paintourcolor.odle.dto.post.response.PostResponse;
 import com.paintourcolor.odle.entity.User;
 import com.paintourcolor.odle.security.UserDetailsImpl;
@@ -84,4 +86,12 @@ public class PostController {
     public PostLikeCountResponse getPostLikeCount(@PathVariable Long postId){
         return likeService.getPostLikeCount(postId);
     }
+
+    //게시글 좋아요 여부 확인
+    @GetMapping("/{postId}/like-or-unlike")
+    public PostLikeOrUnlikeResponse getPostLikeOrUnlikeResponse(@PathVariable Long postId,
+                                                                   @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return likeService.getPostLikeOrUnlikeResponse(postId, userDetails.getUserId());
+    }
+
 }

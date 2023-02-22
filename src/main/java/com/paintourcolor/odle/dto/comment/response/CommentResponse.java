@@ -15,6 +15,8 @@ public class CommentResponse {
     private Long commentId;
     private Long postId;
     private Long userId;
+    private String username;
+    private String userProfileImage;
     private String content;
     private Long likeCount;
     private LocalDateTime createdAt;
@@ -24,6 +26,8 @@ public class CommentResponse {
         this.commentId = comment.getId();
         this.postId = comment.getPost().getId();
         this.userId = comment.getUser().getId();
+        this.username = comment.getUser().getUsername();
+        this.userProfileImage = comment.getUser().getProfileImage();
         this.content = comment.getContent();
         this.likeCount = comment.getLikeCount();
         this.createdAt = comment.getCreatedAt();

@@ -1,7 +1,9 @@
 package com.paintourcolor.odle.service;
 
 import com.paintourcolor.odle.dto.comment.response.CommentLikeCountResponse;
+import com.paintourcolor.odle.dto.comment.response.CommentLikeOrUnlikeResponse;
 import com.paintourcolor.odle.dto.post.response.PostLikeCountResponse;
+import com.paintourcolor.odle.dto.post.response.PostLikeOrUnlikeResponse;
 import com.paintourcolor.odle.entity.*;
 import com.paintourcolor.odle.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +47,8 @@ public class LikeService implements LikeServiceInterface {
         PostLike postLike = new PostLike(user, post);
         postLikeRepository.save(postLike);
 
-        postRepository.save(post);
+        post.plusLike(user); // likeCount 증가
+        postRepository.save(post); //likeCount가 증가된 Post를 레파지토리에 반영
     }
 
     // 게시글 좋아요 취소
@@ -67,6 +70,7 @@ public class LikeService implements LikeServiceInterface {
         } else {
             throw new IllegalArgumentException("해당 게시글을 좋아요한 적이 없습니다.");
         }
+        postRepository.save(post);// likeCount가 감소된 Post를 레파지토리에 반영
     }
 
 
@@ -88,6 +92,7 @@ public class LikeService implements LikeServiceInterface {
         commentLikeRepository.save(commentLike);
 
         comment.plusLikeComment(user); // Comment 객체의 좋아요 수를 증가시킴
+        commentRepository.save(comment);// likeCount가 증가된 comment를 레파지토리에 반영
     }
 
     // 댓글 좋아요 취소
@@ -111,6 +116,7 @@ public class LikeService implements LikeServiceInterface {
         commentLikeRepository.delete(commentLike);
 
         comment.minusLikeComment(user); // Comment 객체의 좋아요 수를 감소시킴
+        commentRepository.save(comment);// likeCount가 감소된 comment를 레파지토리에 반영
     }
 
 
@@ -132,5 +138,19 @@ public class LikeService implements LikeServiceInterface {
                 () -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다.")
         );
         return new PostLikeCountResponse(post.getLikeCount());
+    }
+
+    @Override
+    public PostLikeOrUnlikeResponse getPostLikeOrUnlikeResponse(Long postId, Long userId){
+        if (postLikeRepository.existsByUserIdAndPostId(userId, postId)){
+            return new PostLikeOrUnlikeResponse("like");}
+        else {return new PostLikeOrUnlikeResponse("unlike");}
+    }
+
+    @Override
+    public CommentLikeOrUnlikeResponse getCommentLikeOrUnlikeResponse(Long commentId, Long userId){
+        if (commentLikeRepository.existsByUserIdAndCommentId(userId, commentId)){
+            return new CommentLikeOrUnlikeResponse("like");}
+        else {return new CommentLikeOrUnlikeResponse("unlike");}
     }
 }

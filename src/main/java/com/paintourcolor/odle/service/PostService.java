@@ -134,11 +134,11 @@ public class PostService implements PostServiceInterface {
     // 게시글 삭제
     @Transactional
     @Override
-    public String deletePost(Long postId, String username) {
+    public void deletePost(Long postId, String username) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new NoSuchElementException("해당 게시글은 존재하지 않습니다."));
 
         if (!post.getUser().getUsername().equals(username)) {
-            return "작성자만 삭제 가능합니다";
+            throw new IllegalArgumentException("작성자만 삭제 가능합니다");
         }
 
         //emotionCount 가 0이 될 뿐 삭제는 안 됨
@@ -153,7 +153,6 @@ public class PostService implements PostServiceInterface {
         }
 
         postRepository.deleteById(postId);
-        return "게시글 삭제 성공";
     }
 
     public String getTag(Long postId) {

@@ -114,10 +114,18 @@ public class LikeService implements LikeServiceInterface {
 
     // 댓글 좋아요 개수 조회
     @Override
-    public CommentLikeCountResponse getCommentLikeCount(Long commentId) {
+    public CommentLikeCountResponse getCommentLikeCount(Long postId, Long commentId) {
+        postRepository.findById(postId).orElseThrow(
+                () -> new IllegalArgumentException("댓글의 게시글을 찾을 수 없습니다.")
+        );
+
         Comment comment = commentRepository.findById(commentId).orElseThrow(
                 () -> new IllegalArgumentException("해당 댓글이 존재하지 않습니다.")
         );
+
+        if (!postId.equals(comment.getPost().getId())) {
+            throw new IllegalArgumentException("해당 댓글이 선택하신 게시글에 존재하지 않습니다.");
+        }
 
         return new CommentLikeCountResponse(comment.getLikeCount());
     }
@@ -140,7 +148,11 @@ public class LikeService implements LikeServiceInterface {
     }
 
     @Override
-    public CommentLikeOrUnlikeResponse getCommentLikeOrUnlikeResponse(Long commentId, Long userId){
+    public CommentLikeOrUnlikeResponse getCommentLikeOrUnlikeResponse(Long postId, Long commentId, Long userId){
+        postRepository.findById(postId).orElseThrow(
+                () -> new IllegalArgumentException("댓글의 게시글을 찾을 수 없습니다.")
+        );
+
         if (commentLikeRepository.existsByUserIdAndCommentId(userId, commentId)){
             return new CommentLikeOrUnlikeResponse("like");}
         else {return new CommentLikeOrUnlikeResponse("unlike");}

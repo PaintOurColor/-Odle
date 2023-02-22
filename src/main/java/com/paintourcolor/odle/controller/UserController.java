@@ -1,5 +1,6 @@
 package com.paintourcolor.odle.controller;
 
+import com.paintourcolor.odle.dto.security.StatusResponse;
 import com.paintourcolor.odle.dto.user.request.*;
 import com.paintourcolor.odle.dto.user.response.*;
 import com.paintourcolor.odle.security.UserDetailsImpl;
@@ -30,31 +31,36 @@ public class UserController {
     private final JwtUtil jwtUtil;
 
     @PostMapping("/signup")
-    public String signUp(@RequestBody @Valid UserSignupRequest signUpRequest) {
+    public ResponseEntity<StatusResponse> signUp(@RequestBody @Valid UserSignupRequest signUpRequest) {
+        StatusResponse statusResponse = new StatusResponse(HttpStatus.CREATED.value(), "회원가입 성공");
         userService.signupUser(signUpRequest);
-        return "회원가입 성공";
+        return new ResponseEntity<>(statusResponse, HttpStatus.CREATED);
     }
 
     @PostMapping("/admin-signup")
-    public String signupAdmin(@RequestBody @Valid AdminSignupRequest signUpRequest) {
+    public ResponseEntity<StatusResponse> signupAdmin(@RequestBody @Valid AdminSignupRequest signUpRequest) {
+        StatusResponse statusResponse = new StatusResponse(HttpStatus.CREATED.value(), "관리자 회원가입 성공");
         adminService.signupAdmin(signUpRequest);
-        return "관리자 회원가입 성공";
+        return new ResponseEntity<>(statusResponse, HttpStatus.CREATED);
     }
 
     // 로그인(유저, 관리자)
     @PostMapping("/login")
-    public String loginUser(@RequestBody UserLoginRequest userLoginRequest, HttpServletResponse response) {
+    public ResponseEntity<StatusResponse> loginUser(@RequestBody UserLoginRequest userLoginRequest,
+                                                    HttpServletResponse response) {
+        StatusResponse statusResponse = new StatusResponse(HttpStatus.OK.value(), "로그인 성공");
         userService.loginUser(userLoginRequest, response);
-        return "로그인 완료";
+        return new ResponseEntity<>(statusResponse, HttpStatus.OK);
     }
 
     // 유저, 관리자 로그아웃
     @PostMapping("/logout")
-    public String logoutUser(HttpServletRequest request) {
+    public ResponseEntity<StatusResponse> logoutUser(HttpServletRequest request) {
+        StatusResponse statusResponse = new StatusResponse(HttpStatus.CREATED.value(), "로그아웃 완료");
         String token = jwtUtil.getRefreshToken(request);
         userService.logoutUser(token);
 //        return "redirect:/users/login";
-        return "로그아웃 완료";
+        return new ResponseEntity<>(statusResponse, HttpStatus.CREATED);
     }
 
     // AccessToken 재발급

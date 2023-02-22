@@ -1,11 +1,13 @@
 function changeProfile() {
     const accessToken = localStorage.getItem('accessToken');
+    const refreshToken = getCookie('RefreshToken');
     const settings = {
         "url": "http://localhost:8080/users/profile",
         "method": "PATCH",
         "timeout": 0,
         "headers": {
             "Authorization": accessToken,
+            "Refresh-Token": refreshToken,
             "Content-Type": "application/json"
         },
         "data": JSON.stringify({
@@ -27,4 +29,12 @@ function changeProfile() {
             alert("서버에 문제가 발생하였습니다.");
         }
     });
+}
+
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) {
+        return parts.pop().split(';').shift();
+    }
 }

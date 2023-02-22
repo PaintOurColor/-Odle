@@ -88,6 +88,10 @@ public class CommentService implements CommentServiceInterface{
                 () -> new IllegalArgumentException("해당 댓글이 존재하지 않습니다.")
         );
 
+        if (!postId.equals(comment.getPost().getId())) {
+            throw new IllegalArgumentException("해당 댓글이 선택하신 게시글에 존재하지 않습니다.");
+        }
+
         if (!userId.equals(comment.getUser().getId())) {
             throw new IllegalArgumentException("댓글 작성자 본인만 삭제가 가능합니다.");
         }

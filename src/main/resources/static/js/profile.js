@@ -44,7 +44,7 @@ function get_userinfo() {
             }
 
             //프로필 이미지가 없을 때
-            profileImage = (profileImage ==null)? "../static/images/avatar.jpg":profileImage;// 기본 프로필 이미지
+            profileImage = (profileImage ==null)? "http://bwptedu.com/assets/image/default-profile.jpg":profileImage;// 기본 프로필 이미지
             
 
             $("#profile__username").append(username);
@@ -120,6 +120,7 @@ function get_posts() {
                 const createdYear = created_at.getFullYear().toString().slice(2);
                 const createdMonth = created_at.getMonth() + 1;
                 const createdDate = created_at.getDate();
+                console.log(music_cover)
 
                 const temp_post = `
                             <div id="post_popup_btn_${post_id}" class="profile__photo" onclick="open_post_popup(${post_id})">
@@ -158,11 +159,11 @@ function get_my_simple_profile() {
             $("#login_userId").text(login_userId);
             $("#my_username").text(my_username);
 
-            my_profileImage = (my_profileImage ==null)? "../static/images/avatar.jpg":my_profileImage;
+            my_profileImage = (my_profileImage ==null)? "http://bwptedu.com/assets/image/default-profile.jpg":my_profileImage;
 
             $("#my_profileImage").append("<img src='" + my_profileImage + "'>");
-            $("#my_profile").attr('onclick',`window.location.href='/src/main/resources/templates/profile.html?userId=${login_userId}'`)
-            $('#getSimpleProfile').attr('onclick',`window.location.href='/src/main/resources/templates/profile.html?userId=${login_userId}'`)
+            $("#my_profile").attr('onclick',`window.location.href='./profile.html?userId=${login_userId}'`)
+            $('#getSimpleProfile').attr('onclick',`window.location.href='./profile.html?userId=${login_userId}'`)
             console.log('언제 나와' + login_userId)
         }
     })
@@ -286,7 +287,7 @@ function showFollowerList() {
         const follwerName = followerList[i]['followerName'];
         let follwerProfileImage = followerList[i]['followerProfileImage'];
 
-        follwerProfileImage = (follwerProfileImage ==null)? "../static/images/avatar.jpg":follwerProfileImage;
+        follwerProfileImage = (follwerProfileImage ==null)? "http://bwptedu.com/assets/image/default-profile.jpg":follwerProfileImage;
 
         let follwerTemp = `
                     <div class="follow_profile">
@@ -321,7 +322,7 @@ function showFollowingList() {
         const follwingName = followingList[i]['followingName'];
         let follwingProfileImage = followingList[i]['followingProfileImage'];
 
-        follwingProfileImage = (follwingProfileImage ==null)? "../static/images/avatar.jpg":follwingProfileImage;
+        follwingProfileImage = (follwingProfileImage ==null)? "http://bwptedu.com/assets/image/default-profile.jpg":follwingProfileImage;
 
         let follwingTemp = `
                     <div class="follow_profile">

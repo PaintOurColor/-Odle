@@ -43,7 +43,7 @@ public class LikeService implements LikeServiceInterface {
         if (post.likedBy(user)) {
             throw new IllegalArgumentException("이미 좋아요를 누르셨습니다.");
         }
-
+        PostLike postLike = new PostLike(user,post);
         post.plusLike(user); // likeCount 증가
         postRepository.save(post); //likeCount가 증가된 Post를 레파지토리에 반영
     }

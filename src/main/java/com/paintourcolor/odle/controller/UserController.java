@@ -72,12 +72,15 @@ public class UserController {
     }
 
     //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ로그인 및 회원가입 외 유저 기능 여기서부터ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ//
+    // 관리자가 유저 목록 조회
     @GetMapping("")
     public ResponseEntity<List<UserResponse>> getUsers(@PageableDefault(sort = "userId",direction = Sort.Direction.DESC) Pageable pageable,
                                                  @AuthenticationPrincipal UserDetailsImpl userDetails){
         List<UserResponse> userList = userService.getUsers(pageable);
         return new ResponseEntity<>(userList,HttpStatus.OK);
     }
+
+    // 내 프로필에서 내 게시글들 목록 조회
     @GetMapping("/{userId}/profile/posts")
     public ResponseEntity<List<ProfilePostResponse>> getProfilePosts(@PageableDefault(sort = "createdAt",direction = Sort.Direction.ASC) Pageable pageable,
                                                                      @PathVariable Long userId,
@@ -85,6 +88,8 @@ public class UserController {
         List<ProfilePostResponse> profilePostList = userService.getProfilePosts(userId, pageable);
         return new ResponseEntity<>(profilePostList,HttpStatus.OK);
     }
+
+    // 프로필 페이지에서 자신의 게시글 수
     @GetMapping("/{userId}/post-count")
     public ResponseEntity<PostCountResponse> getPostCount(@PathVariable Long userId,
                                                           @AuthenticationPrincipal UserDetailsImpl userDetails){
@@ -110,65 +115,72 @@ public class UserController {
 
     //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ유저 프로필 기능 여기서부터ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ//
 
-    // AccessToken 재발급
+    // 프로필 수정
     @PatchMapping("/profile")
     public ResponseEntity<String> updateProfile(@RequestBody ProfileUpdateRequest profileUpdateRequest, @AuthenticationPrincipal UserDetailsImpl userDetails){
         profileService.updateProfile(userDetails.getUserId(), profileUpdateRequest);
         return new ResponseEntity<>("프로필 수정 완료",HttpStatus.OK);
     }
 
+    // 다른사람의 프로필 조회
     @GetMapping("/{userId}/profile")
     public ResponseEntity<ProfileResponse> getProfile(@PathVariable Long userId, @AuthenticationPrincipal UserDetailsImpl userDetails){
         ProfileResponse profile = profileService.getProfile(userId);
         return new ResponseEntity<>(profile,HttpStatus.OK);
     }
+
+    // 모든 유저 간편 프로필 조회
     @GetMapping("/{userId}/profile/simple")
     public ResponseEntity<ProfileSimpleResponse> getSimpleProfile(@PathVariable Long userId, @AuthenticationPrincipal UserDetailsImpl userDetails){
         ProfileSimpleResponse profileSimple = profileService.getSimpleProfile(userId);
         return new ResponseEntity<>(profileSimple,HttpStatus.OK);
     }
 
+    // 본인 간편 프로필 조회
     @GetMapping("/profile/simple")
     public ResponseEntity<ProfileSimpleResponse> getMySimpleProfile(@AuthenticationPrincipal UserDetailsImpl userDetails){
         ProfileSimpleResponse profileSimple = profileService.getMySimpleProfile(userDetails.getUser());
         return new ResponseEntity<>(profileSimple,HttpStatus.OK);
     }
 
-
-
     //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ팔로우 기능 여기서부터ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ//
 
+    // 유저 팔로우 하기
     @PostMapping("/{userId}/follow")
     public ResponseEntity<String> followUser(@PathVariable Long userId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         followService.followUser(userDetails.getUserId(), userId);
         return new ResponseEntity<>("팔로우 완료", HttpStatus.OK);
     }
 
+    // 유저 팔로우 취소
     @DeleteMapping("/{userId}/unfollow")
     public ResponseEntity<String> unfollowUser(@PathVariable Long userId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         followService.unfollowUser(userDetails.getUserId(), userId);
         return new ResponseEntity<>("팔로우 취소 완료", HttpStatus.OK);
     }
 
+    // 팔로워 목록 조회
     @GetMapping("/{userId}/follower")
     public ResponseEntity<List<FollowerResponse>> getFollowers(@PathVariable Long userId, Pageable pageable) {
         List<FollowerResponse> followerList = followService.getFollowers(userId, pageable);
         return new ResponseEntity<>(followerList,HttpStatus.OK);
     }
 
-
+    // 팔로잉 목록 조회
     @GetMapping("/{userId}/following")
     public ResponseEntity<List<FollowingResponse>> getFollowings(@PathVariable Long userId, Pageable pageable) {
         List<FollowingResponse> followingList = followService.getFollowings(userId, pageable);
         return new ResponseEntity<>(followingList,HttpStatus.OK);
     }
 
+    // 팔로워 수 조회
     @GetMapping("/{userId}/follower-count")
     public ResponseEntity<FollowerCountResponse> countFollower(@PathVariable Long userId) {
         FollowerCountResponse followerCount = followService.countFollower(userId);
         return new ResponseEntity<>(followerCount,HttpStatus.OK);
     }
 
+    // 팔로잉 수 조회
     @GetMapping("/{userId}/following-count")
     public ResponseEntity<FollowingCountResponse> countFollowing(@PathVariable Long userId) {
         FollowingCountResponse followingCount = followService.countFollowing(userId);

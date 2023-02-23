@@ -203,6 +203,14 @@ public class UserController {
         return new ResponseEntity<>(followingCount,HttpStatus.OK);
     }
 
+    // 팔로우 여부 확인
+    @GetMapping("/{userId}/follow-or-unfollow")
+    public ResponseEntity<UserFollowOrUnfollowResponse> getUserFollowOrUnfollowResponse(@PathVariable Long userId,
+                                                                                        @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        UserFollowOrUnfollowResponse userFollowOrUnfollowResponse = userService.getUserFollowOrUnfollowResponse(userId, userDetails.getUserId());
+        return new ResponseEntity<>(userFollowOrUnfollowResponse, HttpStatus.OK);
+    }
+
     //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ팔로우 기능 여기까지ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ//
 
 }

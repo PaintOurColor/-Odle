@@ -3,7 +3,9 @@ package com.paintourcolor.odle.service;
 import com.paintourcolor.odle.dto.user.request.*;
 import com.paintourcolor.odle.dto.user.response.PostCountResponse;
 import com.paintourcolor.odle.dto.user.response.ProfilePostResponse;
+import com.paintourcolor.odle.dto.user.response.UserFollowOrUnfollowResponse;
 import com.paintourcolor.odle.dto.user.response.UserResponse;
+import com.paintourcolor.odle.security.UserDetailsImpl;
 import org.springframework.data.domain.Pageable;
 
 import javax.servlet.http.HttpServletResponse;
@@ -20,4 +22,6 @@ public interface UserServiceInterface {
     List<UserResponse> getUsers(Pageable pageable);
     List<ProfilePostResponse> getProfilePosts(Long userId, Pageable pageable);
     PostCountResponse getPostCount(Long userId);
+
+    UserFollowOrUnfollowResponse getUserFollowOrUnfollowResponse(Long followingId, Long followerId);
 }

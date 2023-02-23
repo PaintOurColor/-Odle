@@ -8,12 +8,15 @@ import javax.validation.constraints.Pattern;
 @Getter
 @NoArgsConstructor
 public class UserSignupRequest {
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*\\d)[a-z\\d]{4,10}$")
+    // 닉네임 : 영문&숫자&한글 조합 4~12글자
+    @Pattern(regexp = "^[a-zA-Z0-9가-힣]{4,12}$")
     private String username;
 
-    @Pattern(regexp = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@" + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$")
+    // 이메일 : 영문&숫자&_&- + @ + 영문or숫자 + . + 영문
+    @Pattern(regexp = "^[A-Za-z0-9_\\-]+@[A-Za-z0-9\\-]+\\.[A-Za-z\\-]+$")
     private String email;
 
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[(?=.*[^\\w\\s])])[A-Za-z\\d(?=.*[^\\w\\s])]{8,15}$")
+    // 비밀번호 : 숫자, 문자, 특수문자 포함 8~15자리
+    @Pattern(regexp = "^.*(?=^.{8,15}$)(?=.*\\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$")
     private String password;
 }

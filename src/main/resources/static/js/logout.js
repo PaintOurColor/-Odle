@@ -1,23 +1,23 @@
-
 function logOut() {
-const accessToken = localStorage.getItem('accessToken');
-const refreshToken = getCookie('RefreshToken');
-const settings = {
-    "url": "http://localhost:8080/users/logout",
-    "method": "POST",
-    "timeout": 0,
-    "headers": {
-        "RefreshToken": refreshToken,
-        "Authorization": accessToken
-    }
-    
+    const accessToken = localStorage.getItem('accessToken');
+    const refreshToken = getCookie('RefreshToken');
+    const settings = {
+        "url": "http://localhost:8080/users/logout",
+        "method": "POST",
+        "timeout": 0,
+        "headers": {
+            "RefreshToken": refreshToken,
+            "Authorization": accessToken
+        }
+
     };
-    
+
     $.ajax(settings)
-    .done(function (response) {
-    console.log(response);
-    window.location = 'signin.html'
-    });
+        .done(function (response) {
+            localStorage.setItem('accessToken', '');
+            console.log(response);
+            window.location = 'signin.html'
+        });
 }
 
 function getCookie(name) {

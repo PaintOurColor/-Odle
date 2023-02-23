@@ -12,7 +12,9 @@ body {
 }
 
 .sidebar {
+    z-index: 80;
     position: fixed;
+    
     top: 20px;
     left: 20px;
     bottom: 20px;
@@ -23,11 +25,12 @@ body {
     background: rgb(0, 0, 0);
     transition: 0.5s;
     overflow-x: hidden;
-    margin-top: 80px;
+    margin-top: 5%;
 }
 
 .sidebar.active {
     width: 300px;
+    max-width: 30%;
 }
 
 .sidebar ul {

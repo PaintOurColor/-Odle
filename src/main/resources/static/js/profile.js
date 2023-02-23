@@ -187,17 +187,17 @@ function show_button(followerList) {
     }
 
     const button_temp = `<a href='edit-profile.html' style="${style_edit_profile}">프로필 편집</a>
-                        <a style="${style_follow}" onclick="followUser()">팔로우</a>
-                        <a style="${style_unfollow}" onclick="unfollowUser()">팔로우 취소</a>`
+                        <a style="${style_follow}" onclick="followUser(${url_userId})">팔로우</a>
+                        <a style="${style_unfollow}" onclick="unfollowUser(${url_userId})">팔로우 취소</a>`
 
     $("#profile_button").append(button_temp)
 }
 
 
 // ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ팔로우/팔로우 취소하기ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ//
-function followUser() {
+function followUser(followUserId) {
     $.ajax({
-        url: "http://localhost:8080/users/" + url_userId + "/follow",
+        url: "http://localhost:8080/users/" + followUserId + "/follow",
         type: "POST",
         dataType: "json",
         headers: {
@@ -213,9 +213,9 @@ function followUser() {
     });
 }
 
-function unfollowUser() {
+function unfollowUser(UnfollowUserId) {
     $.ajax({
-        url: "http://localhost:8080/users/" + url_userId + "/unfollow",
+        url: "http://localhost:8080/users/" + UnfollowUserId + "/unfollow",
         type: "DELETE",
         dataType: "json",
         headers: {
@@ -295,7 +295,7 @@ function showFollowerList() {
                     <p id="follower_profileImage">
                     <img src="${follwerProfileImage}"></p>
                         <span id="follower_username">${follwerName}</span>
-                        <p class="follow_button">팔로우버튼</p>
+                        <p class="follow_button" onclick="followUser(${followerId})">팔로우 하기</p>
                     </div>   
                     `
         $('#follower_list_container').append(follwerTemp);
@@ -308,7 +308,7 @@ function showFollowerList() {
 var following_modal = document.getElementById('following_modal');
 
 // When the user clicks on the button, open the modal 
-function open_follower_popup() {
+function open_following_popup() {
     following_modal.style.display = "block";
     showFollowingList();
 }
@@ -326,11 +326,11 @@ function showFollowingList() {
 
         let follwingTemp = `
                     <div class="follow_profile">
-                    <p id="follwer_userId_${followingId}" style="display: none">${followingId}</p>
+                    <p id="following_userId_${followingId}" style="display: none">${followingId}</p>
                     <p id="following_profileImage">
                     <img src="${follwingProfileImage}"></p>
                         <span id="following_username">${follwingName}</span>
-                        <p class="follow_button">팔로우버튼</p>
+                        <p class="follow_button" onclick="unfollowUser(${followingId})">팔로우 취소</p>
                     </div>   
                     `
         $('#following_list_container').append(follwingTemp);

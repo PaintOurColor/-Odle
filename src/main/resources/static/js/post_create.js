@@ -1,3 +1,7 @@
+jQuery(document).ready(function ($) {
+    getMySimpleProfile();
+});
+
 function postCreate() {
 
     $.ajax({
@@ -11,14 +15,10 @@ function postCreate() {
             tagCreateRequest: $(`#tag`).val(),
             openOrEnd: $(`input[name='btnradio']:checked`).val(),
             emotion: $(`input[name='emotion']:checked`).val(),
-            // melonId: $(``),
-            // title: $(``),
-            // singer: $(``),
-            // cover: $(``)
-            melonId: 1,
-            title: "abc",
-            singer: "abc",
-            cover: "abc"
+            melonId: $(`#post-melon-id`).text(),
+            title: $(`#post-title`).text(),
+            singer: $(`#post-singer`).text(),
+            cover: $(`#post-cover`).text()
         }),
         contentType: "application/json; charset=UTF-8",
         success: function (response) {
@@ -30,15 +30,76 @@ function postCreate() {
     })
 }
 
+function getMySimpleProfile() {
+    var settings = {
+        "url": "http://localhost:8080/users/profile/simple",
+        "method": "GET",
+        "timeout": 0,
+        "headers": {
+            "Authorization": localStorage.getItem('accessToken')
+        },
+    };
+
+    $.ajax(settings).done(function (response, status) {
+        $('#myProfileUsername').text(response['username'])
+        $('#myProfileImage').attr('src', response['profileImage'] == null ? 'http://bwptedu.com/assets/image/default-profile.jpg' : response['profileImage'])
+        if (status === 403) { // 권한이 없는 것이니까 로그인으로 보내면 됨
+            window.location = "/login.html"
+        }
+        const userId = response['userId']
+        // 프로필 이거 꼭 적어주시기!
+        $('#myProfile_post').attr('onclick', `window.location.href='./profile.html?userId=${userId}'`)
+    });
+}
+function getMusicSearchList() {
+    const option = $(`input[name='music-search']:checked`).val();
+    const keyword = $(`#music-keyword`).val();
+    console.log(option, keyword);
+    var settings = {
+        "url": `http://localhost:8080/music/search/${option}/${keyword}`,
+        "method": "GET",
+        "timeout": 0,
+        "headers": {
+            "Authorization": localStorage.getItem('accessToken')
+        },
+        "contentType": "application/json; charset=UTF-8",
+    };
+
+    $.ajax(settings).done(function (response) {
+        for (let i = 0; i < response.length; i++) {
+            const melonMusicId = response[i]['melonMusicId']
+            const title = response[i]['title']
+            const singer = response[i]['singer']
+            const cover = response[i]['cover']
+            const temp_music = `<button type="button" class="btn btn-primary" onclick="selectMusic(${melonMusicId}, '${title}', '${singer}', '${cover}')"><span>${melonMusicId}</span>
+<span>${title}</span>
+<span>${singer}</span>
+<span>${cover}</span>
+</button>`
+
+            $('#searched-music-list').append(temp_music)
+        }
+    });
+}
+
+function selectMusic(melonMusicId, title, singer, cover) {
+    $('#post-melon-id').text(melonMusicId)
+    $('#post-title').text(title)
+    $('#post-singer').text(singer)
+    $('#post-cover').text(cover)
+}
 
 
-function show () {
+function show() {
     document.querySelector(".background2").className = "background2 show";
 }
 
-function close () {
+function close() {
     document.querySelector(".background2").className = "background2";
 }
 
 document.querySelector("#show").addEventListener('click', show);
 document.querySelector("#close").addEventListener('click', close);
+
+
+

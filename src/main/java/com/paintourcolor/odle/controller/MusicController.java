@@ -31,10 +31,10 @@ public class MusicController {
     //keyword: 입력한 키워드를 포함하는 모든 음악 리스트를 가져옴
     //페이지 기본 설정: 음악 수-10, 첫페이지-1(index:0)
     //(정렬을 최신순으로 하고 싶었으나, 크롤링 시 한번에 가져온 데이터는 정렬이 불가할 것 같음)
-    @GetMapping("/search")
+    @GetMapping("/search/{option}/{keyword}")
     public ResponseEntity<List<MusicSearchResponse>> getMusicSearchList(Pageable pageable,
-                                                                  @RequestParam(value = "option") String option,
-                                                                  @RequestParam(value = "keyword") String keyword) {
+                                                                        @PathVariable String option,
+                                                                        @PathVariable String keyword) {
         List<MusicSearchResponse> musicSearchList = musicService.getMusicSearchList(pageable, option, keyword);
         return new ResponseEntity<>(musicSearchList, HttpStatus.OK);
     }

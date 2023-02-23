@@ -11,6 +11,7 @@ function open_post_popup(post_id) {
 function close_button() {
     post_modal.style.display = "none";
     follower_modal.style.display = "none";
+    following_modal.style.display = "none";
 }
 
 // When the user clicks anywhere outside of the modal, close it
@@ -19,6 +20,8 @@ window.onclick = function (event) {
         post_modal.style.display = "none";
     } else if(event.target == follower_modal) {
         follower_modal.style.display = "none";
+    } else if(event.target == following_modal) {
+        following_modal.style.display = "none";
     }
 }
 

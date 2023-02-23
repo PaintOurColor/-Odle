@@ -5,12 +5,14 @@ import com.paintourcolor.odle.entity.MelonKorea;
 import com.paintourcolor.odle.repository.MelonKoreaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 public class MusicService implements MusicServiceInterface {
     private final MelonKoreaRepository melonRepository;
     // 노래 정보 조회
+    @Transactional
     @Override
     public MusicResponse getMusic(Long melonId) {
         MelonKorea melon = melonRepository.findById(melonId).orElseThrow(

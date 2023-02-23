@@ -19,5 +19,5 @@ public interface PostServiceInterface {
     // 게시글 수정
     PostResponse updatePost(Long postId, PostUpdateRequest postUpdateRequest, String username);
     // 게시글 삭제
-    String deletePost(Long postId, String username);
+    void deletePost(Long postId, String username);
 }

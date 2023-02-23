@@ -1,14 +1,13 @@
 package com.paintourcolor.odle.service;
 
+import com.paintourcolor.odle.dto.post.response.PostLikeOrUnlikeResponse;
 import com.paintourcolor.odle.dto.user.request.*;
 import com.paintourcolor.odle.dto.user.response.PostCountResponse;
 import com.paintourcolor.odle.dto.user.response.ProfilePostResponse;
+import com.paintourcolor.odle.dto.user.response.UserFollowOrUnfollowResponse;
 import com.paintourcolor.odle.dto.user.response.UserResponse;
 import com.paintourcolor.odle.entity.*;
-import com.paintourcolor.odle.repository.LogoutTokenRepository;
-import com.paintourcolor.odle.repository.PostRepository;
-import com.paintourcolor.odle.repository.RefreshTokenRepository;
-import com.paintourcolor.odle.repository.UserRepository;
+import com.paintourcolor.odle.repository.*;
 import com.paintourcolor.odle.util.jwtutil.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -32,6 +31,7 @@ public class UserService implements UserServiceInterface {
     private final LogoutTokenRepository logoutTokenRepository;
     private final RefreshTokenRepository refreshTokenRepository;
     private final PostRepository postRepository;
+    private final FollowRepository followRepository;
 
     // 유저 회원가입
     @Transactional
@@ -144,4 +144,12 @@ public class UserService implements UserServiceInterface {
         return new PostCountResponse(postRepository.countByUserId(userId));
     }
 
+    // 팔로우 여부 확인
+    @Transactional
+    @Override
+    public UserFollowOrUnfollowResponse getUserFollowOrUnfollowResponse(Long followingId, Long followerId) {
+        if (followRepository.existsFollowByFollowerIdAndFollowingId(followerId, followingId)){
+            return new UserFollowOrUnfollowResponse("follow");}
+        else {return new UserFollowOrUnfollowResponse("unfollow");}
+    }
 }

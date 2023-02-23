@@ -9,7 +9,9 @@ import javax.validation.constraints.Pattern;
 @NoArgsConstructor
 public class ProfileUpdateRequest {
     private String profileImage;
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*\\d)[a-z\\d]{4,10}$") //4~10자리의 소문자 및 숫자로 구성
+
+    // 닉네임 : 영문&숫자&한글 조합 4~12글자
+    @Pattern(regexp = "^[a-zA-Z0-9가-힣]{4,12}$")
     private String username;
     private String introduction;
 }

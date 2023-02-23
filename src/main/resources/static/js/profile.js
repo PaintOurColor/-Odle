@@ -1,6 +1,7 @@
 
 const api_url = "http://localhost:8080/users/"; //공통 Url
 const url_userId = document.location.href.split('=')[1]; // 추후 프로필 화면 누를 시 Id 받아오도록 변경
+let login_userId;
 
 //페이지 시작 시 호출 펑션들
 $(document).ready(function () {
@@ -8,6 +9,10 @@ $(document).ready(function () {
     get_profile() //상단 프로필
     get_posts() //유저 게시글
     // show_edit_profile_button() // 프로필 편집 or 팔로우 or 팔로우 취소 버튼
+
+    getFollowers()//팔로워 버튼 누르면 나오도록 변경예정
+    getFollowings()
+
 });
 
 
@@ -19,21 +24,14 @@ function get_profile() {
     get_follwingcount();
 }
 
-// function show_profile_button() {
-//     show_edit_profile_button();
-//     //팔로우 버튼 펑션 추가 필요
-//     //팔로우 취소 버튼 펑션 추가 필요
-// }
-
 
 // 프로필 유저 정보 가져오기
-function get_userinfo(userId) {
+function get_userinfo() {
     $.ajax({
         url: api_url + url_userId + "/profile",
         type: "GET",
         dataType: "json",
         success: function (response) {
-            console.log(response)
             // 받은 데이터 표시
             const username = response['username'] // 유저 이름
             const email = response['email'] //유저 이메일
@@ -45,10 +43,9 @@ function get_userinfo(userId) {
                 introduction = "소개글이 없습니다"
             }
 
-            // //프로필 이미지가 없을 때
-            // if (profileImage == null) {
-            //     profileImage = "../static/images/avatar.jpg" // 기본 프로필 이미지
-            // }
+            //프로필 이미지가 없을 때
+            profileImage = (profileImage ==null)? "../static/images/avatar.jpg":profileImage;// 기본 프로필 이미지
+            
 
             $("#profile__username").append(username);
             $("#profile__email").append(email);
@@ -98,6 +95,7 @@ function get_follwingcount() {
     });
 }
 
+
 // 작성한 게시글 목록 가져오기
 function get_posts() {
     $.ajax({
@@ -120,16 +118,12 @@ function get_posts() {
                 const created_at = new Date(response[i].createdAt);
                 const modified_at = response[i].modifiedAt;
                 const createdYear = created_at.getFullYear().toString().slice(2);
-                const createdMonth = created_at.getMonth()+1;
+                const createdMonth = created_at.getMonth() + 1;
                 const createdDate = created_at.getDate();
-                
-
-                console.log(typeof created_at)
-                
 
                 const temp_post = `
                             <div id="post_popup_btn_${post_id}" class="profile__photo" onclick="open_post_popup(${post_id})">
-                            <span class="date">${createdYear}/${createdMonth<10?'0'+createdMonth:createdMonth}/${createdDate<10?'0'+createdDate:createdDate}</span>
+                            <span class="date">${createdYear}/${createdMonth < 10 ? '0' + createdMonth : createdMonth}/${createdDate < 10 ? '0' + createdDate : createdDate}</span>
                             <a href="#개별게시글링크">
                                 <img src="${music_cover}" />
                             </a>
@@ -155,54 +149,189 @@ function get_my_simple_profile() {
             "Authorization": localStorage.getItem("accessToken")
         },
         success: function (response) {
-            console.log('외않되?' + response);//콘솔에 받아오는 데이터 확인
-
-            const my_userId = response['userId'] // 유저 아이디
+            login_userId = response['userId'] // 유저 아이디
             const my_username = response['username'] // 유저 이름
             let my_profileImage = response['profileImage'] //프로필 사진
 
+            console.log("미니프로필정보" + login_userId, my_username, my_profileImage)
 
-            console.log(my_userId, my_username, my_profileImage)
-
-            $("#my_userId").text(my_userId);
+            $("#login_userId").text(login_userId);
             $("#my_username").text(my_username);
 
-            //프로필 이미지가 없을 때
-            if (my_profileImage == null) {
-                my_profileImage = "../static/images/avatar.jpg" // 기본 프로필 이미지
-            }
+            my_profileImage = (my_profileImage ==null)? "../static/images/avatar.jpg":my_profileImage;
 
             $("#my_profileImage").append("<img src='" + my_profileImage + "'>");
-
-            // 함수 성공 시 프로필 버튼 노출
-
-            show_edit_profile_button()
+            $("#my_profile").attr('onclick',`window.location.href='/src/main/resources/templates/profile.html?userId=${login_userId}'`)
+            $('#getSimpleProfile').attr('onclick',`window.location.href='/src/main/resources/templates/profile.html?userId=${login_userId}'`)
+            console.log('언제 나와' + login_userId)
         }
     })
 }
 
-function show_profile_button() {
-    console.log("내아이디: " + my_userId)
-    console.log("url 아이디: " + url_userId)
 
-    if (my_userId == url_userId) {
-        show_edit_profile_button();
+//ㅡㅡㅡㅡㅡㅡㅡㅡ프로필편집/팔로우/팔로우취소 버튼 보여주기ㅡㅡㅡㅡㅡㅡㅡㅡㅡ//
+function show_button(followerList) {
+
+    const isFollower = followerList.some(follower => follower.followerId === login_userId);
+    let style_edit_profile = 'display:none';
+    let style_follow = 'display:none';
+    let style_unfollow = 'display:none';
+
+    if (login_userId === Number(url_userId)) {
+
+        style_edit_profile = '';
+    } else {
+        style_follow = isFollower ? 'display:none' : '';
+        style_unfollow = isFollower ? '' : 'display:none';
     }
-    else {
+
+    const button_temp = `<a href='edit-profile.html' style="${style_edit_profile}">프로필 편집</a>
+                        <a style="${style_follow}" onclick="followUser()">팔로우</a>
+                        <a style="${style_unfollow}" onclick="unfollowUser()">팔로우 취소</a>`
+
+    $("#profile_button").append(button_temp)
+}
 
 
+// ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ팔로우/팔로우 취소하기ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ//
+function followUser() {
+    $.ajax({
+        url: "http://localhost:8080/users/" + url_userId + "/follow",
+        type: "POST",
+        dataType: "json",
+        headers: {
+            "Authorization": localStorage.getItem("accessToken")
+        },
+        success: function (response) {
+            alert("팔로우 완료!")
+            window.location.reload()
+        },
+        error: function (error) {
+            alert("팔로우가 정상적으로 진행되지 않았습니다.")
+        }
+    });
+}
 
+function unfollowUser() {
+    $.ajax({
+        url: "http://localhost:8080/users/" + url_userId + "/unfollow",
+        type: "DELETE",
+        dataType: "json",
+        headers: {
+            "Authorization": localStorage.getItem("accessToken")
+        },
+        success: function (response) {
+            alert("팔로우 취소 완료!")
+            window.location.reload()
+        },
+        error: function (error) {
+            alert("팔로우 취소가 정상적으로 진행되지 않았습니다.")
+        }
+    });
+}
+
+// ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ팔로우/팔로워 리스트 가져오기ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ//
+
+function getFollowers() {
+    $.ajax({
+        url: api_url + url_userId + "/follower",
+        type: "GET",
+        dataType: "json",
+        timeout: 0,
+        headers: {
+            "Authorization": localStorage.getItem("accessToken")
+        },
+        success: function (response) {
+            console.log('팔로워리스트' + response);
+            followerList = response;
+            show_button(followerList)
+        }
+    })
+}
+
+function getFollowings() {
+    $.ajax({
+        url: api_url + url_userId + "/following",
+        type: "GET",
+        dataType: "json",
+        timeout: 0,
+        headers: {
+            "Authorization": localStorage.getItem("accessToken")
+        },
+        success: function (response) {
+            console.log('팔로잉리스트' + response);
+            followingList = response;
+
+        }
+    })
+}
+
+// ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ팔로워 리스트 모달창ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+
+// Get the modal
+var follower_modal = document.getElementById('follower_modal');
+
+// When the user clicks on the button, open the modal 
+function open_follower_popup() {
+    follower_modal.style.display = "block";
+    showFollowerList();
+}
+
+function showFollowerList() {
+    console.log('팔로우리스트나오나' + followerList)
+    $('#follower_list_container').empty();
+
+    for (let i = 0; i < followerList.length; i++) {
+        const followerId = followerList[i]['followerId'];
+        const follwerName = followerList[i]['followerName'];
+        let follwerProfileImage = followerList[i]['followerProfileImage'];
+
+        follwerProfileImage = (follwerProfileImage ==null)? "../static/images/avatar.jpg":follwerProfileImage;
+
+        let follwerTemp = `
+                    <div class="follow_profile">
+                    <p id="follwer_userId_${followerId}" style="display: none">${followerId}</p>
+                    <p id="follower_profileImage">
+                    <img src="${follwerProfileImage}"></p>
+                        <span id="follower_username">${follwerName}</span>
+                        <p class="follow_button">팔로우버튼</p>
+                    </div>   
+                    `
+        $('#follower_list_container').append(follwerTemp);
     }
 }
 
-function show_edit_profile_button() {
-    $("#profile_button").append("<a href='edit-profile.html'>프로필 편집</a>");
+// ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ팔로잉 리스트 모달창ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ//
+
+// Get the modal
+var following_modal = document.getElementById('following_modal');
+
+// When the user clicks on the button, open the modal 
+function open_follower_popup() {
+    following_modal.style.display = "block";
+    showFollowingList();
 }
 
-function show_follow_button() {
-    $("#profile_button").append("<a href='edit-profile.html'>팔로우</a>");
-}
+function showFollowingList() {
+    console.log('팔로잉리스트나오나' + followingList)
+    $('#following_list_container').empty();
 
-function show_follow_button() {
-    $("#profile_button").append("<a href='edit-profile.html'>팔로우 취소</a>");
+    for (let i = 0; i < followingList.length; i++) {
+        const followingId = followingList[i]['followingId'];
+        const follwingName = followingList[i]['followingName'];
+        let follwingProfileImage = followingList[i]['followingProfileImage'];
+
+        follwingProfileImage = (follwingProfileImage ==null)? "../static/images/avatar.jpg":follwingProfileImage;
+
+        let follwingTemp = `
+                    <div class="follow_profile">
+                    <p id="follwer_userId_${followingId}" style="display: none">${followingId}</p>
+                    <p id="following_profileImage">
+                    <img src="${follwingProfileImage}"></p>
+                        <span id="following_username">${follwingName}</span>
+                        <p class="follow_button">팔로우버튼</p>
+                    </div>   
+                    `
+        $('#following_list_container').append(follwingTemp);
+    }
 }

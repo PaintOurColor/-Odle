@@ -19,13 +19,13 @@ public interface LikeServiceInterface {
     void unlikeComment(Long postId, Long commentId, Long userId);
 
     //댓글 좋아요 개수 조회
-    CommentLikeCountResponse getCommentLikeCount(Long commentId);
+    CommentLikeCountResponse getCommentLikeCount(Long postId, Long commentId);
 
     //    게시글 좋아요 개수 조회
     PostLikeCountResponse getPostLikeCount(Long postId);
 
     PostLikeOrUnlikeResponse getPostLikeOrUnlikeResponse(Long postId, Long userId);
-    CommentLikeOrUnlikeResponse getCommentLikeOrUnlikeResponse(Long commentId, Long userId);
+    CommentLikeOrUnlikeResponse getCommentLikeOrUnlikeResponse(Long postId, Long commentId, Long userId);
 
 
     }

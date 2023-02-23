@@ -10,165 +10,134 @@
     <link rel="stylesheet" href="../static/css/styles.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="../static/css/styles.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
 </head>
 
 <body>
-<nav class="navigation">
-    <div class="navigation__column">
-        <a href="index.html">
-            <img src="../static/images/main_logo.jpg" />
-        </a>
-    </div>
-    <div class="navigation__column">
-        <i class="fa fa-search"></i>
-        <input type="text" placeholder="검색">
-    </div>
-    <div class="navigation__profile">
-        <div class="photo__header" id="getSimpleProfile">
-            <img src="../static/images/avatar.jpg" class="photo__avatar" />
-            <div class="photo__user-info">
-                <span class="photo__author">닉네임</span>
-            </div>
-        </div>
-    </div>
-</nav>
-<!-- 여기서부터 사이드바 -->
-<aside class="sidebar">
-    <ul>
-        <li class="list">
-            <div class="toggle">
-                <a href="#">
-                    <span class="icon"><ion-icon name="menu-outline" class="open"></ion-icon></span>
-                    <span class="title">메뉴 접기</span>
-                </a>
-            </div>
-        </li>
-        <li class="list active">
-            <b></b>
-            <b></b>
+    <nav class="navigation">
+        <div class="navigation__column">
             <a href="index.html">
-                <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
-                <span class="title">홈</span>
+                <img src="../static/images/main_logo.jpg" />
             </a>
-        </li>
-        <li class="list">
-            <b></b>
-            <b></b>
-            <a href="profile.html">
-                <span class="icon"><ion-icon name="person-outline"></ion-icon></span>
-                <span class="title">프로필</span>
-            </a>
-        </li>
-        <li class="list">
-            <b></b>
-            <b></b>
-            <a href="chart.html">
-                <span class="icon"><ion-icon name="bar-chart-outline"></ion-icon></span>
-                <span class="title">실시간 Top</span>
-            </a>
-        </li>
-        <li class="list">
-            <b></b>
-            <b></b>
-            <a href="#">
-                <span class="icon"><ion-icon name="alert-outline"></ion-icon></span>
-                <span class="title">알림</span>
-            </a>
-        </li>
-        <li class="list">
-            <b></b>
-            <b></b>
-            <a href="post.html">
-                <span class="icon"><ion-icon name="create-outline"></ion-icon></span>
-                <span class="title">게시글 작성</span>
-            </a>
-        </li>
-        <li class="list">
-            <b></b>
-            <b></b>
-            <a href="edit-profile.html">
-                <span class="icon"><ion-icon name="settings-outline"></ion-icon></span>
-                <span class="title">설정</span>
-            </a>
-        </li>
-        <li class="list">
-            <b></b>
-            <b></b>
+        </div>
+        <div class="navigation__column">
+            <i class="fa fa-search"></i>
+            <input type="text" placeholder="검색">
+        </div>
+        <div class="navigation__profile">
+            <!-- id 하나 선언해 주신 다음 js 파일에서 함수 만들어 주시면 됩니다! feed.js의 getMySimpleProfile 함수 참고!-->
+            <!-- 밑에 사이드바 부분도 고쳐주세요~ -->
+            <div class="photo__header" id="getMySimpleProfile">
+                <div>
+                    <a id="myProfile1" role="link" tabindex="0">
+                        <img alt="프로필 사진" src="" id="myProfileImage" class="photo__avatar" />
+                    </a>
+                </div>
+                <div class="photo__user-info">
+                    <a id="myProfile2" role="link" tabindex="0">
+                        <span class="photo__author" id="myProfileUsername"></span>
+                    </a>
+                </div>
+            </div>
+            <!-- 참고 코드 -->
+        </div>
+    </nav>
+    <!-- 여기서부터 사이드바 -->
+    <aside class="sidebar">
+        <ul>
+            <li class="list">
+                <div class="toggle">
+                    <a href="#">
+                        <span class="icon"><ion-icon name="menu-outline" class="open"></ion-icon></span>
+                        <span class="title">메뉴 접기</span>
+                    </a>
+                </div>
+            </li>
+            <li class="list active">
+                <b></b>
+                <b></b>
+                <a href="index.html">
+                    <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
+                    <span class="title">홈</span>
+                </a>
+            </li>
+            <li class="list">
+                <b></b>
+                <b></b>
+                <!-- 참고 코드 -->
+                <div id="getMySimpleProfile">
+                    <a id="myProfile3">
+                        <span class="icon"><ion-icon name="person-outline"></ion-icon></span>
+                        <span class="title">프로필</span>
+                    </a>
+                </div>
+                <!-- 참고 코드 -->
+            </li>
+            <li class="list">
+                <b></b>
+                <b></b>
+                <a href="chart.html">
+                    <span class="icon"><ion-icon name="bar-chart-outline"></ion-icon></span>
+                    <span class="title">실시간 Top</span>
+                </a>
+            </li>
+            <li class="list">
+                <b></b>
+                <b></b>
+                <a href="#">
+                    <span class="icon"><ion-icon name="alert-outline"></ion-icon></span>
+                    <span class="title">알림</span>
+                </a>
+            </li>
+            <li class="list">
+                <b></b>
+                <b></b>
+                <a href="post.html">
+                    <span class="icon"><ion-icon name="create-outline"></ion-icon></span>
+                    <span class="title">게시글 작성</span>
+                </a>
+            </li>
+            <li class="list">
+                <b></b>
+                <b></b>
+                <a href="edit-profile.html">
+                    <span class="icon"><ion-icon name="settings-outline"></ion-icon></span>
+                    <span class="title">설정</span>
+                </a>
+            </li>
+            <li class="list">
+                <b></b>
+                <b></b>
                 <a>
                     <span class="icon" onclick="logOut()"><ion-icon name="log-out-outline"></ion-icon></span>
                     <span class="title">로그아웃</span>
                 </a>
-            <!-- <a href="signin.html">
+                <!-- <a href="signin.html">
                 <span class="icon"><ion-icon name="log-out-outline"></ion-icon></span>
                 <span class="title">로그아웃</span>
             </a> -->
-        
-        </li>
-    </ul>
-</aside>
-<!-- 여기까지 사이드바 -->
-<main id="feed">
-    <div class="feed__container">
-        <div class="photo">
-            <header class="photo__header">
-                <img src="../static/images/avatar.jpg" class="photo__avatar" />
-                <div class="photo__user-info">
-                    <span class="photo__author">닉네임</span>
-                </div>
-            </header>
-            <div class="feed__open_close">
-                <span>여는 노래</span>
-            </div>
-            <div class="feed__musics">
-                <div class="feed__musicinfo">
-                    <span>노래 제목</span>
-                    <span>가수</span>
-                </div>
-                <img src="../static/images/post_test.jpg" />
-            </div>
-            <div class="photo__info">
-                <div class="photo__actions">
-                        <span class="photo__action">
-                            <i class="fa fa-heart-o fa-lg"></i>
-                        </span>
-                    <span class="photo__action">
-                            <i class="fa fa-comment-o fa-lg"></i>
-                        </span>
-                </div>
-                <div class="photo__contents">
-                    <a>게시글 내용</a>
-                </div>
-                <div class="photo__tags">
-                    <a href="#">#태그들</a>
-                </div>
-                <div class="photo__likes">
-                    <span>100</span><a>좋아요</a>
-                </div>
-                <ul class="photo__comments">
-                    <li class="photo__comment">
-                        <span class="photo__comment-author">닉네임</span>
-                        <span>댓글 내용</span>
-                    </li>
-                </ul>
-                <span class="photo__time-ago">작성 시간</span>
-                <div class="photo__add-comment-container">
-                    <textarea name="comment" placeholder="댓글을 입력..."></textarea>
-                    <i class="fa fa-ellipsis-h"></i>
+            </li>
+        </ul>
+    </aside>
+    <!-- 여기까지 사이드바 -->
+    <main id="feed">
+        <div class="feed__container" id="getPost">
+            <div id="post_modal" class="modal">
+                <div id="post_popup" class="modal-content">
                 </div>
             </div>
         </div>
-    </div>
-</main>
-<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-<script src="../static/js/sidebar.js"></script>
-
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-
+    </main>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <!-- JQuery 사용 설정 -->
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <!-- js 파일 링크 -->
+    <script src="../static/js/sidebar.js"></script>
+    <script src="../static/js/feed.js"></script>
+    <script src="../static/js/logout.js"></script>
+    <script src="../static/js/post_popup.js"></script>
 </body>
-
-<script src="../static/js/logout.js"></script>
 
 </html>

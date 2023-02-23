@@ -34,7 +34,22 @@
 .photo .photo__user-info .photo__author {
   display: block;
   font-weight: 600;
-  margin-bottom: 5px;
+  margin-bottom: -5px;
+}
+
+.photo__header .follow_button {
+  background-color: #3f99ed;
+  color: white;
+  border-color: #3f99ed;
+  margin-bottom: 0;
+}
+
+.photo .photo__user-info .photo__author {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0;
+  text-decoration: none;
+  color: inherit;
 }
 
 .photo > img {
@@ -125,15 +140,19 @@
 
 .feed__musics img {
   margin: 10px;
+  /* max-width: 100%;
+  height: auto; */
+  width: 500px;
+  height: 500px;
 }
 
-.feed__musicinfo {
+.feed__musicInfo {
   display: flex;
   flex-direction: column;
   margin-left: 10px;
 }
 
-.feed__musicinfo {
+.feed__musicInfo {
   display: flex;
   flex-direction: column;
   margin-left: 10px;
@@ -146,4 +165,69 @@
   width: 96%;
   text-align: center;
   margin-left: 2%;
+}
+
+/*팔로우 버튼*/
+.arr2 {
+  align-items: baseline;
+  border: 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  flex-shrink: 0;
+  font: inherit;
+  font-size: 100%;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  top: 1px;
+  vertical-align: baseline;
+}
+
+.arr3 {
+  align-items: stretch;
+  border: 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  font: inherit;
+  font-size: 100%;
+  margin: 0;
+  margin-right: 2px;
+  padding: 0;
+  position: relative;
+  vertical-align: baseline;
+  margin-right: 5px;
+}
+
+.border {
+  border: 1px solid grey;
+}
+
+.pad {
+  padding: 15px;
+}
+
+/*링크에 파란색 글씨 -> 검은색 글씨로 변경*/
+/*링크 클릭 시 보라색 글씨 -> 검은색 글씨로 변경*/
+a:link {
+  text-decoration: none;
+  color: black;
+}
+a:visited {
+  text-decoration: none;
+  color: black;
+}
+a:hover {
+  text-decoration: none;
+  color: black;
+}
+a:focus {
+  text-decoration: none;
+  color: black;
+}
+a:hover, a:active {
+  text-decoration: none;
+  color: black;
 }

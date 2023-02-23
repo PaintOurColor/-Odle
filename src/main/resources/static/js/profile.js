@@ -1,6 +1,6 @@
 
 const api_url = "http://localhost:8080/users/"; //공통 Url
-const url_userId = 1; // 추후 프로필 화면 누를 시 Id 받아오도록 변경
+const url_userId = document.location.href.split('=')[1]; // 추후 프로필 화면 누를 시 Id 받아오도록 변경
 
 //페이지 시작 시 호출 펑션들
 $(document).ready(function () {
@@ -27,7 +27,7 @@ function get_profile() {
 
 
 // 프로필 유저 정보 가져오기
-function get_userinfo() {
+function get_userinfo(userId) {
     $.ajax({
         url: api_url + url_userId + "/profile",
         type: "GET",

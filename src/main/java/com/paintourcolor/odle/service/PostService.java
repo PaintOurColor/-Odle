@@ -161,6 +161,7 @@ public class PostService implements PostServiceInterface {
         for (PostTag postTag : postTags) {
             tags.add(postTag.getTag());
         }
+
         return tags.stream().map(Tag::getTagName).collect(Collectors.joining(" "));
     }
 }

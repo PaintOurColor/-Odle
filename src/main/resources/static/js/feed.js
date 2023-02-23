@@ -1,10 +1,14 @@
+const url_userId = document.location.href.split('=')[1];
+
 // 페이지가 로딩될 때 실행되는 거
 jQuery(document).ready(function ($) {
     getMySimpleProfile();
     getPost();
+    follow();
 });
 
 // 상단바에 보이는 내 프로필
+// 이 함수 복사하시던가 feed.js 파일 스크립트에 추가하셔서 사용하세요!
 function getMySimpleProfile() {
     var settings = {
         "url": "http://localhost:8080/users/profile/simple",
@@ -23,6 +27,7 @@ function getMySimpleProfile() {
             window.location = "/login.html"
         }
         const userId = response['userId']
+        // 프로필 이거 꼭 적어주시기!
         $('#myProfile1').attr('onclick', `window.location.href='/src/main/resources/templates/profile.html?userId=${userId}'`)
         $('#myProfile2').attr('onclick', `window.location.href='/src/main/resources/templates/profile.html?userId=${userId}'`)
         $('#myProfile3').attr('onclick', `window.location.href='/src/main/resources/templates/profile.html?userId=${userId}'`)
@@ -78,11 +83,9 @@ function getPost() {
                             <div class="arr3">
                                 <span class="_ac6e _ac6g _ac6h">•</span>
                             </div>
-                            <button class="follow_button" type="button">
                                 <div style="height: 100%;">
-                                     <p id="profile_button">팔로우</p>
+                                     <p onclick="follow">팔로우</p>
                                 </div>
-                            </button>
                           </div>
                       </header>
                       <div class="feed__open_close" id="openOrEnd">
@@ -126,16 +129,15 @@ function getPost() {
     });
 }
 
-function getProfile(userId) {
-    // http://127.0.0.1:5500/src/main/resources/templates/profile.html
-        var settings = {
-            "url": "http://localhost:8080/src/main/resources/templates/profile.html/userId",
-            "method": "GET",
-            "timeout": 0,
-            "headers": {
-                "Authorization": localStorage.getItem('accessToken')
-            },
-        };
+function follow() {
+    var settings = {
+        "url": "localhost:8080/users/" + url_userId + "follow",
+        "method": "POST",
+        "timeout": 0,
+        "headers": {
+            "Authorization": localStorage.getItem('accessToken')
+        },
+    };
 
     $.ajax(settings).done(function (response) {
         console.log(response);

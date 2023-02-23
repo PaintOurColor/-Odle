@@ -198,6 +198,7 @@
   padding: 0;
   position: relative;
   vertical-align: baseline;
+  margin-right: 5px;
 }
 
 .border {

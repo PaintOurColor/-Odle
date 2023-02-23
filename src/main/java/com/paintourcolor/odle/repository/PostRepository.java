@@ -10,6 +10,7 @@ import java.util.List;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
     Page<Post> findAllByOrderByCreatedAtDesc(Pageable pageable);
+
     @Query("select post from Post post WHERE post.user.id = :userId")
     Page<Post> findAllByUserId(Long userId, Pageable pageable);
 

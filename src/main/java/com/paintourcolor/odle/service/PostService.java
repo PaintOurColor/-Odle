@@ -62,7 +62,7 @@ public class PostService implements PostServiceInterface {
     @Transactional(readOnly = true)
     @Override
     public List<PostResponse> getPostList(Pageable pageable) {
-        Page<Post> posts = postRepository.findAll(pageable);
+        Page<Post> posts = postRepository.findAllByOrderByCreatedAtDesc(pageable);
         List<PostResponse> postResponses = new ArrayList<>();
 
         for (Post post : posts) {

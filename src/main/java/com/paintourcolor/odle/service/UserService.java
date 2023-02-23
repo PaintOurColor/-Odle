@@ -1,8 +1,6 @@
 package com.paintourcolor.odle.service;
 
-import com.paintourcolor.odle.dto.user.request.UserLoginRequest;
-import com.paintourcolor.odle.dto.user.request.UserSignupRequest;
-import com.paintourcolor.odle.dto.user.request.UserInactivateRequest;
+import com.paintourcolor.odle.dto.user.request.*;
 import com.paintourcolor.odle.dto.user.response.PostCountResponse;
 import com.paintourcolor.odle.dto.user.response.ProfilePostResponse;
 import com.paintourcolor.odle.dto.user.response.UserResponse;
@@ -51,6 +49,24 @@ public class UserService implements UserServiceInterface {
         ActivationEnum activation = ActivationEnum.ACTIVE;
 
         userRepository.save(new User(username, password, email, role, activation));
+    }
+
+    @Transactional
+    @Override
+    public void checkEmail(EmailCheckRequest emailCheckRequest) {
+        String inputEmail = emailCheckRequest.getEmail();
+        if (userRepository.existsByEmail(inputEmail)) {
+            throw new IllegalArgumentException("중복된 이메일이 존재합니다.");
+        }
+    }
+
+    @Transactional
+    @Override
+    public void checkUsername(UsernameCheckRequest usernameCheckRequest) {
+        String inputUsername = usernameCheckRequest.getUsername();
+        if (userRepository.existsByUsername(inputUsername)) {
+            throw new IllegalArgumentException("중복된 닉네임이 존재합니다.");
+        }
     }
 
     // 로그인 유저,관리자

@@ -1,8 +1,6 @@
 package com.paintourcolor.odle.service;
 
-import com.paintourcolor.odle.dto.user.request.UserInactivateRequest;
-import com.paintourcolor.odle.dto.user.request.UserLoginRequest;
-import com.paintourcolor.odle.dto.user.request.UserSignupRequest;
+import com.paintourcolor.odle.dto.user.request.*;
 import com.paintourcolor.odle.dto.user.response.PostCountResponse;
 import com.paintourcolor.odle.dto.user.response.ProfilePostResponse;
 import com.paintourcolor.odle.dto.user.response.UserResponse;
@@ -13,6 +11,8 @@ import java.util.List;
 
 public interface UserServiceInterface {
     void signupUser(UserSignupRequest userSignupRequest);
+    void checkEmail(EmailCheckRequest emailCheckRequest);
+    void checkUsername(UsernameCheckRequest usernameCheckRequest);
     void loginUser(UserLoginRequest userLoginRequest, HttpServletResponse response);
     void logoutUser(String token);  // ?
     void reissueToken(String refreshToken, HttpServletResponse response); //AccessToken 재발급

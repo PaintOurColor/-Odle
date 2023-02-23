@@ -44,6 +44,22 @@ public class UserController {
         return new ResponseEntity<>(statusResponse, HttpStatus.CREATED);
     }
 
+    // 회원가입 이메일 중복 확인
+    @PostMapping("/check-email")
+    public ResponseEntity<StatusResponse> checkEmail(@RequestBody EmailCheckRequest emailCheckRequest) {
+        StatusResponse statusResponse = new StatusResponse(HttpStatus.OK.value(), "사용 가능한 이메일입니다.");
+        userService.checkEmail(emailCheckRequest);
+        return new ResponseEntity<>(statusResponse, HttpStatus.OK);
+    }
+
+    // 회원가입 닉네임 중복 확인
+    @PostMapping("/check-username")
+    public ResponseEntity<StatusResponse> checkUsername(@RequestBody UsernameCheckRequest usernameCheckRequest) {
+        StatusResponse statusResponse = new StatusResponse(HttpStatus.OK.value(), "사용 가능한 닉네임입니다.");
+        userService.checkUsername(usernameCheckRequest);
+        return new ResponseEntity<>(statusResponse, HttpStatus.OK);
+    }
+
     // 로그인(유저, 관리자)
     @PostMapping("/login")
     public ResponseEntity<StatusResponse> loginUser(@RequestBody UserLoginRequest userLoginRequest,

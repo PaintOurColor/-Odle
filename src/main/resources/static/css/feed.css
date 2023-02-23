@@ -8,6 +8,55 @@
 .feed__container {
   margin-top: 100px;
 }
+/* ㅡㅡㅡㅡ모달 팝업 게시글 1개 ㅡㅡㅡㅡ */
+/* The Modal (background) */
+.modal {
+  display: none;
+  /* Hidden by default */
+  position: fixed;
+  /* Stay in place */
+  z-index: 1;
+  /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%;
+  /* Full width */
+  height: 100%;
+  /* Full height */
+  overflow: auto;
+  /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0);
+  /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4);
+  /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 50%;
+  max-width: 600px;
+  /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
 
 .photo {
   background-color: white;
@@ -35,33 +84,55 @@
   display: block;
   font-weight: 600;
   margin-bottom: -5px;
+  margin-right: 10px;
 }
 
 .photo__header .follow_button {
   background-color: #3f99ed;
   color: white;
   border-color: #3f99ed;
-  font-size : 95%;
-  font-weight: 600;
   min-width: 30%;
   text-decoration: none;
-  padding: 1%;
   border-radius: 3px;
   height: 100%;
   width: 100%;
   align-items: baseline;
-  border: 0;
   box-sizing: border-box;
   display: flex;
   flex-direction: row;
   flex-shrink: 0;
   font: inherit;
   font-size: 100%;
-  margin: 0;
-  padding: 0;
+  padding: 3px;
   position: relative;
   top: 1px;
   vertical-align: baseline;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.photo__header .unfollow_button {
+  background-color: white;
+  color: #3f99ed;
+  border-color: white;
+  min-width: 30%;
+  text-decoration: none;
+  border-radius: 3px;
+  height: 100%;
+  width: 100%;
+  align-items: baseline;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  flex-shrink: 0;
+  font: inherit;
+  font-size: 100%;
+  padding: 1px;
+  position: relative;
+  top: 1px;
+  vertical-align: baseline;
+  margin-bottom: 5px;
+  font-weight: bold;
 }
 
 /*팔로우 버튼*/
@@ -91,12 +162,10 @@
   flex-shrink: 0;
   font: inherit;
   font-size: 100%;
-  margin: 0;
-  margin-right: 2px;
   padding: 0;
   position: relative;
   vertical-align: baseline;
-  margin-right: 5px;
+  /*margin-right: 5px;*/
 }
 
 .photo .photo__user-info .photo__author {
@@ -204,22 +273,20 @@
 .feed__musicInfo {
   display: flex;
   flex-direction: column;
-  margin-left: 10px;
-}
-
-.feed__musicInfo {
-  display: flex;
-  flex-direction: column;
-  margin-left: 10px;
+  text-align : center;
+  font-size: 16px;
 }
 
 .feed__open_close {
-  background-color: white;
+  font-size: 20px;
+  font-weight: 600;
+  color: inherit;
+  padding: 7px 20px;
   border: 1px solid #e6e6e6;
   border-radius: 3px;
-  width: 96%;
-  text-align: center;
-  margin-left: 2%;
+  text-align : center;
+  margin-right: 1px;
+  margin-left: 1px;
 }
 
 .border {
@@ -228,6 +295,29 @@
 
 .pad {
   padding: 15px;
+}
+
+.feed_info_container {
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.feed_info_container img {
+  width: 40px;
+  border-radius: 50%;
+  margin-right: 15px;
+}
+
+.feed_info {
+  width: 100%;
+}
+
+.feed_info span {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 5px;
 }
 
 /*링크에 파란색 글씨 -> 검은색 글씨로 변경*/

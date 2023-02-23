@@ -14,7 +14,7 @@ function close_button() {
 
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function (event) {
-    if (event.target == feed_modal) {
+    if (event.target === feed_modal) {
         feed_modal.style.display = "none";
     }
 }
@@ -55,9 +55,9 @@ function get_post(post_id) {
             <div class="feed_container">
                 <div class="feed_info_container">
                     <p id="myUserId" style="display: none"></p>
-                    <p id="myProfileImage1">
-                        <img src="${feed_profileImage}"></a>
-                    </p>
+                    <a id="myProfileImage1">
+                        <img src="${feed_profileImage == null ? 'http://bwptedu.com/assets/image/default-profile.jpg' : feed_profileImage}"></a>
+                    </a>
                     <div class="post_info">
                         <span id="myUsername1">${feed_username}</span>
                         <div class="post_time">
@@ -83,7 +83,7 @@ function get_post(post_id) {
                     <ion-icon name="trash" style="${delete_button_style}" onclick="delete_post(${post_id})"></ion-icon>
                 </div>
                 <div class="post_content_container">
-                    <p id="likeCount" style="font-weight: 600;">좋아요 수 ${like_count}</p>
+                    <p id="likeCount" style="font-weight: 600;">좋아요 ${like_count}개</p>
                     <p id="postContent">${content}</p>
                     <p id="postTag">${tag_list}</p>
                 </div>

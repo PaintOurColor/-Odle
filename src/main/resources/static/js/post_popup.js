@@ -22,24 +22,6 @@ window.onclick = function (event) {
     }
 }
 
-
-
-
-// let checkLike;
-// let heart = checkLike ? 'heart' : 'heart-outline';
-// let heartStyle = checkLike ? 'color:red' : '';
-
-// const likeChange = (post_id) => {
-//     checkLike = !checkLike
-//     heart = checkLike ? 'heart' : 'heart-outline';
-//     heartStyle = checkLike ? 'color:red' : '';
-//     let onclickChange = checkLike ? `likeChange(${post_id}); unlike_post(${post_id});` : `likeChange(${post_id}); like_post(${post_id});`;
-
-//     $('#post_like').html('<ion-icon name=' + heart + ' style=' + heartStyle + '></ion-icon>')
-//     $('#post_like').attr('onclick', onclickChange)
-
-// }
-
 function get_post(post_id) {
     $.ajax({
         url: "http://localhost:8080/posts/" + post_id,
@@ -49,7 +31,7 @@ function get_post(post_id) {
             $('#post_popup').empty()
             const post_user_id = response.userId;
             const post_username = response.username;
-            const post_profileImage = response.userProfileImage;
+            let post_profileImage = response.userProfileImage;
             const post_music_id = response.musicId;
             const music_title = response.musicTitle;
             const music_singer = response.musicSinger;
@@ -70,6 +52,7 @@ function get_post(post_id) {
             const modifiedDate = modified_at.getDate();
             const delete_button_style = (post_user_id === login_userId) ? '' : 'display: none';
             console.log(delete_button_style, post_user_id, login_userId);
+            post_profileImage = (post_profileImage ==null)? "http://bwptedu.com/assets/image/default-profile.jpg":post_profileImage;
             const temp_post = `
             <span class="close" onclick="close_button()">&times;</span>
             <div class="post_container">

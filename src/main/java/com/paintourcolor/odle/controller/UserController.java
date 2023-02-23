@@ -147,16 +147,16 @@ public class UserController {
 
     // 유저 팔로우 하기
     @PostMapping("/{userId}/follow")
-    public ResponseEntity<String> followUser(@PathVariable Long userId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseEntity<StatusResponse> followUser(@PathVariable Long userId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         followService.followUser(userDetails.getUserId(), userId);
-        return new ResponseEntity<>("팔로우 완료", HttpStatus.OK);
+        return new ResponseEntity<>(new StatusResponse(HttpStatus.OK.value(),"팔로우 완료") , HttpStatus.OK);
     }
 
     // 유저 팔로우 취소
     @DeleteMapping("/{userId}/unfollow")
-    public ResponseEntity<String> unfollowUser(@PathVariable Long userId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseEntity<StatusResponse> unfollowUser(@PathVariable Long userId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         followService.unfollowUser(userDetails.getUserId(), userId);
-        return new ResponseEntity<>("팔로우 취소 완료", HttpStatus.OK);
+        return new ResponseEntity<>(new StatusResponse(HttpStatus.OK.value(),"팔로우 완료"), HttpStatus.OK);
     }
 
     // 팔로워 목록 조회

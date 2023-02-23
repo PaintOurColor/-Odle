@@ -77,17 +77,20 @@ function getPost() {
                               <img alt="프로필 사진" src="${profileImage == null ? 'http://bwptedu.com/assets/image/default-profile.jpg' : profileImage}" id="profileImage" class="photo__avatar"/>
                           </a>
                           <div class="photo__user-info">
-                              <a onclick="window.location.href='./profile.html?userId=${userId}'" id="getProfile"  role="link" tabindex="0">
-                                  <span class="photo__author" id="profileUsername">${username}</span>
-                              </a>
+                              <div>
+                                  <a onclick="window.location.href='./profile.html?userId=${userId}'" id="getProfile"  role="link" tabindex="0">
+                                      <span class="photo__author" id="profileUsername">${username}</span>
+                                  </a>
+                              </div>
+                              <div class="arr2">
+                                <div class="arr3">
+                                    <span class="_ac6e _ac6g _ac6h"></span>
+                                </div>
+                                <div id="feed_follow_${postId}">
+                                </div>
+                              </div>
                           </div>
-                          <div class="arr2">
-                            <div class="arr3">
-                                <span class="_ac6e _ac6g _ac6h">•</span>
-                            </div>
-                            <div id="feed_follow_${postId}">
-                            </div>
-                          </div>
+                          
                       </header>
                       <div class="feed__open_close" id="openOrEnd">
                           <span>${openOrEnd} / ${emotion}</span>
@@ -135,7 +138,7 @@ function showFollowButton(userId, postId) {
         },
         success: function (response) {
             follow_button = `<div class="follow_button" id="feed_follow_state_${postId}" onclick="followUser(${userId})">팔로우</div>`
-            unfollow_button = `<div class="follow_button" id="feed_follow_state_${postId}" onclick="unfollowUser(${userId})">언팔로우</div>`
+            unfollow_button = `<div class="unfollow_button" id="feed_follow_state_${postId}" onclick="unfollowUser(${userId})">언팔로우</div>`
 
             response['followOrUnfollow']
 
@@ -165,7 +168,7 @@ function followUser(userId) {
 
     $.ajax(settings).done(function (response) {
         alert("팔로우 완료!")
-        window.location.reload()
+        window.location.reload(true)
     })
         .fail(function (response) {
             alert("팔로우가 정상적으로 진행되지 않았습니다.")
@@ -184,7 +187,7 @@ function unfollowUser(userId) {
 
     $.ajax(settings).done(function (response) {
         alert("팔로우 취소 완료!")
-        window.location.reload()
+        window.location.reload(true)
     })
         .fail(function (response) {
             alert("팔로우 취소가 정상적으로 진행되지 않았습니다.")
@@ -231,7 +234,7 @@ function likePost(postId) {
             "Authorization": localStorage.getItem("accessToken")
         },
         success: function (response) {
-            window.location.reload()
+            window.location.reload(true);
         },
         error: function (error) {
             console.log(error)
@@ -249,7 +252,7 @@ function unlikePost(postId) {
             "Authorization": localStorage.getItem("accessToken")
         },
         success: function (response) {
-            window.location.reload()
+            window.location.reload(true)
         },
         error: function (error) {
             console.log(error)

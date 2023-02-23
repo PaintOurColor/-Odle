@@ -4,7 +4,7 @@ const url_userId = document.location.href.split('=')[1];
 jQuery(document).ready(function ($) {
     getMySimpleProfile();
     getPost();
-    follow();
+    //follow();
 });
 
 // 상단바에 보이는 내 프로필
@@ -15,7 +15,6 @@ function getMySimpleProfile() {
         "method": "GET",
         "timeout": 0,
         "headers": {
-            "RefreshToken": getCookie('RefreshToken'),
             "Authorization": localStorage.getItem('accessToken')
         },
     };
@@ -28,9 +27,9 @@ function getMySimpleProfile() {
         }
         const userId = response['userId']
         // 프로필 이거 꼭 적어주시기!
-        $('#myProfile1').attr('onclick', `window.location.href='/src/main/resources/templates/profile.html?userId=${userId}'`)
-        $('#myProfile2').attr('onclick', `window.location.href='/src/main/resources/templates/profile.html?userId=${userId}'`)
-        $('#myProfile3').attr('onclick', `window.location.href='/src/main/resources/templates/profile.html?userId=${userId}'`)
+        $('#myProfile1').attr('onclick', `window.location.href='./profile.html?userId=${userId}'`)
+        $('#myProfile2').attr('onclick', `window.location.href='./profile.html?userId=${userId}'`)
+        $('#myProfile3').attr('onclick', `window.location.href='./profile.html?userId=${userId}'`)
     });
 }
 
@@ -66,7 +65,7 @@ function getPost() {
             const createdAt = new Date(obj['createdAt'])
             const modifiedAt = new Date(obj['modifiedAt'])
 
-            showPostLikeButton(postId, likeCount)
+            //showPostLikeButton(postId, likeCount)
             $('#post_popup').empty()
             const tempHtml = `
                   <div class="photo">
@@ -129,7 +128,7 @@ function getPost() {
     });
 }
 
-function follow() {
+/*function follow() {
     var settings = {
         "url": "localhost:8080/users/" + url_userId + "follow",
         "method": "POST",
@@ -142,7 +141,7 @@ function follow() {
     $.ajax(settings).done(function (response) {
         console.log(response);
     });
-}
+}*/
 
 function elapsedText(date) {
     // 초 (밀리초)

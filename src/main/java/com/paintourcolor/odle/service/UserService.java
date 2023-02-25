@@ -116,8 +116,11 @@ public class UserService implements UserServiceInterface {
 
     // 유저 비활성화(유저가 본인을)
     @Override
-    public void inactivateUser(String username, UserInactivateRequest userInactivateRequest) {
-
+    public void inactivateMe(User user, UserInactivateRequest userInactivateRequest) {
+        user.isActivation(); // 유저가 활성화 상태인지 확인
+        user.matchPassword(userInactivateRequest.getPassword(), passwordEncoder); // 가져온 비밀번호가 본인꺼 맞는지 확인
+        user.updateActivation(ActivationEnum.INACTIVE);
+        userRepository.save(user);
     }
 
     // 유저 전체 조회

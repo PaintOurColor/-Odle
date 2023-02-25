@@ -3,6 +3,7 @@ package com.paintourcolor.odle.controller;
 import com.paintourcolor.odle.dto.security.StatusResponse;
 import com.paintourcolor.odle.dto.user.request.*;
 import com.paintourcolor.odle.dto.user.response.*;
+import com.paintourcolor.odle.entity.User;
 import com.paintourcolor.odle.security.UserDetailsImpl;
 import com.paintourcolor.odle.service.*;
 import com.paintourcolor.odle.util.jwtutil.JwtUtil;
@@ -110,6 +111,16 @@ public class UserController {
     public ResponseEntity<PostCountResponse> getPostCount(@PathVariable Long userId,
                                                           @AuthenticationPrincipal UserDetailsImpl userDetails){
         return new ResponseEntity<>(userService.getPostCount(userId),HttpStatus.OK);
+    }
+
+    // 본인 계정 비활성화 하기
+    @PatchMapping("/inactivation")
+    public ResponseEntity<StatusResponse> inactivateMe(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                                                           @RequestBody UserInactivateRequest userInactivateRequest) {
+        User user = userDetails.getUser();
+        StatusResponse statusResponse = new StatusResponse(HttpStatus.OK.value(), "비활성화가 완료되었습니다.");
+        userService.inactivateMe(user, userInactivateRequest);
+        return new ResponseEntity<>(statusResponse, HttpStatus.OK);
     }
 
     //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ관리자의 전용 기능 여기서부터ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ//

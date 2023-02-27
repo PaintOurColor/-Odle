@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -38,4 +39,12 @@ public class RestApiExceptionHandler {
         return new ResponseEntity(restApiException, HttpStatus.FORBIDDEN);
     }
 
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity validationError(MethodArgumentNotValidException e) {
+        RestApiException restApiException = new RestApiException();
+        restApiException.setErrorCode("400");
+        restApiException.setHttpStatus(HttpStatus.BAD_REQUEST);
+        restApiException.setErrorMessage(e.getBindingResult().getFieldError().getDefaultMessage());
+        return new ResponseEntity(restApiException, HttpStatus.BAD_REQUEST);
+    }
 }

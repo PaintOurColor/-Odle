@@ -47,7 +47,7 @@ public class UserController {
 
     // 회원가입 이메일 중복 확인
     @PostMapping("/check-email")
-    public ResponseEntity<StatusResponse> checkEmail(@RequestBody EmailCheckRequest emailCheckRequest) {
+    public ResponseEntity<StatusResponse> checkEmail(@RequestBody @Valid EmailCheckRequest emailCheckRequest) {
         StatusResponse statusResponse = new StatusResponse(HttpStatus.OK.value(), "사용 가능한 이메일입니다.");
         userService.checkEmail(emailCheckRequest);
         return new ResponseEntity<>(statusResponse, HttpStatus.OK);

@@ -19,6 +19,29 @@ function emailCheck() {
     })
 }
 
+function usernameCheck() {
+    $.ajax({
+        url: "http://localhost:8080/users/check-username",
+        type: "POST",
+        data: JSON.stringify({
+            username: $(`#username`).val()
+        }),
+        contentType: "application/json; charset=UTF-8",
+        success: function (response) {
+            console.log(response)
+            alert("사용 가능한 닉네임입니다.")
+        },
+        error: function (response) {
+            console.log(response)
+            if (response.responseJSON.errorMessage === '중복된 닉네임이 존재합니다.') {
+                alert("중복된 닉네임이 존재합니다.")
+            } else {
+                alert("잘못된 형식입니다.")
+            }
+        }
+    })
+}
+
 function signUp() {
     $.ajax({
         type: "POST",

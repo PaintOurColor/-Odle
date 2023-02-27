@@ -9,7 +9,7 @@ import javax.validation.constraints.Pattern;
 @NoArgsConstructor
 public class UserSignupRequest {
     // 닉네임 : 영문&숫자&한글 조합 4~12글자
-    @Pattern(regexp = "^[a-zA-Z0-9가-힣]{4,12}$")
+    @Pattern(regexp = "^[a-zA-Z0-9가-힣]{2,12}$")
     private String username;
 
     // 이메일 : 영문&숫자&_&- + @ + 영문or숫자 + . + 영문

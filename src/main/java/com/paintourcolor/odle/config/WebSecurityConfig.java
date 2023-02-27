@@ -35,7 +35,8 @@ public class WebSecurityConfig implements WebMvcConfigurer {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf().disable();
+        http.csrf().disable()
+                .cors();//CORS 설정 추가
 
         // 기본 설정인 Session 방식은 사용하지 않고 JWT 방식을 사용하기 위한 설정
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -44,7 +45,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
                 .antMatchers("/**/admin").hasRole("ADMIN")
                 .antMatchers("/users/**").permitAll()
                 .antMatchers("/posts/**").permitAll()
-                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll() // 프론트 CORS 오류 뜰 때
+//                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll() // 프론트 CORS 오류 뜰 때
                 .anyRequest().authenticated()
                 // JWT 인증/인가를 사용하기 위한 설정
                 .and().addFilterBefore(new JwtAuthFilter(jwtUtil, logoutTokenRepository), UsernamePasswordAuthenticationFilter.class);
@@ -55,6 +56,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
 
         return http.build();
     }
+
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")

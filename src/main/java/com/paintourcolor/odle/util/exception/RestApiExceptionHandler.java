@@ -3,6 +3,7 @@ package com.paintourcolor.odle.util.exception;
 import lombok.Builder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -46,5 +47,14 @@ public class RestApiExceptionHandler {
         restApiException.setHttpStatus(HttpStatus.BAD_REQUEST);
         restApiException.setErrorMessage(e.getBindingResult().getFieldError().getDefaultMessage());
         return new ResponseEntity(restApiException, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({BadCredentialsException.class})
+    public ResponseEntity BadCredentialsException(BadCredentialsException e) {
+        RestApiException restApiException = new RestApiException();
+        restApiException.setErrorCode("401");
+        restApiException.setHttpStatus(HttpStatus.UNAUTHORIZED);
+        restApiException.setErrorMessage(e.getMessage());
+        return new ResponseEntity(restApiException, HttpStatus.UNAUTHORIZED);
     }
 }

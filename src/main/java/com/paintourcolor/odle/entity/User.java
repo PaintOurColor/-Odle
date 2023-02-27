@@ -64,13 +64,13 @@ public class User {
 
     public void isInactivation( ) {
         if(!this.activation.equals(ActivationEnum.INACTIVE)) {
-            throw new DisabledException("활성화 된 계정입니다.");
+            throw new IllegalArgumentException("활성화 된 계정입니다.");
         }
     }
 
     public void matchPassword(String requestPassword, PasswordEncoder passwordEncoder) {
         if (!passwordEncoder.matches(requestPassword, this.password)){
-            throw new BadCredentialsException("아이디 혹은 비밀번호가 일치하지 않습니다.");
+            throw new BadCredentialsException("계정 혹은 비밀번호를 재확인 바랍니다.");
         }
     }
 

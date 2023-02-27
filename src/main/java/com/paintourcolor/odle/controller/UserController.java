@@ -91,7 +91,7 @@ public class UserController {
     //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ로그인 및 회원가입 외 유저 기능 여기서부터ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ//
     // 관리자가 유저 목록 조회
     @GetMapping("")
-    public ResponseEntity<List<UserResponse>> getUsers(@PageableDefault(sort = "userId",direction = Sort.Direction.DESC) Pageable pageable,
+    public ResponseEntity<List<UserResponse>> getUsers(@PageableDefault(sort = "id") Pageable pageable,
                                                  @AuthenticationPrincipal UserDetailsImpl userDetails){
         List<UserResponse> userList = userService.getUsers(pageable);
         return new ResponseEntity<>(userList,HttpStatus.OK);
@@ -99,7 +99,7 @@ public class UserController {
 
     // 내 프로필에서 내 게시글들 목록 조회
     @GetMapping("/{userId}/profile/posts")
-    public ResponseEntity<List<ProfilePostResponse>> getProfilePosts(@PageableDefault(sort = "createdAt",direction = Sort.Direction.ASC) Pageable pageable,
+    public ResponseEntity<List<ProfilePostResponse>> getProfilePosts(@PageableDefault(sort = "id",direction = Sort.Direction.DESC) Pageable pageable,
                                                                      @PathVariable Long userId,
                                                                      @AuthenticationPrincipal UserDetailsImpl userDetails){
         List<ProfilePostResponse> profilePostList = userService.getProfilePosts(userId, pageable);
@@ -183,7 +183,7 @@ public class UserController {
     @DeleteMapping("/{userId}/unfollow")
     public ResponseEntity<StatusResponse> unfollowUser(@PathVariable Long userId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         followService.unfollowUser(userDetails.getUserId(), userId);
-        return new ResponseEntity<>(new StatusResponse(HttpStatus.OK.value(),"팔로우 완료"), HttpStatus.OK);
+        return new ResponseEntity<>(new StatusResponse(HttpStatus.OK.value(),"언팔로우 완료"), HttpStatus.OK);
     }
 
     // 팔로워 목록 조회

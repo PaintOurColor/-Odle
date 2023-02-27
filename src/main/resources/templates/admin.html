@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin 메인 페이지</title>
+        <!-- JQuery 사용 설정 -->
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+</head>
+
+<body>
+    <header>
+        <h1>관리자 페이지 입니다. (유저 활성/비활성)</h1>
+        <h3><a href="./admin_feed.html">관리자 페이지 - 게시글 삭제 가기<a></a></h3>
+    </header>
+    <div class="input_field">
+        <input type="text" id="admin_password" placeholder="비밀번호를 입력하세요" class="input">
+    </div>
+     <div id="user_card_list">
+        <div id="user_card">
+            <span>유저 아이디: </span><span id="user_id"></span>
+            <span>유저 이메일: </span><span id="user_email"></span>
+            <span>유저 이름: </span><span id="user_username"></span>
+            <span>활성화 여부: </span><span id="user_activation"></span>
+            <button id="user_active">활성화</button>
+            <button id="user_inactive">비활성화</button>
+        </div>
+    </div>
+        <script src="../static/js/admin.js"></script>
+</body>
+</html>

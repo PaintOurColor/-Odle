@@ -45,6 +45,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
                 .antMatchers("/**/admin").hasRole("ADMIN")
                 .antMatchers("/users/**").permitAll()
                 .antMatchers("/posts/**").permitAll()
+                .antMatchers("/crawl").permitAll()
 //                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll() // 프론트 CORS 오류 뜰 때
                 .anyRequest().authenticated()
                 // JWT 인증/인가를 사용하기 위한 설정

@@ -13,5 +13,5 @@ public class PostUpdateRequest {
     private String content;
     private OpenOrEndEnum openOrEnd;
     private EmotionEnum emotion;
-    private TagUpdateRequest tagUpdateRequest;
+    private String tagList;
 }

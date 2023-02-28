@@ -17,5 +17,5 @@ public class PostCreateRequest {
     private String content;
     private OpenOrEndEnum openOrEnd;
     private EmotionEnum emotion;
-    private TagCreateRequest tagCreateRequest;
+    private String tagList;
 }

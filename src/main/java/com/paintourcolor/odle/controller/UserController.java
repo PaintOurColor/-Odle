@@ -31,6 +31,7 @@ public class UserController {
     private final AdminServiceInterface adminService;
     private final FollowServiceInterface followService;
     private final ProfileServiceInterface profileService;
+    private final EmailServiceInterface emailService;
     private final JwtUtil jwtUtil;
 
     @PostMapping("/signup")
@@ -238,4 +239,14 @@ public class UserController {
 
     //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ팔로우 기능 여기까지ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ//
 
+    //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ이메일 인증 여기부터ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ//
+
+    // 인증 이메일 발송
+    @PostMapping("/email")
+    public ResponseEntity<StatusResponse> sendEmailCode(@RequestBody @Valid EmailCheckRequest emailCheckRequest) throws Exception {
+        StatusResponse statusResponse = new StatusResponse(HttpStatus.OK.value(), "인증 메일이 전송되었습니다.");
+        String email = emailCheckRequest.getEmail();
+        emailService.sendEmail(email);
+        return new ResponseEntity<>(statusResponse, HttpStatus.OK);
+    }
 }

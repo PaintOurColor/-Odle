@@ -18,8 +18,6 @@ public class EmailService implements EmailServiceInterface{
 
     // 메일 생성
     private MimeMessage createMessage(String to)throws Exception{
-        System.out.println("코드 요청한 사람 : "+ to);
-        System.out.println("인증 번호 : "+ePw);
         MimeMessage  message = emailSender.createMimeMessage();
 
         message.addRecipients(MimeMessage.RecipientType.TO, to);// 요청한 유저

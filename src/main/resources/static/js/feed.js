@@ -87,9 +87,6 @@ function getPost() {
                                   </a>
                               </div>
                               <div class="arr2">
-                                <div class="arr3">
-                                    <span class="_ac6e _ac6g _ac6h"></span>
-                                </div>
                                 <div id="feed_follow_${postId}">
                                 </div>
                               </div>

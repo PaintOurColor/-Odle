@@ -14,7 +14,7 @@ function postCreate() {
         },
         data: JSON.stringify({
             content: $(`#content`).val(),
-            tagCreateRequest: $(`#tag`).val(),
+            tagList: $(`#tag`).val(),
             openOrEnd: $(`input[name='btnradio']:checked`).val(),
             emotion: $(`input[name='emotion']:checked`).val(),
             melonId: $(`#post-melon-id`).text(),

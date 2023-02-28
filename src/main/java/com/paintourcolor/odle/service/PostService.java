@@ -26,6 +26,7 @@ public class PostService implements PostServiceInterface {
     private final TagRepository tagRepository;
 
     // 게시글 작성
+    @Transactional
     @Override
     public void createPost(PostCreateRequest postCreateRequest, User user) {
         Music music = musicRepository.findMusicByMelonKoreaId(postCreateRequest.getMelonId());
@@ -41,8 +42,8 @@ public class PostService implements PostServiceInterface {
         postRepository.save(post);
 
         // Tag 가 있을 경우 tag 작성
-        if (postCreateRequest.getTagCreateRequest() != null) {
-            String tagList = postCreateRequest.getTagCreateRequest().getTagList();
+        if (!postCreateRequest.getTagList().isEmpty()) {
+            String tagList = postCreateRequest.getTagList();
             String[] tagNameList = tagList.split(" ");
             for (String tagName : tagNameList) {
                 Tag tag = tagRepository.findByTagName(tagName);
@@ -100,18 +101,18 @@ public class PostService implements PostServiceInterface {
         post.update(postUpdateRequest.getContent(), postUpdateRequest.getOpenOrEnd(), postUpdateRequest.getEmotion());
         music.plusEmotionCount(postUpdateRequest.getEmotion());
 
-        // tagName 수정
-        if (postUpdateRequest.getTagUpdateRequest() != null) {
-            // 기존에 있던 태그 다 -1
-            List<PostTag> postTags = postTagRepository.findTagIdByPostId(postId);
-            for (PostTag postTag : postTags) {
-                Tag tag = tagRepository.findById(postTag.getTag().getId()).get();
-                tag.minusTagCount();
-                postTagRepository.delete(postTag);
-            }
+        // 기존에 있던 태그 다 -1
+        List<PostTag> postTags = postTagRepository.findTagIdByPostId(postId);
+        for (PostTag postTag : postTags) {
+            Tag tag = tagRepository.findById(postTag.getTag().getId()).get();
+            tag.minusTagCount();
+            postTagRepository.delete(postTag);
+        }
 
+        // tagName 수정
+        if (!postUpdateRequest.getTagList().isEmpty()) {
             // 새로 들어온 태그
-            String tagList = postUpdateRequest.getTagUpdateRequest().getTagList();
+            String tagList = postUpdateRequest.getTagList();
             String[] tagNameList = tagList.split(" ");
             for (String tagName : tagNameList) {
                 Tag tag = tagRepository.findByTagName(tagName);

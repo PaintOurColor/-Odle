@@ -8,8 +8,8 @@ import javax.validation.constraints.Pattern;
 @Getter
 @NoArgsConstructor
 public class UserSignupRequest {
-    // 닉네임 : 영문&숫자&한글 조합 2~12글자
-    @Pattern(regexp = "^[a-zA-Z0-9가-힣]{2,12}$", message = "올바른 형식으로 입력해 주세요")
+    // 닉네임 : 영문&숫자&한글 조합 2~8글자
+    @Pattern(regexp = "^[a-zA-Z0-9가-힣]{2,8}$", message = "올바른 형식으로 입력해 주세요")
     private String username;
 
     // 이메일 : 영문&숫자&_&- + @ + 영문or숫자 + . + 영문

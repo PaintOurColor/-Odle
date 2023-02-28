@@ -2,6 +2,8 @@ jQuery(document).ready(function ($) {
     getMySimpleProfile();
 });
 
+let post_url_userId;
+
 function postCreate() {
 
     $.ajax({
@@ -18,13 +20,13 @@ function postCreate() {
             melonId: $(`#post-melon-id`).text(),
             title: $(`#post-title`).text(),
             singer: $(`#post-singer`).text(),
-            cover: $(`#post-cover`).text()
+            cover: $(`#post-cover`).attr('src')
         }),
         contentType: "application/json; charset=UTF-8",
         success: function (response) {
             if (response['statusCode'] === 201) {
                 alert("게시글 작성 완료");
-                location.href = "profile.html";
+                location.href = './profile.html?userId='+post_url_userId;
             }
         }
     })
@@ -46,9 +48,10 @@ function getMySimpleProfile() {
         if (status === 403) { // 권한이 없는 것이니까 로그인으로 보내면 됨
             window.location = "/login.html"
         }
-        const userId = response['userId']
+        post_url_userId = response['userId']
         // 프로필 이거 꼭 적어주시기!
-        $('#myProfile_post').attr('onclick', `window.location.href='./profile.html?userId=${userId}'`)
+        $('#myProfile_post_pic').attr('onclick', `window.location.href='./profile.html?userId=${post_url_userId}'`)
+        $('#myProfile_post').attr('onclick', `window.location.href='./profile.html?userId=${post_url_userId}'`)
     });
 }
 function getMusicSearchList() {

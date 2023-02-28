@@ -10,6 +10,9 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.persistence.EntityNotFoundException;
+import java.nio.file.AccessDeniedException;
+
 @RestControllerAdvice
 public class RestApiExceptionHandler {
     @ExceptionHandler({IllegalArgumentException.class})
@@ -56,5 +59,23 @@ public class RestApiExceptionHandler {
         restApiException.setHttpStatus(HttpStatus.UNAUTHORIZED);
         restApiException.setErrorMessage(e.getMessage());
         return new ResponseEntity(restApiException, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler({AccessDeniedException.class})
+    public ResponseEntity AccessDeniedException(AccessDeniedException e) {
+        RestApiException restApiException = new RestApiException();
+        restApiException.setErrorCode("403");
+        restApiException.setHttpStatus(HttpStatus.FORBIDDEN);
+        restApiException.setErrorMessage(e.getMessage());
+        return new ResponseEntity(restApiException, HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler({EntityNotFoundException.class})
+    public ResponseEntity EntityNotFoundException(EntityNotFoundException e) {
+        RestApiException restApiException = new RestApiException();
+        restApiException.setErrorCode("404");
+        restApiException.setHttpStatus(HttpStatus.NOT_FOUND);
+        restApiException.setErrorMessage(e.getMessage());
+        return new ResponseEntity(restApiException, HttpStatus.NOT_FOUND);
     }
 }

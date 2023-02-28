@@ -30,7 +30,7 @@
         <div class="photo__header" id="getMySimpleProfile">
             <div>
                 <a id="myProfile_post_pic" role="link" tabindex="0">
-                    <img alt="프로필 사진" src="" id="myProfileImage" class="photo__avatar" />
+                    <img alt="프로필 사진" src="" id="myProfileImage" class="photo__avatar"/>
                 </a>
             </div>
             <div class="photo__user-info">
@@ -120,16 +120,21 @@
             <div class="window">
                 <div class="popup">
                     <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                        <input type="radio" class="btn-check" name="music-search" value="가수" id="singer-post" autocomplete="off"
+                        <input type="radio" class="btn-check" name="music-search" value="가수" id="singer-post"
+                               autocomplete="off"
                                checked>
                         <label class="btn btn-outline-primary" for="singer-post">가수</label>
 
-                        <input type="radio" class="btn-check" name="music-search" value="제목" id="title-post" autocomplete="off">
+                        <input type="radio" class="btn-check" name="music-search" value="제목" id="title-post"
+                               autocomplete="off">
                         <label class="btn btn-outline-primary" for="title-post">제목</label>
                     </div>
                     <div class="input-group mb-3">
-                        <input id="music-keyword" type="text" class="form-control" placeholder="입력해주세요" aria-label="입력해주세요" aria-describedby="button-addon2">
-                        <button class="btn btn-outline-secondary" type="button" id="button-addon2" onclick="getMusicSearchList()">검색</button>
+                        <input id="music-keyword" type="text" class="form-control" placeholder="입력해주세요"
+                               aria-label="입력해주세요" aria-describedby="button-addon2">
+                        <button class="btn btn-outline-secondary" type="button" id="button-addon2"
+                                onclick="getMusicSearchList()">검색
+                        </button>
                     </div>
                     <div id="searched-music-list">
                     </div>
@@ -147,15 +152,18 @@
             <label class="btn btn-outline-primary" for="btnradio2">닫는 노래</label>
         </div>
     </div>
-    <div id="music-info">
-        <div id="post-melon-id" >멜론아이디</div>
-        <div id="post-title">제목</div>
-        <div id="post-singer">가수</div>
-        <img id="post-cover" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlQ_lwqhefUx9tX5xxqH-ZZ9SOZO7YunrwOA&usqp=CAU">
+    <div id="music-info" class="music-info">
+        <div>
+            <div id="post-melon-id">멜론아이디</div>
+            <div id="post-title">제목</div>
+            <div id="post-singer">가수</div>
+            <img id="post-cover"
+                 src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlQ_lwqhefUx9tX5xxqH-ZZ9SOZO7YunrwOA&usqp=CAU">
+        </div>
     </div>
 
     <div class="input-group">
-        <span class="input-group-text" >게시글작성</span>
+        <span class="input-group-text">게시글작성</span>
         <textarea aria-label="With textarea" class="form-control h-25" id="content" rows="10"></textarea>
     </div>
     <div class="input-group mb-3">

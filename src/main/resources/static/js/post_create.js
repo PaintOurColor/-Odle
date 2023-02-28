@@ -71,12 +71,11 @@ function getMusicSearchList() {
             const title = response[i]['title']
             const singer = response[i]['singer']
             const cover = response[i]['cover']
-            const temp_music = `<button type="button" class="btn btn-primary" onclick="selectMusic(${melonMusicId}, '${title}', '${singer}', '${cover}')"><span>${melonMusicId}</span>
-<span>${title}</span>
-<span>${singer}</span>
-<span>${cover}</span>
+            const temp_music = `<button type="button" class="btn btn-primary" id="temp" onclick="selectMusic(${melonMusicId}, '${title}', '${singer}', '${cover}')"><div>ID: ${melonMusicId},</div>
+<div>제목: ${title},</div>
+<div>가수: ${singer}</div>
+<div><img src="${cover}"></div>
 </button>`
-
             $('#searched-music-list').append(temp_music)
         }
     });
@@ -86,7 +85,7 @@ function selectMusic(melonMusicId, title, singer, cover) {
     $('#post-melon-id').text(melonMusicId)
     $('#post-title').text(title)
     $('#post-singer').text(singer)
-    $('#post-cover').text(cover)
+    document.getElementById("post-cover").src = cover
 }
 
 

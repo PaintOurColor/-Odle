@@ -69,6 +69,7 @@ function getMusicSearchList() {
     };
 
     $.ajax(settings).done(function (response) {
+        $("#searched-music-list").empty()
         for (let i = 0; i < response.length; i++) {
             const melonMusicId = response[i]['melonMusicId']
             const title = response[i]['title']

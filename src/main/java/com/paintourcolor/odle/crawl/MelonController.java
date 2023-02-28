@@ -1,16 +1,20 @@
 package com.paintourcolor.odle.crawl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/crawl")
 public class MelonController {
     private final MelonMapper melonMapper;
 
-    //국내 차트 크롤링
-    @GetMapping("/crawl/korea")
+    //2시간마다 국내 차트 크롤링
+    //@Scheduled(fixedRate = 60 * 1000 * 60 * 2)
+    @GetMapping("/korea")
     public void crawlKoreaMelon() {
         MelonCrawler melonCrawler = new MelonCrawler(melonMapper);
 
@@ -19,7 +23,7 @@ public class MelonController {
     }
 
     //해외 차트 크롤링
-    @GetMapping("/crawl/global")
+    @GetMapping("/global")
     public void crawlGlobalMelon() {
         MelonCrawler melonCrawler = new MelonCrawler(melonMapper);
 

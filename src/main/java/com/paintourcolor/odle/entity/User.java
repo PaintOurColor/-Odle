@@ -3,6 +3,7 @@ package com.paintourcolor.odle.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -56,6 +57,12 @@ public class User {
         this.email = email;
         this.role = role;
         this.activation = activation;
+    }
+
+    public void isAdmin() {
+        if(!this.role.equals(UserRoleEnum.ADMIN)) {
+            throw new AccessDeniedException("관리자만 이용 가능합니다.");
+        }
     }
 
     public void isActivation( ) {

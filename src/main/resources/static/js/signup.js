@@ -15,6 +15,23 @@ function emailCheck() {
     })
 }
 
+function emailCode() {
+    $.ajax({
+        url: "http://localhost:8080/users/email",
+        type: "POST",
+        data: JSON.stringify({
+            email: $(`#email`).val()
+        }),
+        contentType: "application/json; charset=UTF-8",
+        success: function () {
+            alert("메일이 전송되었습니다. 작성해주신 이메일에서 확인 부탁드립니다.")
+        },
+        error: function (response) {
+            alert(response.responseJSON.errorMessage)
+        }
+    })
+}
+
 function usernameCheck() {
     $.ajax({
         url: "http://localhost:8080/users/check-username",

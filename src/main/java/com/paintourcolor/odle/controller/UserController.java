@@ -15,10 +15,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -143,11 +145,23 @@ public class UserController {
     //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ유저 프로필 기능 여기서부터ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ//
 
     // 프로필 수정
-    @PatchMapping("/profile")
-    public ResponseEntity<String> updateProfile(@RequestBody ProfileUpdateRequest profileUpdateRequest, @AuthenticationPrincipal UserDetailsImpl userDetails){
+    @PutMapping("/profile")
+    public ResponseEntity<String> updateProfile(
+            @RequestParam(value = "username", required = false) String username,
+            @RequestParam(value = "introduction", required = false) String introduction,
+            @RequestParam(value = "profileImage", required = false) MultipartFile profileImage,
+            @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
+
+        ProfileUpdateRequest profileUpdateRequest = ProfileUpdateRequest.builder()
+                .username(username)
+                .introduction(introduction)
+                .profileImage(profileImage)
+                .build();
+
         profileService.updateProfile(userDetails.getUserId(), profileUpdateRequest);
-        return new ResponseEntity<>("프로필 수정 완료",HttpStatus.OK);
+        return new ResponseEntity<>("프로필 수정 완료", HttpStatus.OK);
     }
+
 
     // 다른사람의 프로필 조회
     @GetMapping("/{userId}/profile")

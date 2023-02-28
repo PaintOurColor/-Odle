@@ -2,6 +2,7 @@ package com.paintourcolor.odle.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @Entity(name = "USERS")
 public class User {
@@ -23,6 +25,7 @@ public class User {
     private String email;
     @Column(nullable = false)
     private String password;
+    @Column
     private String profileImage;
     private String introduction;
     @Column(nullable = false)
@@ -84,4 +87,15 @@ public class User {
         this.activation = activation;
     }
 
+    public void setProfileImage(String profileImage) {
+        this.profileImage = profileImage;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setIntroduction(String introduction) {
+        this.introduction = introduction;
+    }
 }

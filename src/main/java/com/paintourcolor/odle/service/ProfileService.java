@@ -9,29 +9,33 @@ import com.paintourcolor.odle.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class ProfileService implements ProfileServiceInterface{
     private final UserRepository userRepository;
+    private final S3UploaderService s3UploaderService;
+
 
     // 프로필 설정(수정)
-    @Override
-    public void updateProfile(Long userId, ProfileUpdateRequest profileUpdateRequest) {
-        String profileImage = profileUpdateRequest.getProfileImage();
-        String introduction = profileUpdateRequest.getIntroduction();
-        String username = profileUpdateRequest.getUsername();
+    @Transactional
+    public void updateProfile(Long userId, ProfileUpdateRequest profileUpdateRequest) throws IOException {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
+        user.setUsername(profileUpdateRequest.getUsername());
+        user.setIntroduction(profileUpdateRequest.getIntroduction());
 
-        User user = userRepository.findById(userId).get();
-
-        if(!username.equals(user.getUsername())){ //변경하려는 이름이 기존 이름과 다를 때만 중복확인
-            if(userRepository.existsByUsername(username)) {
-                throw new IllegalArgumentException("동일한 이름이 이미 존재합니다.");
-            }
+        MultipartFile profileImage = profileUpdateRequest.getProfileImage();
+        if (profileImage != null && !profileImage.isEmpty()) {
+            String profileImageUrl = s3UploaderService.upload(profileImage, "profile");
+            user.setProfileImage(profileImageUrl);
         }
-        user.updateProfile(profileImage, introduction, username);
+
         userRepository.save(user);
     }
 

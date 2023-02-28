@@ -16,8 +16,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,6 +34,7 @@ public class UserService implements UserServiceInterface {
     private final RefreshTokenRepository refreshTokenRepository;
     private final PostRepository postRepository;
     private final FollowRepository followRepository;
+    private final S3UploaderService s3UploaderService;
 
     // 유저 회원가입
     @Transactional
@@ -154,5 +157,21 @@ public class UserService implements UserServiceInterface {
         if (followRepository.existsFollowByFollowerIdAndFollowingId(followerId, followingId)){
             return new UserFollowOrUnfollowResponse("follow");}
         else {return new UserFollowOrUnfollowResponse("unfollow");}
+    }
+
+    // 프로필 업데이트
+    public String uploadProfileImage(MultipartFile file, String username) throws IOException {
+        String dirName = "profile-images/" + username; // 유저별로 프로필 이미지 저장 디렉토리 생성
+
+        // 이미지 파일 업로드
+        String url = s3UploaderService.upload(file, dirName);
+
+        // 업로드된 이미지 URL을 DB에 저장
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
+        user.setProfileImage(url);
+        userRepository.save(user);
+
+        return url;
     }
 }

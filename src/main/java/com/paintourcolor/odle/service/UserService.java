@@ -1,6 +1,5 @@
 package com.paintourcolor.odle.service;
 
-import com.paintourcolor.odle.dto.post.response.PostLikeOrUnlikeResponse;
 import com.paintourcolor.odle.dto.user.request.*;
 import com.paintourcolor.odle.dto.user.response.PostCountResponse;
 import com.paintourcolor.odle.dto.user.response.ProfilePostResponse;
@@ -27,14 +26,13 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserService implements UserServiceInterface {
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final JwtUtil jwtUtil;
-
-    private final LogoutTokenRepository logoutTokenRepository;
-    private final RefreshTokenRepository refreshTokenRepository;
     private final PostRepository postRepository;
     private final FollowRepository followRepository;
+    private final LogoutTokenRepository logoutTokenRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
+    private final PasswordEncoder passwordEncoder;
     private final S3UploaderService s3UploaderService;
+    private final JwtUtil jwtUtil;
 
     // 유저 회원가입
     @Transactional
@@ -44,9 +42,13 @@ public class UserService implements UserServiceInterface {
         String password = passwordEncoder.encode(userSignupRequest.getPassword());
         String email = userSignupRequest.getEmail();
 
-        userRepository.findByUsername(username).ifPresent(user -> {
-            throw new IllegalArgumentException("중복된 사용자가 존재합니다.");
-        });
+        if (userRepository.existsByUsername(username)) {
+            throw new IllegalArgumentException("중복된 닉네임이 존재합니다.");
+        }
+
+        if (userRepository.existsByEmail(email)) {
+            throw new IllegalArgumentException("중복된 이메일이 존재합니다.");
+        }
 
         UserRoleEnum role = UserRoleEnum.USER;
         ActivationEnum activation = ActivationEnum.ACTIVE;
@@ -54,6 +56,7 @@ public class UserService implements UserServiceInterface {
         userRepository.save(new User(username, password, email, role, activation));
     }
 
+    // 이메일 중복 체크
     @Transactional
     @Override
     public void checkEmail(EmailCheckRequest emailCheckRequest) {
@@ -63,6 +66,7 @@ public class UserService implements UserServiceInterface {
         }
     }
 
+    // 닉네임 중복 체크
     @Transactional
     @Override
     public void checkUsername(UsernameCheckRequest usernameCheckRequest) {

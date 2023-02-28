@@ -78,4 +78,13 @@ public class RestApiExceptionHandler {
         restApiException.setErrorMessage(e.getMessage());
         return new ResponseEntity(restApiException, HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler({RuntimeException.class})
+    public ResponseEntity RuntimeException(RuntimeException e) {
+        RestApiException restApiException = new RestApiException();
+        restApiException.setErrorCode("502");
+        restApiException.setHttpStatus(HttpStatus.BAD_GATEWAY);
+        restApiException.setErrorMessage(e.getMessage());
+        return new ResponseEntity(restApiException, HttpStatus.BAD_GATEWAY);
+    }
 }

@@ -77,15 +77,15 @@ public class EmailService implements EmailServiceInterface{
     // 인증 이메일 발송
     @Transactional
     @Override
-    public String sendEmail(String to) throws Exception {
+    public void sendEmail(String to) throws Exception {
         MimeMessage message = createMessage(to);
         try{
             emailSender.send(message);
         }catch(MailException es){
-            es.printStackTrace();
-            throw new IllegalArgumentException();
+//            es.printStackTrace(); // 에러 발생의 근원지를 찾아서 단계별로 에러를 출력
+            es.getMessage(); // 에러의 원인을 간단하게 출력
+            throw new RuntimeException("서버에서 정상적으로 처리되지 않았습니다.");
         }
-        return ePw;
     }
 }
 

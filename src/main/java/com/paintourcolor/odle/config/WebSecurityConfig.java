@@ -61,7 +61,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "HEAD")
-                .allowedOrigins("http://localhost:8080", "http://127.0.0.1:5500/")
+                .allowedOrigins("http://localhost:8080", "http://127.0.0.1:5555/")
                 .exposedHeaders("Authorization", "RefreshToken");
     }
 }

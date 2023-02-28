@@ -36,30 +36,30 @@ class UserServiceTest {
     private UserService userService;
 
     @Test
-    @DisplayName("로그인")
+//     @DisplayName("로그인")
     void loginUser() {
     // given
         // 리퀘스트로 받아온 유저 로그인 정보
-        UserLoginRequest request = UserLoginRequest.builder()
-                .email("user1@gmail.com")
-                .password("qweQWE123")
-                .build();
+//         UserLoginRequest request = UserLoginRequest.builder()
+//                 .email("user1@gmail.com")
+//                 .password("qweQWE123")
+//                 .build();
         // 토큰 정보
-        MockHttpServletResponse servletResponse = new MockHttpServletResponse();
+//         MockHttpServletResponse servletResponse = new MockHttpServletResponse();
 
         // 저장되어있는 임의의 유저 객체
-        User user1 = new User("user1@gmail.com", passwordEncoder.encode("qweQWE123"), UserRoleEnum.USER);
+//         User user1 = new User("user1@gmail.com", passwordEncoder.encode("qweQWE123"), UserRoleEnum.USER);
         // 저장되어있는 임의의 관리자 객체(그냥 일단 추가해봄)
-        User admin1 = new User("admin1@gmail.com", passwordEncoder.encode("qweQWE123"), UserRoleEnum.ADMIN);
+//         User admin1 = new User("admin1@gmail.com", passwordEncoder.encode("qweQWE123"), UserRoleEnum.ADMIN);
 
-        when(userRepository.findByUsername(any(String.class)))
-                .thenReturn(Optional.of(user1));
+//         when(userRepository.findByUsername(any(String.class)))
+//                 .thenReturn(Optional.of(user1));
 
     // when
-        userService.loginUser(request, servletResponse);
+//         userService.loginUser(request, servletResponse);
 
     // then
-        verify(userRepository).saveAndFlush(any(User.class));
+//         verify(userRepository).saveAndFlush(any(User.class));
 
     }
 

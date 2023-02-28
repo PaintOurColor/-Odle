@@ -20,7 +20,9 @@ function getMySimpleProfile() {
     $.ajax(settings).done(function (response, status) {
         login_feed_userId = response['userId']
         $('#myProfileUsername').text(response['username'])
+        $('#myProfileUsername2').text(response['username'])
         $('#myProfileImage').attr('src', response['profileImage'] == null ? 'http://bwptedu.com/assets/image/default-profile.jpg' : response['profileImage'])
+        $('#myProfileImage2').attr('src', response['profileImage'] == null ? 'http://bwptedu.com/assets/image/default-profile.jpg' : response['profileImage'])
         if (status === 403) { // 권한이 없는 것이니까 로그인으로 보내면 됨
             window.location = "/login.html"
         }
@@ -28,6 +30,8 @@ function getMySimpleProfile() {
         $('#myProfile1').attr('onclick', `window.location.href='./profile.html?userId=${userId}'`)
         $('#myProfile2').attr('onclick', `window.location.href='./profile.html?userId=${userId}'`)
         $('#myProfile3').attr('onclick', `window.location.href='./profile.html?userId=${userId}'`)
+        $('#myProfile4').attr('onclick', `window.location.href='./profile.html?userId=${userId}'`)
+        $('#myProfile5').attr('onclick', `window.location.href='./profile.html?userId=${userId}'`)
     });
 }
 
@@ -50,7 +54,7 @@ function getPost() {
             const postId = obj['id']
             const userId = obj['userId']
             const username = obj['username']
-            const profileImage = obj['profileImage']
+            const profileImage = obj['userProfileImage']
             const openOrEnd = obj['openOrEnd']
             const emotion = obj['emotion']
             const musicTitle = obj['musicTitle']

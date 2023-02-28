@@ -8,6 +8,7 @@ import com.paintourcolor.odle.dto.comment.response.CommentLikeOrUnlikeResponse;
 import com.paintourcolor.odle.dto.comment.response.CommentResponse;
 import com.paintourcolor.odle.dto.security.StatusResponse;
 import com.paintourcolor.odle.security.UserDetailsImpl;
+import com.paintourcolor.odle.service.AdminServiceInterface;
 import com.paintourcolor.odle.service.CommentServiceInterface;
 import com.paintourcolor.odle.service.LikeServiceInterface;
 import lombok.RequiredArgsConstructor;
@@ -19,12 +20,15 @@ import org.springframework.http.*;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/posts")
 public class CommentController {
     private final CommentServiceInterface commentService;
     private final LikeServiceInterface likeService;
+    private final AdminServiceInterface adminService;
 
     // 댓글 작성
     @PostMapping("/{postId}/comments")
@@ -59,6 +63,16 @@ public class CommentController {
         commentService.updateComment(postId, commentId, commentUpdateRequest, userId);
 
         return new ResponseEntity<>(statusResponse, HttpStatus.CREATED);
+    }
+
+    // 댓글 삭제 - 관리자 전용
+    @DeleteMapping("{postId}/comments/{commentId}/admin")
+    public ResponseEntity<StatusResponse> deleteCommentAdmin(@PathVariable Long postId,
+                                                             @PathVariable Long commentId,
+                                                             @AuthenticationPrincipal UserDetailsImpl userDetails){
+        adminService.deleteComment(postId, commentId, userDetails.getUser());
+        StatusResponse statusResponse = new StatusResponse(HttpStatus.OK.value(),"댓글 삭제 완료");
+        return new ResponseEntity<>(statusResponse, HttpStatus.OK);
     }
 
     // 댓글 삭제

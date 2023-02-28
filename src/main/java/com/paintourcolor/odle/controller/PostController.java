@@ -6,7 +6,9 @@ import com.paintourcolor.odle.dto.post.response.PostLikeOrUnlikeResponse;
 import com.paintourcolor.odle.dto.post.response.PostResponse;
 import com.paintourcolor.odle.dto.security.StatusResponse;
 import com.paintourcolor.odle.entity.User;
+import com.paintourcolor.odle.entity.UserRoleEnum;
 import com.paintourcolor.odle.security.UserDetailsImpl;
+import com.paintourcolor.odle.service.AdminServiceInterface;
 import com.paintourcolor.odle.service.LikeServiceInterface;
 import com.paintourcolor.odle.service.PostServiceInterface;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,7 @@ import java.util.List;
 public class PostController {
     private final PostServiceInterface postService;
     private final LikeServiceInterface likeService;
+    private final AdminServiceInterface adminService;
 
     //게시글 작성
     @PostMapping
@@ -106,6 +109,15 @@ public class PostController {
                                                                    @AuthenticationPrincipal UserDetailsImpl userDetails) {
         PostLikeOrUnlikeResponse postLikeOrUnlikeResponse = likeService.getPostLikeOrUnlikeResponse(postId, userDetails.getUserId());
         return new ResponseEntity<>(postLikeOrUnlikeResponse, HttpStatus.OK);
+    }
+
+    //게시글 삭제 - 관리자 전용
+    @DeleteMapping("/{postId}/admin")
+    public ResponseEntity<StatusResponse> deleteBoardAdmin(@PathVariable Long postId,
+                                                           @AuthenticationPrincipal UserDetailsImpl userDetails){
+        adminService.deletePost(postId, userDetails.getUser());
+        StatusResponse statusResponse = new StatusResponse(HttpStatus.OK.value(),"게시글 삭제 완료");
+        return new ResponseEntity<>(statusResponse, HttpStatus.OK);
     }
 
 }

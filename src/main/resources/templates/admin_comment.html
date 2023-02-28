@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin 게시글 삭제 페이지</title>
+    <!-- JQuery 사용 설정 -->
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+</head>
+
+<body id="admin_comment">
+    <header>
+        <h1>관리자 페이지 입니다. (댓글 삭제)</h1>
+        <h3><a href="./admin.html">관리자 페이지 - 활성화/비활성화 가기</a></h3>
+        <h3><a href="./admin_post.html">관리자 페이지 - 게시글 삭제 가기</a></h3>
+    </header>
+    <div id="post_info">
+        <span>게시글 id: </span><span id="comment_postId"></span>
+        <span>작성자: </span><span id="comment_postUsername"></span>
+        <span>작성 시간: </span><span id="comment_postCreatedAt"></span>
+        <span>여는/닫는 노래: </span><span id="comment_postOpenOrEnd"></span>
+        <span>노래 이름: </span><span id="comment_postMusicTitle"></span>
+        <button id="post_delete">게시글 삭제</button>
+    </div>
+    <div id="comment_list">
+        <div id="comment_box">
+            <span>댓글 id: </span><span id="comment_id"></span>
+            <span>작성자: </span><span id="comment_username"></span>
+            <span>내용: </span><span id="comment_content"></span>
+            <button id="comment_delete">댓글 삭제</button>
+        </div>
+    </div>
+    <script src="../static/js/admin.js"></script>
+</body>
+
+</html>

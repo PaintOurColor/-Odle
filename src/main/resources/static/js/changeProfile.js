@@ -1,18 +1,21 @@
 function changeProfile() {
     const accessToken = localStorage.getItem('accessToken');
+    const formData = new FormData();
+    formData.append("username", $(`#username`).val());
+    formData.append("introduction", $(`#introduction`).val());
+    formData.append("profileImage", $('#profileImage')[0].files[0]);
+
     const settings = {
         "url": "http://localhost:8080/users/profile",
-        "method": "PATCH",
+        "method": "PUT",
         "timeout": 0,
         "headers": {
-            "Authorization": accessToken,
-            "Content-Type": "application/json"
+            "Authorization": accessToken
         },
-        "data": JSON.stringify({
-            "username": $(`#username`).val(),
-            "introduction": $(`#introduction`).val(),
-            "profileImage": $(`#profileImage`).val()
-        }),
+        "processData": false,
+        "contentType": false,
+        "mimeType": "multipart/form-data",
+        "data": formData
     };
 
     $.ajax(settings).done(function (response) {

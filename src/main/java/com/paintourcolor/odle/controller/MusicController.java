@@ -1,12 +1,11 @@
 package com.paintourcolor.odle.controller;
 
+import com.paintourcolor.odle.dto.mucis.response.MusicChartResponse;
 import com.paintourcolor.odle.dto.mucis.response.MusicResponse;
 import com.paintourcolor.odle.dto.mucis.response.MusicSearchResponse;
 import com.paintourcolor.odle.service.MusicServiceInterface;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -39,4 +38,10 @@ public class MusicController {
         return new ResponseEntity<>(musicSearchList, HttpStatus.OK);
     }
 
+    // angry 차트 조회
+    @GetMapping("/charts/angry")
+    public ResponseEntity<List<MusicChartResponse>> getAngryChart() {
+        List<MusicChartResponse> musicChartResponses = musicService.getAngryChart();
+        return new ResponseEntity<>(musicChartResponses, HttpStatus.OK);
+    }
 }

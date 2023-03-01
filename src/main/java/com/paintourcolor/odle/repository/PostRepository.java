@@ -5,7 +5,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
@@ -16,4 +18,13 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Query("select count(post) from Post post WHERE post.user.id = :userId")
     Long countByUserId(Long userId);
+
+    @Query("SELECT m.id, m.title, m.singer, m.cover, COUNT(p.music.id) AS musicCount " +
+            "FROM Music m " +
+            "LEFT JOIN m.posts p " +
+            "WHERE p.emotion = 'angry' " +
+            "AND p.createdAt BETWEEN :startDate AND :endDate " +
+            "GROUP BY m.id " +
+            "ORDER BY musicCount DESC")
+    List<Object[]> findAngryMusicIdsWithCountAndMusicInfo(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
 }

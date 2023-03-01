@@ -1,17 +1,17 @@
 package com.paintourcolor.odle.service;
 
+import com.paintourcolor.odle.dto.mucis.response.MusicChartResponse;
 import com.paintourcolor.odle.dto.mucis.response.MusicResponse;
 import com.paintourcolor.odle.dto.mucis.response.MusicSearchResponse;
 import com.paintourcolor.odle.entity.MelonKorea;
 import com.paintourcolor.odle.repository.MelonKoreaRepository;
+import com.paintourcolor.odle.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityNotFoundException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,6 +20,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class MusicService implements MusicServiceInterface {
     private final MelonKoreaRepository melonRepository;
+    private final PostRepository postRepository;
+
     // 노래 정보 조회
     @Transactional
     @Override
@@ -53,4 +55,27 @@ public class MusicService implements MusicServiceInterface {
                 .collect(Collectors.toList());
     }
 
+    // angry 차트 조회
+    @Transactional(readOnly = true)
+    @Override
+    public List<MusicChartResponse> getAngryChart() {
+        // 24시간
+        LocalDateTime endDate = LocalDateTime.now();
+        LocalDateTime startDate = endDate.minusDays(1);
+
+        List<Object[]> musics = postRepository.findAngryMusicIdsWithCountAndMusicInfo(startDate, endDate).stream().limit(6).toList();
+
+        List<MusicChartResponse> musicChartResponses = new ArrayList<>();
+        for (Object[] music : musics) {
+            MusicChartResponse musicChartResponse = MusicChartResponse.builder()
+                    .musicId((Long) music[0])
+                    .title((String) music[1])
+                    .singer((String) music[2])
+                    .cover((String) music[3])
+                    .todayEmotionCount((Long) music[4])
+                    .build();
+            musicChartResponses.add(musicChartResponse);
+        }
+        return musicChartResponses;
+    }
 }

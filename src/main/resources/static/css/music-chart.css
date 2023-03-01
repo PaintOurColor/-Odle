@@ -35,11 +35,23 @@
   width: 200px;
 }
 
-.chart__musicinfo {
+.chart__musicInfo {
   display: flex;
   flex-direction: column;
   margin-left: 10px;
   margin-top: 10px;
+  float: left;
+  max-width: 65%;
+}
+
+.chart__emotion_count {
+  display: flex;
+  flex-direction: column;
+  margin-right: 10px;
+  margin-top: 10px;
+  float: right;
+  color: #999999;
+  max-width: 30%;
 }
 
 

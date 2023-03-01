@@ -91,17 +91,17 @@ function getSadChart() {
             const title = obj['title']
             const singer = obj['singer']
             const cover = obj['cover']
-            const todayAngryCount = obj['todayEmotionCount']
+            const todaySadCount = obj['todayEmotionCount']
 
             const tempHtml = `
                     <div class="chart__musics">
-                        <img alt="앨범 커버" src="${cover == null ? 'http://bwptedu.com/assets/image/default-profile.jpg' : cover}" id="angryChartCover">
+                        <img alt="앨범 커버" src="${cover == null ? 'http://bwptedu.com/assets/image/default-profile.jpg' : cover}" id="sadChartCover">
                         <div class="chart__musicInfo">
                             <span style="font-weight: bold">${title}</span>
                             <span>${singer}</span>
                         </div>
                         <div class="chart__emotion_count">
-                            <span>post ${todayAngryCount}</span>
+                            <span>post ${todaySadCount}</span>
                         </div> 
                     </div>
         `
@@ -127,17 +127,17 @@ function getScreamChart() {
             const title = obj['title']
             const singer = obj['singer']
             const cover = obj['cover']
-            const todayAngryCount = obj['todayEmotionCount']
+            const todayScreamCount = obj['todayEmotionCount']
 
             const tempHtml = `
                     <div class="chart__musics">
-                        <img alt="앨범 커버" src="${cover == null ? 'http://bwptedu.com/assets/image/default-profile.jpg' : cover}" id="angryChartCover">
+                        <img alt="앨범 커버" src="${cover == null ? 'http://bwptedu.com/assets/image/default-profile.jpg' : cover}" id="screamChartCover">
                         <div class="chart__musicInfo">
                             <span style="font-weight: bold">${title}</span>
                             <span>${singer}</span>
                         </div>
                         <div class="chart__emotion_count">
-                            <span>post ${todayAngryCount}</span>
+                            <span>post ${todayScreamCount}</span>
                         </div> 
                     </div>
         `
@@ -163,17 +163,17 @@ function getShyChart() {
             const title = obj['title']
             const singer = obj['singer']
             const cover = obj['cover']
-            const todayAngryCount = obj['todayEmotionCount']
+            const todayShyCount = obj['todayEmotionCount']
 
             const tempHtml = `
                     <div class="chart__musics">
-                        <img alt="앨범 커버" src="${cover == null ? 'http://bwptedu.com/assets/image/default-profile.jpg' : cover}" id="angryChartCover">
+                        <img alt="앨범 커버" src="${cover == null ? 'http://bwptedu.com/assets/image/default-profile.jpg' : cover}" id="shyChartCover">
                         <div class="chart__musicInfo">
                             <span style="font-weight: bold">${title}</span>
                             <span>${singer}</span>
                         </div>
                         <div class="chart__emotion_count">
-                            <span>post ${todayAngryCount}</span>
+                            <span>post ${todayShyCount}</span>
                         </div> 
                     </div>
         `
@@ -199,17 +199,17 @@ function getHappyChart() {
             const title = obj['title']
             const singer = obj['singer']
             const cover = obj['cover']
-            const todayAngryCount = obj['todayEmotionCount']
+            const todayHappyCount = obj['todayEmotionCount']
 
             const tempHtml = `
                     <div class="chart__musics">
-                        <img alt="앨범 커버" src="${cover == null ? 'http://bwptedu.com/assets/image/default-profile.jpg' : cover}" id="angryChartCover">
+                        <img alt="앨범 커버" src="${cover == null ? 'http://bwptedu.com/assets/image/default-profile.jpg' : cover}" id="happyChartCover">
                         <div class="chart__musicInfo">
                             <span style="font-weight: bold">${title}</span>
                             <span>${singer}</span>
                         </div>
                         <div class="chart__emotion_count">
-                            <span>post ${todayAngryCount}</span>
+                            <span>post ${todayHappyCount}</span>
                         </div> 
                     </div>
         `
@@ -235,17 +235,17 @@ function getLoveChart() {
             const title = obj['title']
             const singer = obj['singer']
             const cover = obj['cover']
-            const todayAngryCount = obj['todayEmotionCount']
+            const todayLoveCount = obj['todayEmotionCount']
 
             const tempHtml = `
                     <div class="chart__musics">
-                        <img alt="앨범 커버" src="${cover == null ? 'http://bwptedu.com/assets/image/default-profile.jpg' : cover}" id="angryChartCover">
+                        <img alt="앨범 커버" src="${cover == null ? 'http://bwptedu.com/assets/image/default-profile.jpg' : cover}" id="loveChartCover">
                         <div class="chart__musicInfo">
                             <span style="font-weight: bold">${title}</span>
                             <span>${singer}</span>
                         </div>
                         <div class="chart__emotion_count">
-                            <span>post ${todayAngryCount}</span>
+                            <span>post ${todayLoveCount}</span>
                         </div> 
                     </div>
         `
@@ -271,17 +271,17 @@ function getFlexChart() {
             const title = obj['title']
             const singer = obj['singer']
             const cover = obj['cover']
-            const todayAngryCount = obj['todayEmotionCount']
+            const todayFlexCount = obj['todayEmotionCount']
 
             const tempHtml = `
                     <div class="chart__musics">
-                        <img alt="앨범 커버" src="${cover == null ? 'http://bwptedu.com/assets/image/default-profile.jpg' : cover}" id="angryChartCover">
+                        <img alt="앨범 커버" src="${cover == null ? 'http://bwptedu.com/assets/image/default-profile.jpg' : cover}" id="flexChartCover">
                         <div class="chart__musicInfo">
                             <span style="font-weight: bold">${title}</span>
                             <span>${singer}</span>
                         </div>
                         <div class="chart__emotion_count">
-                            <span>post ${todayAngryCount}</span>
+                            <span>post ${todayFlexCount}</span>
                         </div> 
                     </div>
         `

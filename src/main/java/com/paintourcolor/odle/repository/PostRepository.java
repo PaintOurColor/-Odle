@@ -81,5 +81,4 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             "GROUP BY m.id " +
             "ORDER BY musicCount DESC")
     List<Object[]> findFlexMusicIdsWithCountAndMusicInfo(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
-
 }

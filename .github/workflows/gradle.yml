@@ -9,6 +9,70 @@ on:
 permissions:
   contents: read
 
+env:
+MYSQL_URL: jdbc:mysql://localhost:3306/Odle?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul
+MYSQL_USERNAME: root
+MYSQL_PASSWORD: dqdw1213
+JWT_SECRET_KEY: 7ZWt7ZW0OTntmZTsnbTtjIXtlZzqta3snYTrhIjrqLjshLjqs4TroZzrgpjslYTqsIDsnpDtm4zrpa3tlZzqsJzrsJzsnpDrpbzrp4zrk6TslrTqsIDsnpA=
+AWS_ACCESS_KEY: AKIA6AA4SQ6KQNR6BR5D
+AWS_SECRET_KEY: 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
+AWS_REGION: ap-northeast-2
+AWS_S3_BUCKET_NAME: odle
+SPRING_MAIL_HOST: smtp.naver.com
+SPRING_MAIL_PORT: 587
+SPRING_MAIL_USERNAME: odle7@naver.com
+SPRING_MAIL_PASSWORD: YB2CW6113WG6
+REDIS_HOST: localhost
+REDIS_PORT: 6379
+
+spring:
+datasource:
+driver-class-name: com.mysql.cj.jdbc.Driver
+url: ${MYSQL_URL}
+username: ${MYSQL_USERNAME}
+password: ${MYSQL_PASSWORD}
+jpa:
+show-sql: true
+properties:
+hibernate.format_sql: true
+defer-datasource-initialization: true
+thymeleaf:
+cache: false
+servlet:
+multipart:
+enabled: true
+max-file-size: 10MB
+max-request-size: 10MB
+
+cloud:
+aws:
+credentials:
+accessKey: ${AWS_ACCESS_KEY}
+secretKey: ${AWS_SECRET_KEY}
+s3:
+bucket: ${AWS_S3_BUCKET_NAME}
+region:
+static: ${AWS_REGION}
+
+spring.mail:
+properties:
+mail:
+smtp:
+starttls:
+enable: true
+required: true
+auth: true
+ssl:
+enable: true
+host: ${SPRING_MAIL_HOST}
+port: ${SPRING_MAIL_PORT}
+username: ${SPRING_MAIL_USERNAME}
+password: ${SPRING_MAIL_PASSWORD}
+
+spring.data.redis:
+host: ${REDIS_HOST}
+port: ${REDIS_PORT}
+
 jobs:
   build:
 

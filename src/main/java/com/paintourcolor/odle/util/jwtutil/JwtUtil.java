@@ -29,10 +29,10 @@ public class JwtUtil {
     public static final String AUTHORIZATION_HEADER = "Authorization"; // 액세스 토큰 Header 키
     public static final String AUTHORIZATION_REFRESH = "RefreshToken"; // 리프레시 토큰 Header 키
     public static final String AUTHORIZATION_KEY = "auth"; // UserRole
-    private static final String BEARER_PREFIX = "Bearer "; // 액세스 토큰 식별자 (7자)
-    private static final String REFRESH_PREFIX = "Refresh"; // 리프레시 토큰 식별자 (7자)
-    private static final long ACCESS_TOKEN_TIME = 60 * 60 * 1000L; // 1시간
-    private static final long REFRESH_TOKEN_TIME = 14 * 24 * 60 * 60 * 1000L; // 14일
+    public static final String BEARER_PREFIX = "Bearer "; // 액세스 토큰 식별자 (7자)
+    public static final String REFRESH_PREFIX = "Refresh"; // 리프레시 토큰 식별자 (7자)
+    public static final long ACCESS_TOKEN_TIME = 60 * 60 * 1000L; // 1시간
+    public static final long REFRESH_TOKEN_TIME = 14 * 24 * 60 * 60 * 1000L; // 14일
 
     @Value("${jwt.secret.key}")
     private String secretKey;
@@ -113,5 +113,12 @@ public class JwtUtil {
     public Authentication createAuthentication(String email) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(email);
         return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+    }
+
+    // 토큰 만료 여부 확인
+    public boolean isExpiration(String token) {
+        Date expiration = getUserInfoFromToken(token).getExpiration();
+        return expiration.before(new Date());
+        //만료된 경우 True, 만료되지 않은 경우 False 반환
     }
 }

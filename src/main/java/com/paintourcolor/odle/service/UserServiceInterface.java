@@ -9,6 +9,7 @@ import com.paintourcolor.odle.entity.User;
 import com.paintourcolor.odle.security.UserDetailsImpl;
 import org.springframework.data.domain.Pageable;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
@@ -17,8 +18,8 @@ public interface UserServiceInterface {
     void checkEmail(EmailCheckRequest emailCheckRequest);
     void checkUsername(UsernameCheckRequest usernameCheckRequest);
     void loginUser(UserLoginRequest userLoginRequest, HttpServletResponse response);
-    void logoutUser(String token);  // ?
-    void reissueToken(String refreshToken, HttpServletResponse response); //AccessToken 재발급
+    void logoutUser(HttpServletRequest request);
+    void reissueToken(HttpServletRequest request, HttpServletResponse response); //AccessToken 재발급
     void inactivateMe(User user, UserInactivateRequest userInactivateRequest); // 이거 리퀘스트 같이 써도 되는지,,,
     List<UserResponse> getUsers(Pageable pageable);
     List<ProfilePostResponse> getProfilePosts(Long userId, Pageable pageable);

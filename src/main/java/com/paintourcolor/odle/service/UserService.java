@@ -6,19 +6,26 @@ import com.paintourcolor.odle.dto.user.response.ProfilePostResponse;
 import com.paintourcolor.odle.dto.user.response.UserFollowOrUnfollowResponse;
 import com.paintourcolor.odle.dto.user.response.UserResponse;
 import com.paintourcolor.odle.entity.*;
-import com.paintourcolor.odle.repository.*;
+import com.paintourcolor.odle.repository.FollowRepository;
+import com.paintourcolor.odle.repository.LogoutTokenRepository;
+import com.paintourcolor.odle.repository.PostRepository;
+import com.paintourcolor.odle.repository.UserRepository;
 import com.paintourcolor.odle.util.jwtutil.JwtUtil;
+import com.paintourcolor.odle.util.redis.RedisServiceInterface;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,9 +36,9 @@ public class UserService implements UserServiceInterface {
     private final PostRepository postRepository;
     private final FollowRepository followRepository;
     private final LogoutTokenRepository logoutTokenRepository;
-    private final RefreshTokenRepository refreshTokenRepository;
     private final PasswordEncoder passwordEncoder;
     private final S3UploaderService s3UploaderService;
+    private final RedisServiceInterface redisService;
     private final JwtUtil jwtUtil;
 
     // 유저 회원가입
@@ -95,30 +102,43 @@ public class UserService implements UserServiceInterface {
 
         response.addHeader(JwtUtil.AUTHORIZATION_HEADER, accessToken);
         response.addHeader(JwtUtil.AUTHORIZATION_REFRESH, refreshToken);
-        //우선 헤더로 반환. 추후 리프레쉬 토큰은 쿠키에 저장하는 방식으로 변경 예정
+        //Header로 반환. 반환된 토큰은 프론트에서 각각 accessToken은 LocalStorage에, refershToken은 Cookie에 저장
 
-        refreshTokenRepository.save(new RefreshToken(refreshToken));
-        //리프레시 레파지토리에 저장
+        redisService.saveToken(refreshToken, LocalDateTime.now());
+        // Redis에 토큰(Key: refreshToken, Value: 로그인 요청 시간) 저장
     }
 
 
     @Transactional
     @Override
-    public void reissueToken(String refreshToken, HttpServletResponse response) {
+    public void reissueToken(HttpServletRequest request, HttpServletResponse response) {
+        String accessToken = jwtUtil.getAccessToken(request); // AccessToken
+        String refreshToken = jwtUtil.getRefreshToken(request); // RefreshToken
 
-        Object role = jwtUtil.getUserInfoFromToken(refreshToken).get("auth");
-        String email = jwtUtil.getUserInfoFromToken(refreshToken).getSubject();
+        redisService.existsToken(refreshToken); // redis에 RefreshToken이 존재하는지 확인
 
-        String accessToken = jwtUtil.createAccessToken(email, role);
+        if(jwtUtil.isExpiration(accessToken)) { // Reissue 시점에 AccessToken 이 만료되지 않은 경우
+            logoutTokenRepository.save(new LogoutToken(accessToken));// 블랙리스트에 추가
+        }
 
-        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, accessToken);
+        Object role = jwtUtil.getUserInfoFromToken(refreshToken).get("auth"); // 유저 권한 정보 가져오기
+        String email = jwtUtil.getUserInfoFromToken(refreshToken).getSubject(); // 유저 이메일 정보 가져오기
+
+        String newAccessToken = jwtUtil.createAccessToken(email, role); // 새로운 AccessToken 생성
+        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, newAccessToken); // 새로운 AccessToken Header로 반환
     }
 
     // 로그아웃 유저, 관리자
+    @Transactional
     @Override
-    public void logoutUser(String token) {
-        LogoutToken logoutToken = new LogoutToken(token);
-        logoutTokenRepository.save(logoutToken);
+    public void logoutUser(HttpServletRequest request) {
+        String accessToken = jwtUtil.getAccessToken(request);
+        String refreshToken = jwtUtil.getRefreshToken(request);
+
+        logoutTokenRepository.save(new LogoutToken(accessToken));//AccessToken 블랙리스트에 추가
+
+        redisService.existsToken(refreshToken); //Redis에 RefreshToken 있는지 확인
+        redisService.deleteToken(refreshToken); //Redis에서 RefreshToken 삭제
     }
 
     // 유저 비활성화(유저가 본인을)

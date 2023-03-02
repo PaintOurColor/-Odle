@@ -7,6 +7,7 @@ import com.paintourcolor.odle.entity.User;
 import com.paintourcolor.odle.security.UserDetailsImpl;
 import com.paintourcolor.odle.service.*;
 import com.paintourcolor.odle.util.jwtutil.JwtUtil;
+import com.paintourcolor.odle.util.redis.RedisService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -33,6 +34,7 @@ public class UserController {
     private final ProfileServiceInterface profileService;
     private final EmailServiceInterface emailService;
     private final JwtUtil jwtUtil;
+    private final RedisService redisService;
 
     @PostMapping("/signup")
     public ResponseEntity<StatusResponse> signUp(@RequestBody @Valid UserSignupRequest signUpRequest) {
@@ -76,19 +78,17 @@ public class UserController {
     // 유저, 관리자 로그아웃
     @PostMapping("/logout")
     public ResponseEntity<StatusResponse> logoutUser(HttpServletRequest request) {
-        StatusResponse statusResponse = new StatusResponse(HttpStatus.CREATED.value(), "로그아웃 완료");
-        String token = jwtUtil.getRefreshToken(request);
-        userService.logoutUser(token);
-//        return "redirect:/users/login";
-        return new ResponseEntity<>(statusResponse, HttpStatus.CREATED);
+        StatusResponse statusResponse = new StatusResponse(HttpStatus.OK.value(), "로그아웃 완료");
+        userService.logoutUser(request);
+        return new ResponseEntity<>(statusResponse, HttpStatus.OK);
     }
 
     // AccessToken 재발급
     @PostMapping("/reissue")
-    public ResponseEntity<String> reissueToken(HttpServletRequest httpServletRequest, HttpServletResponse response){
-        String refreshToken = jwtUtil.getRefreshToken(httpServletRequest);
-        userService.reissueToken(refreshToken, response);
-        return new ResponseEntity<>("토큰 재발급 완료",HttpStatus.OK);
+    public ResponseEntity<StatusResponse> reissueToken(HttpServletRequest request, HttpServletResponse response){
+        userService.reissueToken(request, response);
+        StatusResponse statusResponse = new StatusResponse(HttpStatus.OK.value(), "토큰 재발급 완료");
+        return new ResponseEntity<>(statusResponse,HttpStatus.OK);
     }
 
     //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ로그인 및 회원가입 외 유저 기능 여기서부터ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ//

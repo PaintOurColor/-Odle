@@ -63,10 +63,86 @@ public class MusicService implements MusicServiceInterface {
         LocalDateTime endDate = LocalDateTime.now();
         LocalDateTime startDate = endDate.minusDays(1);
 
-        List<Object[]> musics = postRepository.findAngryMusicIdsWithCountAndMusicInfo(startDate, endDate).stream().limit(6).toList();
+        List<Object[]> musicList = postRepository.findAngryMusicIdsWithCountAndMusicInfo(startDate, endDate).stream().limit(6).toList();
 
+        return musicChartResponses(musicList);
+    }
+
+    // sad 차트 조회
+    @Transactional(readOnly = true)
+    @Override
+    public List<MusicChartResponse> getSadChart() {
+        LocalDateTime endDate = LocalDateTime.now();
+        LocalDateTime startDate = endDate.minusDays(1);
+
+        List<Object[]> musicList = postRepository.findSadMusicIdsWithCountAndMusicInfo(startDate, endDate).stream().limit(6).toList();
+
+        return musicChartResponses(musicList);
+    }
+
+    // scream 차트 조회
+    @Transactional(readOnly = true)
+    @Override
+    public List<MusicChartResponse> getScreamChart() {
+        LocalDateTime endDate = LocalDateTime.now();
+        LocalDateTime startDate = endDate.minusDays(1);
+
+        List<Object[]> musicList = postRepository.findScreamMusicIdsWithCountAndMusicInfo(startDate, endDate).stream().limit(6).toList();
+
+        return musicChartResponses(musicList);
+    }
+
+    // shy 차트 조회
+    @Transactional(readOnly = true)
+    @Override
+    public List<MusicChartResponse> getShyChart() {
+        LocalDateTime endDate = LocalDateTime.now();
+        LocalDateTime startDate = endDate.minusDays(1);
+
+        List<Object[]> musicList = postRepository.findShyMusicIdsWithCountAndMusicInfo(startDate, endDate).stream().limit(6).toList();
+
+        return musicChartResponses(musicList);
+    }
+
+    // happy 차트 조회
+    @Transactional(readOnly = true)
+    @Override
+    public List<MusicChartResponse> getHappyChart() {
+        LocalDateTime endDate = LocalDateTime.now();
+        LocalDateTime startDate = endDate.minusDays(1);
+
+        List<Object[]> musicList = postRepository.findHappyMusicIdsWithCountAndMusicInfo(startDate, endDate).stream().limit(6).toList();
+
+        return musicChartResponses(musicList);
+    }
+
+    // love 차트 조회
+    @Transactional(readOnly = true)
+    @Override
+    public List<MusicChartResponse> getLoveChart() {
+        LocalDateTime endDate = LocalDateTime.now();
+        LocalDateTime startDate = endDate.minusDays(1);
+
+        List<Object[]> musicList = postRepository.findLoveMusicIdsWithCountAndMusicInfo(startDate, endDate).stream().limit(6).toList();
+
+        return musicChartResponses(musicList);
+    }
+
+    // flex 차트 조회
+    @Transactional(readOnly = true)
+    @Override
+    public List<MusicChartResponse> getFlexChart() {
+        LocalDateTime endDate = LocalDateTime.now();
+        LocalDateTime startDate = endDate.minusDays(1);
+
+        List<Object[]> musicList = postRepository.findFlexMusicIdsWithCountAndMusicInfo(startDate, endDate).stream().limit(6).toList();
+
+        return musicChartResponses(musicList);
+    }
+
+    public List<MusicChartResponse> musicChartResponses(List<Object[]> musicList) {
         List<MusicChartResponse> musicChartResponses = new ArrayList<>();
-        for (Object[] music : musics) {
+        for (Object[] music : musicList) {
             MusicChartResponse musicChartResponse = MusicChartResponse.builder()
                     .musicId((Long) music[0])
                     .title((String) music[1])

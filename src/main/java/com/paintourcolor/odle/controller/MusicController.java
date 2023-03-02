@@ -44,4 +44,46 @@ public class MusicController {
         List<MusicChartResponse> musicChartResponses = musicService.getAngryChart();
         return new ResponseEntity<>(musicChartResponses, HttpStatus.OK);
     }
+
+    // sad 차트 조회
+    @GetMapping("/charts/sad")
+    public ResponseEntity<List<MusicChartResponse>> getSadChart() {
+        List<MusicChartResponse> musicChartResponses = musicService.getSadChart();
+        return new ResponseEntity<>(musicChartResponses, HttpStatus.OK);
+    }
+
+    // scream 차트 조회
+    @GetMapping("/charts/scream")
+    public ResponseEntity<List<MusicChartResponse>> getScreamChart() {
+        List<MusicChartResponse> musicChartResponses = musicService.getScreamChart();
+        return new ResponseEntity<>(musicChartResponses, HttpStatus.OK);
+    }
+
+    // shy 차트 조회
+    @GetMapping("/charts/shy")
+    public ResponseEntity<List<MusicChartResponse>> getShyChart() {
+        List<MusicChartResponse> musicChartResponses = musicService.getShyChart();
+        return new ResponseEntity<>(musicChartResponses, HttpStatus.OK);
+    }
+
+    // happy 차트 조회
+    @GetMapping("/charts/happy")
+    public ResponseEntity<List<MusicChartResponse>> getHappyChart() {
+        List<MusicChartResponse> musicChartResponses = musicService.getHappyChart();
+        return new ResponseEntity<>(musicChartResponses, HttpStatus.OK);
+    }
+
+    // love 차트 조회
+    @GetMapping("/charts/love")
+    public ResponseEntity<List<MusicChartResponse>> getLoveChart() {
+        List<MusicChartResponse> musicChartResponses = musicService.getLoveChart();
+        return new ResponseEntity<>(musicChartResponses, HttpStatus.OK);
+    }
+
+    // flex 차트 조회
+    @GetMapping("/charts/flex")
+    public ResponseEntity<List<MusicChartResponse>> getFlexChart() {
+        List<MusicChartResponse> musicChartResponses = musicService.getFlexChart();
+        return new ResponseEntity<>(musicChartResponses, HttpStatus.OK);
+    }
 }

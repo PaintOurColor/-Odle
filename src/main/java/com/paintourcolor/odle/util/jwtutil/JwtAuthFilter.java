@@ -3,12 +3,10 @@ package com.paintourcolor.odle.util.jwtutil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.paintourcolor.odle.dto.security.SecurityExceptionDto;
 import com.paintourcolor.odle.repository.LogoutTokenRepository;
-import com.paintourcolor.odle.repository.RefreshTokenRepository;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -46,6 +44,15 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             Claims info = jwtUtil.getUserInfoFromToken(token);
             setAuthentication(info.getSubject());
         }
+        if(refreshToken != null) {
+            if(!jwtUtil.validateToken(refreshToken)){
+                jwtExceptionHandler(response, "토큰 값이 유효하지 않습니다", HttpStatus.UNAUTHORIZED.value());
+                return;
+            }
+            Claims info = jwtUtil.getUserInfoFromToken(refreshToken);
+            setAuthentication(info.getSubject());
+        }
+
         filterChain.doFilter(request,response);
     }
 

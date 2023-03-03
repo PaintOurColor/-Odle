@@ -258,12 +258,6 @@ function unlikePost(postId) {
     });
 }
 
-// 검색창에 입력한 단어 주소창으로 보내기
-function getSearchWord() {
-    const word = $(`#search_word`).val();
-    return window.location.href=`./post_search.html?query=${decodeURI(decodeURIComponent(word))}`
-}
-
 function elapsedText(date) {
     // 초 (밀리초)
     const seconds = 1;

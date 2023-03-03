@@ -20,13 +20,12 @@
             <img src="../static/images/low-res-logo.png">
         </a>
     </div>
-    <div class="navigation__column">
+    <div class="navigation__column" style="display: inline-block;">
         <i class="fa fa-search"></i>
-        <input type="text" placeholder="검색">
+        <input type="text" placeholder="태그를 검색해보세요 ('#' 제외)" id="search_word" style="width: 260px; text-align: left;">
+        <input type="button" value="검색" onclick="getSearchWord()" class="search_btn">
     </div>
     <div class="navigation__profile">
-        <!-- id 하나 선언해 주신 다음 js 파일에서 함수 만들어 주시면 됩니다! feed.js의 getMySimpleProfile 함수 참고!-->
-        <!-- 밑에 사이드바 부분도 고쳐주세요~ -->
         <div class="photo__header" id="getMySimpleProfile">
             <div>
                 <a id="myProfile_post_pic" role="link" tabindex="0">
@@ -39,7 +38,6 @@
                 </a>
             </div>
         </div>
-        <!-- 참고 코드 -->
     </div>
 </nav>
 <!-- 여기서부터 사이드바 -->
@@ -206,10 +204,8 @@
 <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 <script src="../static/js/sidebar.js"></script>
-</body>
-
 <script src="../static/js/post_create.js"></script>
 <script src="../static/js/sidebar.js"></script>
-<!-- <script src="../static/js/feed.js"></script> -->
-
+<script src="../static/js/post_search_word.js"></script>
+</body>
 </html>

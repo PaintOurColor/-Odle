@@ -95,9 +95,3 @@ function getPostSearchList() {
         alert("검색된 게시물이 없습니다.")
     });
 }
-
-// 검색창에 입력한 단어 주소창으로 보내기
-function getSearchWord() {
-    const word = $(`#search_word`).val();
-    return window.location.href=`./post_search.html?query=${decodeURI(decodeURIComponent(word))}`
-}

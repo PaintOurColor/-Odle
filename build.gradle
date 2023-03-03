@@ -4,6 +4,11 @@ plugins {
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 }
 
+jar {
+    enabled = false
+}
+
+
 group = 'com.paintourcolor'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
@@ -26,6 +31,8 @@ dependencies {
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'commons-fileupload:commons-fileupload:1.4'
+    implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.4'
+
     runtimeOnly 'com.mysql:mysql-connector-j'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'

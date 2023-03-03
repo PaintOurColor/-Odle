@@ -19,7 +19,6 @@ bin/
 
 ### IntelliJ IDEA ###
 application-dev.properties
-application.properties
 
 .idea
 *.iws

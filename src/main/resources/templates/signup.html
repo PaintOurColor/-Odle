@@ -30,10 +30,14 @@
                     <button class="btn btn-outline-secondary" style="font-size: 10px;" type="button" onclick="emailCheck()">중복 확인</button>
                     <button class="btn btn-outline-secondary" style="font-size: 10px;" type="button" onclick="emailCode()">인증</button>
                 </div>
+                <div class="input-emailCode input-group mb-3">
+                    <input type="text" class="form-control" id="code" placeholder="이메일 인증 코드를 입력하세요">
+                    <button class="btn btn-outline-secondary" style="font-size: 10px;" type="button" onclick="emailCodeCheck()">코드 인증</button>
+                </div>
                 <div class="input-username input-group mb-3">
                     <input type="text" class="form-control" id="username" style="width: max-content;" placeholder="닉네임을 입력하세요">
                     <button class="btn btn-outline-secondary" style="font-size: 10px;" type="button" onclick="usernameCheck()">중복 확인</button>
-                    <span style="font-size: 12px; color: gray; margin: 3px 1px -3px 0px;">영문/숫자/한글의 조합(2~8자), 특수문자 제외</span>
+                    <span style="font-size: 12px; color: gray; margin: 3px 1px -3px 0px;">영문/숫자/한글 사용(2~8자), 특수문자 제외</span>
                 </div>
                 <div class="input-password input-group mb-3">
                     <input type="password" class="form-control" id="password" style="width: max-content;" placeholder="비밀번호를 입력하세요">

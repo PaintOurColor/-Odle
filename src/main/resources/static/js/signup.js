@@ -32,6 +32,27 @@ function emailCode() {
     })
 }
 
+function emailCodeCheck() {
+    $.ajax({
+        url: "http://localhost:8080/users/verify-code",
+        type: "POST",
+        data: JSON.stringify({
+            email: $(`#email`).val(),
+            code: $(`#code`).val()
+        }),
+        contentType: "application/json; charset=UTF-8",
+        success: function (response) {
+            alert(response.message)
+            // 인증 성공 시 이메일과 인증 코드 수정 못하게
+            $("#email").attr("readonly",true);
+            $("#code").attr("readonly",true);
+        },
+        error: function (response) {
+            alert(response.responseJSON.errorMessage)
+        }
+    })
+}
+
 function usernameCheck() {
     $.ajax({
         url: "http://localhost:8080/users/check-username",
@@ -50,6 +71,7 @@ function usernameCheck() {
 }
 
 function signUp() {
+    // if ($("#email").attr("readonly") !== undefined && $("#code").attr("readonly") !== undefined){
     $.ajax({
         type: "POST",
         url: "http://localhost:8080/users/signup",
@@ -67,4 +89,7 @@ function signUp() {
             alert(response.responseJSON.errorMessage)
         }
     })
+    // } else {
+    //     alert("모든 인증을 완료해주세요")
+    // }
 }

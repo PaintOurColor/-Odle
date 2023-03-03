@@ -6,10 +6,7 @@ import com.paintourcolor.odle.dto.user.response.ProfilePostResponse;
 import com.paintourcolor.odle.dto.user.response.UserFollowOrUnfollowResponse;
 import com.paintourcolor.odle.dto.user.response.UserResponse;
 import com.paintourcolor.odle.entity.*;
-import com.paintourcolor.odle.repository.FollowRepository;
-import com.paintourcolor.odle.repository.LogoutTokenRepository;
-import com.paintourcolor.odle.repository.PostRepository;
-import com.paintourcolor.odle.repository.UserRepository;
+import com.paintourcolor.odle.repository.*;
 import com.paintourcolor.odle.util.jwtutil.JwtUtil;
 import com.paintourcolor.odle.util.redis.RedisServiceInterface;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +36,7 @@ public class UserService implements UserServiceInterface {
     private final PasswordEncoder passwordEncoder;
     private final S3UploaderService s3UploaderService;
     private final RedisServiceInterface redisService;
+    private final EmailCodeRepository emailCodeRepository;
     private final JwtUtil jwtUtil;
 
     // 유저 회원가입
@@ -55,6 +53,19 @@ public class UserService implements UserServiceInterface {
 
         if (userRepository.existsByEmail(email)) {
             throw new IllegalArgumentException("중복된 이메일이 존재합니다.");
+        }
+
+//        if (emailCodeRepository.findByEmail(email).getEmailAuthentication().equals(EmailVerifyEnum.UNVERIFIED)
+//                || !emailCodeRepository.existsByEmail(email)) {
+//            throw new IllegalArgumentException("인증이 완료된 이메일로만 회원가입이 가능합니다.");
+//        }
+
+        if (!emailCodeRepository.existsByEmail(email)) {
+            throw new IllegalArgumentException("인증이 완료된 이메일로만 회원가입이 가능합니다.");
+        }
+
+        if (emailCodeRepository.findByEmail(email).getEmailAuthentication().equals(EmailVerifyEnum.UNVERIFIED)) {
+            throw new IllegalArgumentException("인증이 완료된 이메일로만 회원가입이 가능합니다.");
         }
 
         UserRoleEnum role = UserRoleEnum.USER;

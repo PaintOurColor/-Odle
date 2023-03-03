@@ -1,5 +1,10 @@
 package com.paintourcolor.odle.service;
 
+import com.paintourcolor.odle.dto.user.request.EmailCheckRequest;
+import com.paintourcolor.odle.dto.user.request.EmailCodeRequest;
+import com.paintourcolor.odle.entity.EmailCode;
+import com.paintourcolor.odle.entity.EmailVerifyEnum;
+import com.paintourcolor.odle.repository.EmailCodeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -13,14 +18,15 @@ import java.util.Random;
 @Service
 @RequiredArgsConstructor
 public class EmailService implements EmailServiceInterface{
+    private final EmailCodeRepository emailCodeRepository;
     private final JavaMailSender emailSender;
     public static final String ePw = createKey();
 
     // 메일 생성
-    private MimeMessage createMessage(String to)throws Exception{
+    private MimeMessage createMessage(String userEmail)throws Exception{
         MimeMessage  message = emailSender.createMimeMessage();
 
-        message.addRecipients(MimeMessage.RecipientType.TO, to);// 요청한 유저
+        message.addRecipients(MimeMessage.RecipientType.TO, userEmail);// 요청한 유저
         message.setSubject("Odle 회원가입 이메일 인증");// 메일 제목
 
         String msgg="";
@@ -77,15 +83,37 @@ public class EmailService implements EmailServiceInterface{
     // 인증 이메일 발송
     @Transactional
     @Override
-    public void sendEmail(String to) throws Exception {
-        MimeMessage message = createMessage(to);
+    public void sendEmail(EmailCheckRequest emailCheckRequest) throws Exception {
+        String userEmail = emailCheckRequest.getEmail();
+        MimeMessage message = createMessage(userEmail);
+        EmailCode emailCode = emailCodeRepository.findByEmail(userEmail);
+        EmailVerifyEnum verifyEnum = EmailVerifyEnum.UNVERIFIED;
         try{
-            emailSender.send(message);
+            emailSender.send(message); // 메일 보내기
+            // 인증 코드 DB에 저장
+            if (emailCodeRepository.existsByEmail(userEmail)) {
+                emailCode.updateCode(ePw);
+            } else {
+                emailCodeRepository.save(new EmailCode(userEmail, ePw, verifyEnum));
+            }
+
         }catch(MailException es){
-//            es.printStackTrace(); // 에러 발생의 근원지를 찾아서 단계별로 에러를 출력
-            es.getMessage(); // 에러의 원인을 간단하게 출력
+            es.printStackTrace(); // 에러 발생의 근원지를 찾아서 단계별로 에러를 출력
             throw new RuntimeException("서버에서 정상적으로 처리되지 않았습니다.");
         }
+    }
+
+    @Transactional
+    @Override
+    public void verifyCode(EmailCodeRequest emailCodeRequest) {
+        String email = emailCodeRequest.getEmail();
+        String code = emailCodeRequest.getCode();
+        EmailCode emailCode = emailCodeRepository.findByEmail(email);
+        // 만약 DB에 저장돼있는 이메일에 해당하는 코드랑 리퀘스트로 받아온 코드가 일치하지 않는다면 실패
+        if (!emailCodeRepository.findByEmail(email).getCode().equals(code)) {
+            throw new IllegalArgumentException("인증 코드가 일치하지 않습니다.");
+        }
+        emailCode.updateVerify(EmailVerifyEnum.VERIFIED);
     }
 }
 

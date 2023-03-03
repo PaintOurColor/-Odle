@@ -245,8 +245,15 @@ public class UserController {
     @PostMapping("/email")
     public ResponseEntity<StatusResponse> sendEmailCode(@RequestBody @Valid EmailCheckRequest emailCheckRequest) throws Exception {
         StatusResponse statusResponse = new StatusResponse(HttpStatus.OK.value(), "인증 메일이 전송되었습니다.");
-        String email = emailCheckRequest.getEmail();
-        emailService.sendEmail(email);
+        emailService.sendEmail(emailCheckRequest);
+        return new ResponseEntity<>(statusResponse, HttpStatus.OK);
+    }
+
+    // 이메일 인증 코드 확인
+    @PostMapping("/verify-code")
+    public ResponseEntity<StatusResponse> verifyEmailCode(@RequestBody @Valid EmailCodeRequest emailCodeRequest) {
+        StatusResponse statusResponse = new StatusResponse(HttpStatus.OK.value(), "이메일 인증에 성공했습니다.");
+        emailService.verifyCode(emailCodeRequest);
         return new ResponseEntity<>(statusResponse, HttpStatus.OK);
     }
 }

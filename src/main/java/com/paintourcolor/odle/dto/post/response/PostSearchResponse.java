@@ -3,6 +3,7 @@ package com.paintourcolor.odle.dto.post.response;
 import lombok.Builder;
 import lombok.Getter;
 
+@Getter
 @Builder
 public class PostSearchResponse {
     private final Long postId;

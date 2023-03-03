@@ -8,22 +8,27 @@ import com.paintourcolor.odle.repository.EmailCodeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.time.LocalDateTime;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.*;
 
 @Service
 @RequiredArgsConstructor
 public class EmailService implements EmailServiceInterface{
     private final EmailCodeRepository emailCodeRepository;
     private final JavaMailSender emailSender;
-    public static final String ePw = createKey();
+    private final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 
     // 메일 생성
-    private MimeMessage createMessage(String userEmail)throws Exception{
+    private MimeMessage createMessage(String userEmail, String ePw)throws Exception{
         MimeMessage  message = emailSender.createMimeMessage();
 
         message.addRecipients(MimeMessage.RecipientType.TO, userEmail);// 요청한 유저
@@ -85,15 +90,16 @@ public class EmailService implements EmailServiceInterface{
     @Override
     public void sendEmail(EmailCheckRequest emailCheckRequest) throws Exception {
         String userEmail = emailCheckRequest.getEmail();
-        MimeMessage message = createMessage(userEmail);
+        String ePw = createKey();
+        MimeMessage message = createMessage(userEmail, ePw);
         EmailCode emailCode = emailCodeRepository.findByEmail(userEmail);
         EmailVerifyEnum verifyEnum = EmailVerifyEnum.UNVERIFIED;
         try{
             emailSender.send(message); // 메일 보내기
             // 인증 코드 DB에 저장
-            if (emailCodeRepository.existsByEmail(userEmail)) {
+            if (emailCodeRepository.existsByEmail(userEmail)) { // 기존에 보내진 인증 코드가 있을 경우 -> 인증 코드만 업데이트
                 emailCode.updateCode(ePw);
-            } else {
+            } else { // 저장된 인증 코드가 없어서 새로 생성
                 emailCodeRepository.save(new EmailCode(userEmail, ePw, verifyEnum));
             }
 
@@ -101,8 +107,17 @@ public class EmailService implements EmailServiceInterface{
             es.printStackTrace(); // 에러 발생의 근원지를 찾아서 단계별로 에러를 출력
             throw new RuntimeException("서버에서 정상적으로 처리되지 않았습니다.");
         }
+
+        // 인증코드 메일 발송 1시간 후 삭제
+        executorService.schedule(() -> {
+            // 저장된 row를 삭제
+            LocalDateTime now = LocalDateTime.now();
+            EmailCode expiredCode = emailCodeRepository.findByCreatedTimeBefore(now.minusHours(1));
+            emailCodeRepository.delete(expiredCode);
+        }, 1, TimeUnit.HOURS);
     }
 
+    // 인증 코드 확인
     @Transactional
     @Override
     public void verifyCode(EmailCodeRequest emailCodeRequest) {

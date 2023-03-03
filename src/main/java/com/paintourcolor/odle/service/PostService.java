@@ -3,6 +3,8 @@ package com.paintourcolor.odle.service;
 import com.paintourcolor.odle.dto.post.request.PostCreateRequest;
 import com.paintourcolor.odle.dto.post.request.PostUpdateRequest;
 import com.paintourcolor.odle.dto.post.response.PostResponse;
+import com.paintourcolor.odle.dto.post.response.PostSearchResponse;
+import com.paintourcolor.odle.dto.user.response.PostCountResponse;
 import com.paintourcolor.odle.entity.*;
 import com.paintourcolor.odle.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -154,6 +156,38 @@ public class PostService implements PostServiceInterface {
         }
 
         postRepository.deleteById(postId);
+    }
+
+    // 태그로 게시글 검색하기
+    @Transactional
+    @Override
+    public List<PostSearchResponse> getPostSearchList(Pageable pageable, String tagName) {
+        Tag tag = tagRepository.findByTagName(tagName);
+        List<PostTag> postTags = postTagRepository.findPostIdByTagId(tag.getId());
+
+        if (postTags.isEmpty()) {
+            throw new IllegalArgumentException("게시물이 존재하지 않습니다.");
+        }
+
+        List<PostSearchResponse> postSearchResponses = new ArrayList<>();
+        for (PostTag postTag : postTags) {
+            Post post = postRepository.findById(postTag.getPost().getId()).get();
+            PostSearchResponse postSearchResponse = PostSearchResponse.builder()
+                    .postId(post.getId())
+                    .title(post.getMusic().getTitle())
+                    .singer(post.getMusic().getSinger())
+                    .cover(post.getMusic().getCover())
+                    .build();
+            postSearchResponses.add(postSearchResponse);
+        }
+        return postSearchResponses;
+    }
+
+    // 검색된 게시글 수
+    @Override
+    public PostCountResponse getPostSearchCount(String tagName) {
+        Tag tag = tagRepository.findByTagName(tagName);
+        return new PostCountResponse(postTagRepository.countPostIdByTagId(tag.getId()));
     }
 
     public String getTag(Long postId) {

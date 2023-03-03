@@ -2,8 +2,10 @@ package com.paintourcolor.odle.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Getter
 @Entity
@@ -19,6 +21,8 @@ public class EmailCode {
     @Column
     @Enumerated(EnumType.STRING)
     private EmailVerifyEnum emailAuthentication;
+    @CreationTimestamp // 생성되는 시간
+    private LocalDateTime createdTime;
 
     public EmailCode(String email, String code, EmailVerifyEnum emailAuthentication) {
         this.email = email;

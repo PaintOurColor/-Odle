@@ -1,0 +1,483 @@
+#post_search {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    font-size: 120%;
+}
+
+.post_search__container {
+    margin-top: 12%;
+    width: 60%;
+}
+
+.photo {
+    background-color: white;
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    width: 100%;
+    max-width: 1000px;
+    margin-bottom: 65px;
+}
+
+.photo__header {
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    width: 200px;
+}
+
+.photo__header .photo__avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    margin-right: 3px;
+}
+
+.photo .photo__user-info .photo__author {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 2px;
+    margin-right: 3px;
+    width: 120px;
+    max-width: 100%;
+}
+
+/*검색 버튼*/
+.search_btn {
+    width: 30px;
+    text-align: left;
+    vertical-align: bottom;
+    text-indent: -3em;
+}
+
+/* ㅡㅡㅡㅡ프로필 사진 포함한 프로필 상단 박스ㅡㅡㅡㅡ */
+
+.post_search__header {
+    max-width: 935px;
+    /* min-width: 700px; */
+    width: 100%;
+    display: flex;
+    margin-bottom: 50px;
+    font-size: 110%;
+}
+
+
+/* ㅡㅡㅡㅡ프로필 사진 제외한 프로필 박스ㅡㅡㅡㅡ */
+
+.post_search__column {
+    width: 70%;
+    min-width: 70%;
+    margin-left: 10%;
+}
+
+.post_search__column:first-child {
+    width: 30%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.post_search__column:first-child img {
+    border-radius: 50%;
+    transform-style: preserve-3d;
+    transition: transform 0.5s linear;
+    animation: rotateLynn 1s linear infinite;
+    max-width: 150px;
+}
+
+
+/* ㅡㅡㅡㅡ프로필 사진ㅡㅡㅡㅡ */
+
+.post_search__profileImage {
+    width: 100%;
+    /* margin-right: 10%;   */
+}
+
+.post_search__profileImage:first-child {
+    width: 30%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.post_search__profileImage:first-child img {
+    border-radius: 50%;
+    transform-style: preserve-3d;
+    transition: transform 0.5s linear;
+    animation: rotateLynn 1s linear infinite;
+    width: 150px;
+    min-width: 100%;
+    height: 150px;
+    min-height: 100%;
+}
+
+
+/* ㅡㅡㅡㅡ프로필 유저 정보ㅡㅡㅡㅡ */
+
+.post_search__title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+}
+
+.post_search__title {
+    margin-bottom: 30px;
+}
+
+/* ㅡㅡㅡㅡ프로필 편집 or 팔로우 or 팔로우 취소 버튼 ㅡㅡㅡㅡ */
+
+.post_search__title a {
+    text-decoration: none;
+    color: inherit;
+    font-weight: 600;
+    padding: 5px 25px;
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    transition: all 0.3s ease-in-out;
+}
+
+.post_search__title a:hover {
+    background-color: #3f99ed;
+    color: white;
+    border-color: #3f99ed;
+}
+
+/* ㅡㅡㅡㅡ프로필 유저이름ㅡㅡㅡㅡ */
+
+.post_search__tagName {
+    margin-right: 25px;
+    font-size: 32px;
+    font-weight: 300;
+}
+
+
+/* ㅡㅡㅡㅡ프로필 게시글/팔로워/팔로잉 수ㅡㅡㅡㅡ */
+
+.post_search__stats {
+    font-size: 80%;
+    margin-bottom: 30px;
+    /* justify-content:space-between; */
+    display: flex;
+    align-items: center;
+}
+
+.post_search__stat {
+    margin-right: 5%;
+    min-width: 20%;
+}
+
+.post_search__stat .stat__number {
+    font-weight: 600;
+    margin-left: 10px;
+}
+
+/* ㅡㅡㅡㅡ프로필 게시글 리스트ㅡㅡㅡㅡ */
+
+.post_search__photos {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    /* max-width: 100%; */
+    /* width: 100%; */
+    margin-bottom: 35px;
+    position: relative;
+}
+
+.post_search__photo {
+    width: 25%;
+    margin: 3%;
+}
+
+.post_search__photo .date {
+    font-size: 20px;
+}
+
+.post_search__photo span {
+    font-size: 15px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    text-align: center;
+}
+
+.post_search__photo img {
+    margin-top: 5px;
+    width: 500px;
+    max-width: 100%;
+    border-radius: 10%;
+}
+
+/* ㅡㅡㅡㅡ모달 팝업 게시글 1개 ㅡㅡㅡㅡ */
+/* The Modal (background) */
+.modal {
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    /* Stay in place */
+    z-index: 1;
+    /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%;
+    /* Full width */
+    height: 100%;
+    /* Full height */
+    overflow: auto;
+    /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0);
+    /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 50%;
+    max-width: 600px;
+    /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+
+/* ㅡㅡㅡㅡ팝업 게시글 관련ㅡㅡㅡㅡ */
+
+/* ㅡㅡㅡㅡ프로필ㅡㅡㅡㅡ */
+
+.post_info_container {
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.post_info_container img {
+    width: 40px;
+    border-radius: 50%;
+    margin-right: 15px;
+}
+
+.post_info {
+    width: 100%;
+}
+
+.post_info span {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.post_time {
+    display: flex;
+    justify-content: space-between;
+    font-size: 70%;
+}
+
+.post_time span {
+    margin-right: 5%;
+}
+
+/* ㅡㅡㅡㅡ음악 컨테이너ㅡㅡㅡㅡ */
+.post_music_container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+
+    font-size: 120%;
+}
+
+.post_music_container img {
+    width: 300px;
+    max-width: 60%;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    border-radius: 50%;
+}
+
+.music_open_end {
+    font-size: 20px;
+    font-weight: 600;
+    color: inherit;
+    padding: 7px 20px;
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+}
+
+/* ㅡㅡㅡㅡ좋아요/댓글 버튼 컨테이너ㅡㅡㅡㅡ */
+
+.action_button_container ion-icon {
+    font-size: 24px;
+}
+
+.action_button_container ion-icon:hover {
+    cursor: pointer;
+}
+
+
+.action_button_container {
+    margin-bottom: 1%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* ㅡㅡㅡㅡ게시글 세부 컨테이너ㅡㅡㅡㅡ */
+
+.post_content_container {
+    font-size: 87.5%;
+}
+
+.post_content_container p {
+    margin-bottom: 1%;
+}
+
+
+/* ㅡㅡㅡㅡ댓글 세부 컨테이너ㅡㅡㅡㅡ */
+
+.post_comment_container {
+    font-size: 87.5%;
+}
+
+.post_comment_container p {
+    margin-bottom: 1%;
+}
+
+.comment_info {
+    width: 95%;
+    display: flex;
+    align-items: center;
+}
+
+.comment_box {
+    margin-bottom: 1%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.comment_box img {
+    max-width: 100%;
+    width: 40px;
+    border-radius: 50%;
+}
+
+.comment_box span {
+    margin-right: 2%;
+}
+
+.comment_post_search {
+    max-width: 5%;
+    font-weight: 600;
+}
+
+.comment_like {
+    width: 18%;
+    text-align: right;
+}
+
+.comment_like ion-icon {
+    font-size: 20px;
+}
+
+.comment_like ion-icon:hover {
+    cursor: pointer;
+}
+
+/* ㅡㅡㅡㅡ댓글 입력창ㅡㅡㅡㅡ */
+
+.comment_textbox {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.comment_textbox textarea {
+    width: 90%;
+    border: 0;
+    font-size: 14px;
+    resize: none;
+    height: 20px;
+}
+
+.comment_textbox ion-icon {
+    margin-right: 2%;
+    font-size: 24pt;
+}
+
+.comment_textbox ion-icon:hover {
+    cursor: pointer;
+}
+
+/* ㅡㅡㅡㅡㅡ팔로우리스트 CSSㅡㅡㅡㅡㅡ */
+.follow_list_container {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 3%;
+}
+
+.follower_list_title {
+    margin: 3%;
+    font-size: 140%;
+    font-weight: 600;
+}
+
+.follow_post_search {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    text-align: center;
+    width: 100%;
+    justify-content: space-between;
+    margin-bottom: 7%;
+}
+
+.follow_post_search img {
+    width: 100px;
+    max-width: 100%;
+    border-radius: 50%;
+}
+
+.follow_post_search span {
+    min-width: 60%;
+    font-weight: 600;
+    text-align: left;
+    padding-left: 5%;
+}
+
+.follow_button {
+    font-size: 95%;
+    font-weight: 600;
+    min-width: 30%;
+    text-decoration: none;
+    color: inherit;
+    padding: 1%;
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+}
+
+.follow_button:hover {
+    background-color: #3f99ed;
+    color: white;
+    border-color: #3f99ed;
+}

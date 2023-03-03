@@ -4,9 +4,10 @@ import com.paintourcolor.odle.dto.post.request.*;
 import com.paintourcolor.odle.dto.post.response.PostLikeCountResponse;
 import com.paintourcolor.odle.dto.post.response.PostLikeOrUnlikeResponse;
 import com.paintourcolor.odle.dto.post.response.PostResponse;
+import com.paintourcolor.odle.dto.post.response.PostSearchResponse;
 import com.paintourcolor.odle.dto.security.StatusResponse;
+import com.paintourcolor.odle.dto.user.response.PostCountResponse;
 import com.paintourcolor.odle.entity.User;
-import com.paintourcolor.odle.entity.UserRoleEnum;
 import com.paintourcolor.odle.security.UserDetailsImpl;
 import com.paintourcolor.odle.service.AdminServiceInterface;
 import com.paintourcolor.odle.service.LikeServiceInterface;
@@ -120,4 +121,19 @@ public class PostController {
         return new ResponseEntity<>(statusResponse, HttpStatus.OK);
     }
 
+    // 태그로 게시글 검색
+    @GetMapping("/search/{word}")
+    public ResponseEntity<List<PostSearchResponse>> getPostSearchList(Pageable pageable, @PathVariable String word,
+                                                                      @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        String tagName = "#" + word;
+        List<PostSearchResponse> postSearchResponses = postService.getPostSearchList(pageable, tagName);
+        return new ResponseEntity<>(postSearchResponses, HttpStatus.OK);
+    }
+
+    // 검색된 게시글 수
+    @GetMapping("/search/{word}/post-count")
+    public ResponseEntity<PostCountResponse> getPostSearchCount(@PathVariable String word, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        String tagName = "#" + word;
+        return new ResponseEntity<>(postService.getPostSearchCount(tagName),HttpStatus.OK);
+    }
 }

@@ -5,16 +5,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Feed_우리색으로 칠하조</title>
+    <title>Profile_우리색으로 칠하조</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="../static/css/styles.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="../static/css/styles.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+
+    <!-- JQuery 사용 설정 -->
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+
 </head>
 
 <body>
+<!-- 여기서부터 상단 검색 바 -->
 <nav class="navigation">
     <div class="navigation__column">
         <a href="index.html">
@@ -27,21 +29,21 @@
         <input type="button" value="검색" onclick="getSearchWord()" class="search_btn">
     </div>
     <div class="navigation__profile">
-        <div class="photo__header" id="getMySimpleProfile">
+        <div class="photo__header" id="getMySimpleProfile1">
             <div>
-                <a id="myProfile1" role="link" tabindex="0">
-                    <img alt="프로필 사진" src="" id="myProfileImage" class="photo__avatar"/>
+                <a id="myProfile9" role="link" tabindex="0">
+                    <img alt="프로필 사진" src="" id="myProfileImage4" class="photo__avatar"/>
                 </a>
             </div>
             <div class="photo__user-info">
-                <a id="myProfile2" role="link" tabindex="0">
-                    <span class="photo__author" id="myProfileUsername"></span>
+                <a id="myProfile10" role="link" tabindex="0">
+                    <span class="photo__author" id="myProfileUsername4"></span>
                 </a>
             </div>
         </div>
-        <!-- 참고 코드 -->
     </div>
 </nav>
+<!-- 여기까지 상단 검색 바 -->
 <!-- 여기서부터 사이드바 -->
 <aside class="sidebar">
     <ul>
@@ -64,14 +66,10 @@
         <li class="list">
             <b></b>
             <b></b>
-            <!-- 참고 코드 -->
-            <div>
-                <a id="myProfile3">
-                    <span class="icon"><ion-icon name="person-outline"></ion-icon></span>
-                    <span class="title">프로필</span>
-                </a>
-            </div>
-            <!-- 참고 코드 -->
+            <a id="myProfile11">
+                <span class="icon"><ion-icon name="person-outline"></ion-icon></span>
+                <span class="title">프로필</span>
+            </a>
         </li>
         <li class="list">
             <b></b>
@@ -108,30 +106,60 @@
         <li class="list">
             <b></b>
             <b></b>
-            <a>
-                <span class="icon" onclick="logOut()"><ion-icon name="log-out-outline"></ion-icon></span>
+            <a href="signin.html">
+                <span class="icon"><ion-icon name="log-out-outline"></ion-icon></span>
                 <span class="title">로그아웃</span>
             </a>
         </li>
     </ul>
 </aside>
 <!-- 여기까지 사이드바 -->
-<main id="feed">
-    <div class="feed__container" id="getPost">
-        <div id="feed_modal" class="modal">
-            <div id="feed_popup" class="modal-content">
+<!-- 여기서부터 본문 -->
+<main id="post_search">
+    <div class="post_search__container">
+        <!-- 여기서부터 상단 프로필 -->
+        <header class="post_search__header">
+            <div class="post_search__profileImage">
+                <!-- 유저 프로필이미지 들어갈 곳 -->
+                <p id="post_search__profileImage"></p>
             </div>
-        </div>
+            <div class="post_search__column">
+                <div class="post_search__title">
+                    <h3 class='post_search__tagName'>
+                        <!-- 태그 이름 들어갈 곳 -->
+                        <span id="post_search__tagName"></span>
+                    </h3>
+                </div>
+                <ul class="post_search__stats">
+                    <li class="post_search__stat">
+                        <a>게시글</a>
+                        <!-- 게시글 수 들어갈 곳 -->
+                        <span id="post_search_count" class="stat__number"></span>
+                    </li>
+                </ul>
+            </div>
+        </header>
+        <!-- 여기까지 상단프로필 -->
+        <hr style="border: solid 1px lightgray; margin-bottom: 5%;">
+        <!-- 여기서부터 프로필 게시글 -->
+        <section id="post_search-posts" class="post_search__photos">
+        </section>
+        <!-- 여기까지 프로필 게시글 -->
     </div>
+    <!-- 여기서부터 모달 팝업 -->
+    <div id="post_search_modal" class="modal">
+        <div id="post_search_popup" class="modal-content">
+            <span class="close" onclick="close_button()">&times;</span>
+        </div>
+        <!-- 여기서까지 모달 내용 -->
+    </div>
+    <!-- 여기까지 모달 팝업 -->
 </main>
+<!-- 여기까지 본문 -->
 <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-<!-- JQuery 사용 설정 -->
-<script src="http://code.jquery.com/jquery-latest.js"></script>
-<!-- js 파일 링크 -->
 <script src="../static/js/sidebar.js"></script>
-<script src="../static/js/feed.js"></script>
-<script src="../static/js/logout.js"></script>
-<script src="../static/js/feed_popup.js"></script>
+<script src="../static/js/post_search.js"></script>
+<script src="../static/js/post_search_popup.js"></script>
 </body>
 </html>

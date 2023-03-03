@@ -47,8 +47,6 @@ function getPost() {
     };
 
     $.ajax(settings).done(function (response) {
-        console.log(response);
-
         for (let i = 0; i < response.length; i++) {
             const obj = response[i];
             const postId = obj['id']
@@ -205,7 +203,6 @@ function showFeedLikeButton(postId) {
             "Authorization": localStorage.getItem("accessToken")
         },
         success: function (response) {
-            console.log(response, postId)
             like_button = `<ion-icon id="feed_like_state_${postId}" name="heart" style="color: red; font-size: 20pt;" onclick="unlikePost(${postId})">좋아요 누른 후</ion-icon>`
             unlike_button = `<ion-icon id="feed_like_state_${postId}" name="heart-outline" style="font-size: 20pt;" onclick="likePost(${postId})">>좋아요 누르기 전</ion-icon>`
 
@@ -259,6 +256,12 @@ function unlikePost(postId) {
             console.log(error)
         }
     });
+}
+
+// 검색창에 입력한 단어 주소창으로 보내기
+function getSearchWord() {
+    const word = $(`#search_word`).val();
+    return window.location.href=`./post_search.html?query=${decodeURI(decodeURIComponent(word))}`
 }
 
 function elapsedText(date) {

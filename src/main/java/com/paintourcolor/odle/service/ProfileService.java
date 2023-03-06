@@ -2,17 +2,21 @@ package com.paintourcolor.odle.service;
 
 import com.paintourcolor.odle.dto.user.request.ProfileUpdateRequest;
 import com.paintourcolor.odle.dto.user.response.FollowingResponse;
+import com.paintourcolor.odle.dto.user.response.MyProfileSimpleResponse;
 import com.paintourcolor.odle.dto.user.response.ProfileResponse;
 import com.paintourcolor.odle.dto.user.response.ProfileSimpleResponse;
 import com.paintourcolor.odle.entity.User;
 import com.paintourcolor.odle.repository.UserRepository;
+import com.paintourcolor.odle.util.jwtutil.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.Date;
 import java.util.stream.Collectors;
 
 @Service
@@ -20,6 +24,7 @@ import java.util.stream.Collectors;
 public class ProfileService implements ProfileServiceInterface{
     private final UserRepository userRepository;
     private final S3UploaderService s3UploaderService;
+    private final JwtUtil jwtUtil;
 
 
     // 프로필 설정(수정)
@@ -60,7 +65,9 @@ public class ProfileService implements ProfileServiceInterface{
     }
 
     @Override
-    public ProfileSimpleResponse getMySimpleProfile(User user) {
-    return new ProfileSimpleResponse(user);
+    public MyProfileSimpleResponse getMySimpleProfile(User user, String accessToken) {
+        Date expiration = jwtUtil.getUserInfoFromToken(accessToken).getExpiration();
+
+    return new MyProfileSimpleResponse(user, expiration);
     }
 }

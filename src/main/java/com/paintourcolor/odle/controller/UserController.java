@@ -85,10 +85,8 @@ public class UserController {
 
     // AccessToken 재발급
     @PostMapping("/reissue")
-    public ResponseEntity<StatusResponse> reissueToken(HttpServletRequest request, HttpServletResponse response){
-        userService.reissueToken(request, response);
-        StatusResponse statusResponse = new StatusResponse(HttpStatus.OK.value(), "토큰 재발급 완료");
-        return new ResponseEntity<>(statusResponse,HttpStatus.OK);
+    public ResponseEntity<TokenReissueResponse> reissueToken(HttpServletRequest request, HttpServletResponse response){
+        return new ResponseEntity<>(userService.reissueToken(request, response),HttpStatus.CREATED);
     }
 
     //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ로그인 및 회원가입 외 유저 기능 여기서부터ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ//
@@ -180,8 +178,10 @@ public class UserController {
 
     // 본인 간편 프로필 조회
     @GetMapping("/profile/simple")
-    public ResponseEntity<ProfileSimpleResponse> getMySimpleProfile(@AuthenticationPrincipal UserDetailsImpl userDetails){
-        ProfileSimpleResponse profileSimple = profileService.getMySimpleProfile(userDetails.getUser());
+    public ResponseEntity<MyProfileSimpleResponse> getMySimpleProfile(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                                                                      HttpServletRequest request){
+        String accessToken = jwtUtil.getAccessToken(request);
+        MyProfileSimpleResponse profileSimple = profileService.getMySimpleProfile(userDetails.getUser(), accessToken);
         return new ResponseEntity<>(profileSimple,HttpStatus.OK);
     }
 

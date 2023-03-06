@@ -27,8 +27,10 @@ public class ProfileService implements ProfileServiceInterface{
     public void updateProfile(Long userId, ProfileUpdateRequest profileUpdateRequest) throws IOException {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
-        user.setUsername(profileUpdateRequest.getUsername());
-        user.setIntroduction(profileUpdateRequest.getIntroduction());
+        if (!profileUpdateRequest.getUsername().isEmpty())
+            user.setUsername(profileUpdateRequest.getUsername());
+        if(!profileUpdateRequest.getIntroduction().isEmpty())
+             user.setIntroduction(profileUpdateRequest.getIntroduction());
 
         MultipartFile profileImage = profileUpdateRequest.getProfileImage();
         if (profileImage != null && !profileImage.isEmpty()) {

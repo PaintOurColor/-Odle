@@ -28,7 +28,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-
+        System.out.println("requesturl: "+request.getRequestURL());
+        System.out.println("requesturl: "+request.getRemoteAddr());
         String token = jwtUtil.getAccessToken(request);
         String refreshToken = jwtUtil.getRefreshToken(request);
 

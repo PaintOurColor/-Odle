@@ -1,10 +1,7 @@
 package com.paintourcolor.odle.service;
 
 import com.paintourcolor.odle.dto.user.request.*;
-import com.paintourcolor.odle.dto.user.response.PostCountResponse;
-import com.paintourcolor.odle.dto.user.response.ProfilePostResponse;
-import com.paintourcolor.odle.dto.user.response.UserFollowOrUnfollowResponse;
-import com.paintourcolor.odle.dto.user.response.UserResponse;
+import com.paintourcolor.odle.dto.user.response.*;
 import com.paintourcolor.odle.entity.*;
 import com.paintourcolor.odle.repository.*;
 import com.paintourcolor.odle.util.jwtutil.JwtUtil;
@@ -122,7 +119,7 @@ public class UserService implements UserServiceInterface {
 
     @Transactional
     @Override
-    public void reissueToken(HttpServletRequest request, HttpServletResponse response) {
+    public TokenReissueResponse reissueToken(HttpServletRequest request, HttpServletResponse response) {
         String accessToken = jwtUtil.getAccessToken(request); // AccessToken
         String refreshToken = jwtUtil.getRefreshToken(request); // RefreshToken
 
@@ -136,7 +133,9 @@ public class UserService implements UserServiceInterface {
         String email = jwtUtil.getUserInfoFromToken(refreshToken).getSubject(); // 유저 이메일 정보 가져오기
 
         String newAccessToken = jwtUtil.createAccessToken(email, role); // 새로운 AccessToken 생성
-        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, newAccessToken); // 새로운 AccessToken Header로 반환
+//        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, newAccessToken); // 새로운 AccessToken Header로 반환
+
+        return new TokenReissueResponse(newAccessToken);
     }
 
     // 로그아웃 유저, 관리자

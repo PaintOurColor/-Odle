@@ -13,24 +13,57 @@
 /* ㅡㅡㅡㅡ네비게이션바 프로필ㅡㅡㅡㅡ */
 
 .photo__user-info {
-  padding: 15px;
+  padding: 1%;
   display: flex;
   align-items: center;
-  width: 200px;
+  justify-content:space-between;
+  width: 30%;
 }
 
 .photo__user-info img {
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  margin-right: 10px;
+  margin-right: 1%;
 }
 
 .photo__user-info span {
-  display: block;
   font-weight: 600;
   margin-bottom: 5px;
+  width: 70%;
+}
 
+.mini_porfile_box {
+  width: 30%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navigation__profile {
+  margin-left: 5%;
+  width: 50%;
+}
+.expiration_time {
+  width: 50%;
+}
+
+.expiration_time button {
+  margin-left: 2%;
+  font-size : 95%;
+  font-weight: 600;
+  min-width: 30%;
+
+  padding: 1%;
+  background-color: white;
+  border: 1px solid #e6e6e6;
+  border-radius: 3px;
+}
+
+.expiration_time button:hover {
+  background-color: #3f99ed;
+  color: white;
+  border-color: #3f99ed;
 }
 
 
@@ -63,9 +96,6 @@
 
 .profile__column:first-child img {
   border-radius: 50%;
-  transform-style: preserve-3d;
-  transition: transform 0.5s linear;
-  animation: rotateLynn 1s linear infinite;
   max-width: 150px;
 }
 
@@ -86,9 +116,6 @@
 
 .profile__profileImage:first-child img {
   border-radius: 50%;
-  transform-style: preserve-3d;
-  transition: transform 0.5s linear;
-  animation: rotateLynn 1s linear infinite;
   width: 150px;
   min-width: 100%;
   height: 150px;
@@ -118,7 +145,6 @@
   padding: 5px 25px;
   border: 1px solid #e6e6e6;
   border-radius: 3px;
-  transition: all 0.3s ease-in-out;
 }
 
 .profile__title a:hover {
@@ -126,15 +152,6 @@
   color: white;
   border-color: #3f99ed;
 }
-
-/* .profile__title i {
-  cursor: pointer;
-  transition: transform 1s ease-in;
-}
-
-.profile__title i:hover {
-  transform: rotate(2turn);
-} */
 
 /* ㅡㅡㅡㅡ프로필 유저이름ㅡㅡㅡㅡ */
 
@@ -167,6 +184,10 @@
 
 .follow_stat:hover {
   cursor: pointer;
+}
+
+.follow_stat {
+  color: black;
 }
 
 /* ㅡㅡㅡㅡ프로필 자기소개ㅡㅡㅡㅡ */

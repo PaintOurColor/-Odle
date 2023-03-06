@@ -50,6 +50,9 @@ function getMySimpleProfile() {
         }
         post_url_userId = response['userId']
         // 프로필 이거 꼭 적어주시기!
+        const tokenExpiration = response['tokenExpiration']
+        const expiration_time = new Date(tokenExpiration).getTime();
+        timer(expiration_time)
         $('#myProfile_post_pic').attr('onclick', `window.location.href='./profile.html?userId=${post_url_userId}'`)
         $('#myProfile_post').attr('onclick', `window.location.href='./profile.html?userId=${post_url_userId}'`)
     });

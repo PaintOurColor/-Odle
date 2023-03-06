@@ -27,6 +27,9 @@ function getMySimpleProfile() {
             window.location = "/login.html"
         }
         const userId = response['userId']
+        const tokenExpiration = response['tokenExpiration']
+        const expiration_time = new Date(tokenExpiration).getTime();
+        timer(expiration_time)
         $('#myProfile1').attr('onclick', `window.location.href='./profile.html?userId=${userId}'`)
         $('#myProfile2').attr('onclick', `window.location.href='./profile.html?userId=${userId}'`)
         $('#myProfile3').attr('onclick', `window.location.href='./profile.html?userId=${userId}'`)

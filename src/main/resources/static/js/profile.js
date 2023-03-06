@@ -5,7 +5,7 @@ let login_userId;
 
 //페이지 시작 시 호출 펑션들
 $(document).ready(function () {
-    get_my_simple_profile() //검색바 미니프로필
+    getMySimpleProfile() //검색바 미니프로필
     get_profile() //상단 프로필
     get_posts() //유저 게시글
     // show_edit_profile_button() // 프로필 편집 or 팔로우 or 팔로우 취소 버튼
@@ -44,8 +44,8 @@ function get_userinfo() {
             }
 
             //프로필 이미지가 없을 때
-            profileImage = (profileImage ==null)? "http://bwptedu.com/assets/image/default-profile.jpg":profileImage;// 기본 프로필 이미지
-            
+            profileImage = (profileImage == null) ? "http://bwptedu.com/assets/image/default-profile.jpg" : profileImage;// 기본 프로필 이미지
+
 
             $("#profile__username").append(username);
             $("#profile__email").append(email);
@@ -120,7 +120,6 @@ function get_posts() {
                 const createdYear = created_at.getFullYear().toString().slice(2);
                 const createdMonth = created_at.getMonth() + 1;
                 const createdDate = created_at.getDate();
-                console.log(music_cover)
 
                 const temp_post = `
                             <div id="post_popup_btn_${post_id}" class="profile__photo" onclick="open_post_popup(${post_id})">
@@ -140,7 +139,7 @@ function get_posts() {
 
 
 // 상단 검색바 미니 프로필 정보 가져오기
-function get_my_simple_profile() {
+function getMySimpleProfile() {
     $.ajax({
         url: api_url + "profile/simple",
         type: "GET",
@@ -153,22 +152,21 @@ function get_my_simple_profile() {
             login_userId = response['userId'] // 유저 아이디
             const my_username = response['username'] // 유저 이름
             let my_profileImage = response['profileImage'] //프로필 사진
-
-            console.log("미니프로필정보" + login_userId, my_username, my_profileImage)
+            const tokenExpiration = response['tokenExpiration']
+            const expiration_time = new Date(tokenExpiration).getTime();
+            timer(expiration_time)
 
             $("#login_userId").text(login_userId);
             $("#my_username").text(my_username);
 
-            my_profileImage = (my_profileImage ==null)? "http://bwptedu.com/assets/image/default-profile.jpg":my_profileImage;
+            my_profileImage = (my_profileImage == null) ? "http://bwptedu.com/assets/image/default-profile.jpg" : my_profileImage;
 
-            $("#my_profileImage").append("<img src='" + my_profileImage + "'>");
-            $("#my_profile").attr('onclick',`window.location.href='./profile.html?userId=${login_userId}'`)
-            $('#getSimpleProfile').attr('onclick',`window.location.href='./profile.html?userId=${login_userId}'`)
-            console.log('언제 나와' + login_userId)
+            $("#my_profileImage").attr('src', my_profileImage);
+            $("#my_profile").attr('onclick', `window.location.href='./profile.html?userId=${login_userId}'`)
+            $('#getSimpleProfile').attr('onclick', `window.location.href='./profile.html?userId=${login_userId}'`)
         }
     })
 }
-
 
 //ㅡㅡㅡㅡㅡㅡㅡㅡ프로필편집/팔로우/팔로우취소 버튼 보여주기ㅡㅡㅡㅡㅡㅡㅡㅡㅡ//
 function show_button(followerList) {
@@ -243,7 +241,6 @@ function getFollowers() {
             "Authorization": localStorage.getItem("accessToken")
         },
         success: function (response) {
-            console.log('팔로워리스트' + response);
             followerList = response;
             show_button(followerList)
         }
@@ -260,7 +257,6 @@ function getFollowings() {
             "Authorization": localStorage.getItem("accessToken")
         },
         success: function (response) {
-            console.log('팔로잉리스트' + response);
             followingList = response;
 
         }
@@ -279,7 +275,6 @@ function open_follower_popup() {
 }
 
 function showFollowerList() {
-    console.log('팔로우리스트나오나' + followerList)
     $('#follower_list_container').empty();
 
     for (let i = 0; i < followerList.length; i++) {
@@ -287,7 +282,7 @@ function showFollowerList() {
         const follwerName = followerList[i]['followerName'];
         let follwerProfileImage = followerList[i]['followerProfileImage'];
 
-        follwerProfileImage = (follwerProfileImage ==null)? "http://bwptedu.com/assets/image/default-profile.jpg":follwerProfileImage;
+        follwerProfileImage = (follwerProfileImage == null) ? "http://bwptedu.com/assets/image/default-profile.jpg" : follwerProfileImage;
 
         let follwerTemp = `
                     <div class="follow_profile">
@@ -314,7 +309,6 @@ function open_following_popup() {
 }
 
 function showFollowingList() {
-    console.log('팔로잉리스트나오나' + followingList)
     $('#following_list_container').empty();
 
     for (let i = 0; i < followingList.length; i++) {
@@ -322,7 +316,7 @@ function showFollowingList() {
         const follwingName = followingList[i]['followingName'];
         let follwingProfileImage = followingList[i]['followingProfileImage'];
 
-        follwingProfileImage = (follwingProfileImage ==null)? "http://bwptedu.com/assets/image/default-profile.jpg":follwingProfileImage;
+        follwingProfileImage = (follwingProfileImage == null) ? "http://bwptedu.com/assets/image/default-profile.jpg" : follwingProfileImage;
 
         let follwingTemp = `
                     <div class="follow_profile">

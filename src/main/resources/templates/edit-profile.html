@@ -19,115 +19,29 @@
 </head>
 
 <body>
-<nav class="navigation">
-    <div class="navigation__column">
-        <a href="index.html">
-            <img src="../static/images/low-res-logo.png"/>
-        </a>
-    </div>
-    <div class="photo__header" id="getMySimpleProfile">
-        <div>
-            <a id="myProfile1" role="link" tabindex="0">
-                <img alt="프로필 사진" src="" id="myProfileImage" class="photo__avatar"/>
-            </a>
-        </div>
-        <div class="photo__user-info">
-            <a id="myProfile2" role="link" tabindex="0">
-                <span class="photo__author" id="myProfileUsername"></span>
-            </a>
-        </div>
-    </div>
-</nav>
-<!-- 여기서부터 사이드바 -->
-<aside class="sidebar">
-    <ul>
-        <li class="list">
-            <div class="toggle">
-                <a href="#">
-                    <span class="icon"><ion-icon name="menu-outline" class="open"></ion-icon></span>
-                    <span class="title">메뉴 접기</span>
-                </a>
-            </div>
-        </li>
-        <li class="list">
-            <b></b>
-            <b></b>
+    <nav class="navigation">
+        <div class="navigation__column">
             <a href="index.html">
                 <img src="../static/images/low-res-logo.png" />
             </a>
-        </div>
-        <div class="navigation__column">
-            <i class="fa fa-search"></i>
-            <input type="text" placeholder="검색">
         </div>
         <div class="mini_porfile_box">
             <div class="expiration_time">
                 <span id="expiration_time"></span>
                 <button id="reissue_token" onclick="reissueToken()">접속 연장</button>
             </div>
-        </li>
-        <li class="list">
-            <b></b>
-            <b></b>
-            <a href="chart.html">
-                <span class="icon"><ion-icon name="bar-chart-outline"></ion-icon></span>
-                <span class="title">실시간 Top</span>
-            </a>
-        </li>
-        <li class="list">
-            <b></b>
-            <b></b>
-            <a href="#">
-                <span class="icon"><ion-icon name="alert-outline"></ion-icon></span>
-                <span class="title">알림</span>
-            </a>
-        </li>
-        <li class="list">
-            <b></b>
-            <b></b>
-            <a href="post.html">
-                <span class="icon"><ion-icon name="create-outline"></ion-icon></span>
-                <span class="title">게시글 작성</span>
-            </a>
-        </li>
-        <li class="list active">
-            <b></b>
-            <b></b>
-            <a>
-                <span class="icon" onclick="logOut()"><ion-icon name="settings-outline"></ion-icon></span>
-                <span class="title">설정</span>
-            </a>
-        </li>
-        <li class="list">
-            <b></b>
-            <b></b>
-            <a href="signin.html">
-                <span class="icon"><ion-icon name="log-out-outline"></ion-icon></span>
-                <span class="title">로그아웃</span>
-            </a>
-        </li>
-        </li>
-    </ul>
-</aside>
-<!-- 여기까지 사이드바 -->
-<div class="someting">
-    <main id="edit-profile">
-        <div class="child" style="margin-top: 74px;">
-            <div class="btn-group-vertical" role="group" aria-label="Vertical button group">
-                <a href="edit-profile.html">
-                    <button type="button" class="btn btn-dark" style="margin-bottom: 10px;">프로필 편집
-                    </button>
-                </a>
-                <a href="edit-password.html">
-                    <button type="button" class="btn btn-dark" style="margin-bottom: 10px;">비밀번호
-                        변경
-                    </button>
-                </a>
-                <a href="user-delete.html">
-                    <button type="button" class="btn btn-dark" style="margin-bottom: 10px;">회원
-                        탈퇴
-                    </button>
-                </a>
+
+            <div class="photo__header" id="getMySimpleProfile">
+                <div>
+                    <a id="myProfile1" role="link" tabindex="0">
+                        <img alt="프로필 사진" src="" id="myProfileImage" class="photo__avatar" />
+                    </a>
+                </div>
+                <div class="photo__user-info">
+                    <a id="myProfile2" role="link" tabindex="0">
+                        <span class="photo__author" id="myProfileUsername"></span>
+                    </a>
+                </div>
             </div>
         </div>
     </nav>
@@ -208,15 +122,20 @@
         <main id="edit-profile">
             <div class="child" style="margin-top: 74px;">
                 <div class="btn-group-vertical" role="group" aria-label="Vertical button group">
-                    <a href="edit-profile.html"><button type="button" class="btn btn-dark"
-                            style="margin-bottom: 10px;">프로필 편집
-                        </button></a>
-                    <a href="edit-password.html"> <button type="button" class="btn btn-dark"
-                            style="margin-bottom: 10px;">비밀번호
-                            변경</button></a>
-                    <a href="user-delete.html"> <button type="button" class="btn btn-dark"
-                            style="margin-bottom: 10px;">회원
-                            탈퇴</button></a>
+                    <a href="edit-profile.html">
+                        <button type="button" class="btn btn-dark" style="margin-bottom: 10px;">프로필 편집
+                        </button>
+                    </a>
+                    <a href="edit-password.html">
+                        <button type="button" class="btn btn-dark" style="margin-bottom: 10px;">비밀번호
+                            변경
+                        </button>
+                    </a>
+                    <a href="user-delete.html">
+                        <button type="button" class="btn btn-dark" style="margin-bottom: 10px;">회원
+                            탈퇴
+                        </button>
+                    </a>
                 </div>
             </div>
             <div class="edit-profile__container" style="margin-top: 50px;">
@@ -228,34 +147,13 @@
                                                    margin-left: 70px;
                                                    margin-top: 10px;
                                                    height: 32px;
-                        }" src="" id="myProfileImage2" class="photo__avatar"/>
-                    </a>
-                </div>
-                <div class="photo__user-info" style="width: 69.9453px; margin-top: 10px">
-                    <a id="myProfile5" role="link" tabindex="0">
-                        <span class="photo__author" id="myProfileUsername2"></span>
-                    </a>
-                </div>
-                <div class="input-group mb-3">
-                    <div class="input-group-append" style="margin-top: 30px;">
-                        <input type="file" class="photo_uploader" id="profileImage" accept="image/*">
-                        <img id="preview-profile-image" src="" style="display: none;">
+                        " src="" id="myProfileImage2" class="photo__avatar" />
+                        </a>
                     </div>
-                </div>
-            </header>
-            <form action="" class="edit-profile__form">
-                <div class="form__row">
-                    <label for="bio1" class="form__label">닉네임</label>
-                    <textarea name="username" id="username" id="bio1"></textarea>
-                </div>
-                <div class="form__row">
-                    <label for="bio" class="form__label">소개글</label>
-                    <textarea name="introduction" id="introduction" id="bio"></textarea>
-                </div>
-                <div class="input-group mb-3">
-                    <div class="input-group-append" style="margin-left: 235px;">
-                        <button class="btn btn-outline-secondary" type="button" onclick="changeProfile()"><a href="#">변경사항
-                            저장</a></button>
+                    <div class="photo__user-info" style="width: 69.9453px; margin-top: 10px">
+                        <a id="myProfile5" role="link" tabindex="0">
+                            <span class="photo__author" id="myProfileUsername2"></span>
+                        </a>
                     </div>
                     <div class="input-group mb-3">
                         <div class="input-group-append" style="margin-top: 30px;">
@@ -276,7 +174,8 @@
                     <div class="input-group mb-3">
                         <div class="input-group-append" style="margin-left: 235px;">
                             <button class="btn btn-outline-secondary" type="button" onclick="changeProfile()"><a
-                                    href="#">변경사항 저장</a></button>
+                                    href="#">변경사항
+                                    저장</a></button>
                         </div>
                     </div>
                 </form>

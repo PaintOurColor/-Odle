@@ -13,11 +13,10 @@
 /* ㅡㅡㅡㅡ네비게이션바 프로필ㅡㅡㅡㅡ */
 
 .photo__user-info {
-  padding: 1%;
+  padding: 15px;
   display: flex;
   align-items: center;
-  justify-content:space-between;
-  width: 30%;
+  width: 200px;
 }
 
 .photo__user-info img {
@@ -28,9 +27,13 @@
 }
 
 .photo__user-info span {
+  display: block;
   font-weight: 600;
-  margin-bottom: 5px;
-  width: 70%;
+  margin-bottom: 2px;
+  margin-right: 3px;
+  /*margin-left: -3px;*/
+  width: 120px;
+  max-width: 100%;
 }
 
 .mini_porfile_box {

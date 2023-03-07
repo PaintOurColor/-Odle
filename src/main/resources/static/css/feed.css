@@ -87,14 +87,15 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  margin-right: 3px;
+  margin-right: 1%;
 }
 
-.photo .photo__user-info .photo__author {
+.photo__header .photo__user-info .photo__author {
   display: block;
   font-weight: 600;
   margin-bottom: 2px;
   margin-right: 3px;
+  margin-left: -8px;
   width: 120px;
   max-width: 100%;
 }
@@ -114,7 +115,7 @@
   position: relative;
   top: 1px;
   vertical-align: baseline;
-  width: 100%;
+  width: 120%;
 }
 
 .photo__header .follow_button {
@@ -163,29 +164,6 @@
   vertical-align: baseline;
   margin-bottom: 5px;
   font-weight: bold;
-}
-
-.arr3 {
-  align-items: stretch;
-  border: 0;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  flex-shrink: 0;
-  font: inherit;
-  font-size: 100%;
-  padding: 0;
-  position: relative;
-  vertical-align: baseline;
-  /*margin-right: 5px;*/
-}
-
-.photo .photo__user-info .photo__author {
-  display: block;
-  font-weight: 600;
-  margin-bottom: 0;
-  text-decoration: none;
-  color: inherit;
 }
 
 .photo > img {

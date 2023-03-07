@@ -25,24 +25,24 @@
             <img src="../static/images/low-res-logo.png"/>
         </a>
     </div>
-    <div class="navigation__column">
-        <ul class="navigations__links">
-            <li class="navigation__list-item">
-                <a href="explore.html" class="navigation__link">
-                    <i class="fa fa-compass fa-lg"></i>
+    <div class="mini_porfile_box">
+        <div class="expiration_time" style="font-size: 14px">
+            <span id="expiration_time"></span>
+            <button id="reissue_token" onclick="reissueToken()">접속 연장</button>
+        </div>
+
+        <div class="photo__header" id="getMySimpleProfile">
+            <div>
+                <a id="myProfile14" role="link" tabindex="0">
+                    <img src="" id="myProfileImage7" class="photo__avatar"/>
                 </a>
-            </li>
-            <li class="navigation__list-item">
-                <a href="#" class="navigation__link">
-                    <i class="fa fa-heart-o fa-lg"></i>
+            </div>
+            <div class="photo__user-info">
+                <a id="myProfile15" role="link" tabindex="0">
+                    <span class="photo__author" id="myProfileUsername7"></span>
                 </a>
-            </li>
-            <li class="navigation__list-item">
-                <a href="profile.html" class="navigation__link">
-                    <i class="fa fa-user-o fa-lg"></i>
-                </a>
-            </li>
-        </ul>
+            </div>
+        </div>
     </div>
 </nav>
 <!-- 여기까지 상단 메뉴 -->
@@ -85,7 +85,7 @@
         <li class="list">
             <b></b>
             <b></b>
-            <a href="#">
+            <a href="#" onclick="alert('아직 준비 중입니다!')">
                 <span class="icon"><ion-icon name="alert-outline"></ion-icon></span>
                 <span class="title">알림</span>
             </a>
@@ -144,11 +144,22 @@
 
         <!-- 여기부터 회원탈퇴 -->
         <div class="edit-profile__container" style="margin-top: 50px;">
-            <header class="edit-profile__header">
-                <div class="edit-profile__avatar-container">
-                    <img src="../static/images/avatar.jpg" class="edit-profile__avatar"/>
+            <header class="edit-profile__header" style="margin-left: 70px">
+                <div>
+                    <a id="myProfile16" role="link" tabindex="0">
+                        <img style="width: 32px;
+                                                   border-radius: 50%;
+                                                   margin-left: 70px;
+                                                   margin-top: 10px;
+                                                   height: 32px;
+                        " src="" id="myProfileImage8" class="photo__avatar"/>
+                    </a>
                 </div>
-                <h4 class="edit-profile__username">닉네임</h4>
+                <div class="photo__user-info" style="width: 69px; margin-top: 10px; font-size: 14px;">
+                    <a id="myProfile17" role="link" tabindex="0">
+                        <span class="photo__author" id="myProfileUsername8"></span>
+                    </a>
+                </div>
             </header>
             <form action="" class="edit-profile__form">
                 <div class="input-email input-group mb-3">
@@ -168,7 +179,13 @@
         crossorigin="anonymous"></script>
 <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+<!-- JQuery 사용 설정 -->
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<!-- 페이지 동작 Js -->
 <script src="../static/js/sidebar.js"></script>
 <script src="../static/js/user_delete.js"></script>
+<script src="../static/js/logout.js"></script>
+<script src="../static/js/feed.js"></script>
+<script src="../static/js/reissue.js"></script>
 </body>
 </html>

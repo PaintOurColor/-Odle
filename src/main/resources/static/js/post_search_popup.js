@@ -36,7 +36,30 @@ function get_post(post_id) {
             const like_count = response.likeCount;
             const content = response.content;
             const open_end = response.openOrEnd;
-            const emotion = response.emotion;
+            let emotion = response.emotion;
+            switch (emotion) {
+                case 'ANGRY':
+                    emotion = "😡";
+                    break;
+                case 'SAD':
+                    emotion = "😭";
+                    break;
+                case 'SCREAM':
+                    emotion = "😱";
+                    break;
+                case 'SHY':
+                    emotion = "😳";
+                    break;
+                case 'HAPPY':
+                    emotion = "😆";
+                    break;
+                case 'LOVE':
+                    emotion = "😍";
+                    break;
+                case 'FLEX':
+                    emotion = "😎";
+                    break;
+            }
             const tag_list = response.tagList;
             const comment_count = response.commentCount;
             const created_at = new Date(response.createdAt);
@@ -48,7 +71,7 @@ function get_post(post_id) {
             const modifiedMonth = modified_at.getMonth() + 1;
             const modifiedDate = modified_at.getDate();
             const delete_button_style = (post_user_id === login_search_userId) ? '' : 'display: none';
-            console.log(delete_button_style, post_user_id, login_search_userId);
+
             post_profileImage = (post_profileImage == null) ? "http://bwptedu.com/assets/image/default-profile.jpg" : post_profileImage;
             const temp_post = `
             <span class="close" onclick="close_button()">&times;</span>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link href="	https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+  <!-- 부트스트랩 css 사용 -->
+  <link rel="stylesheet" href="../static/css/styles.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <title>Document</title>
+</head>
+
+<body>
+<nav class="navigation">
+  <div class="navigation__column">
+    <a href="index.html">
+      <img src="../static/images/low-res-logo.png">
+    </a>
+  </div>
+  <div class="navigation__column" style="display: inline-block;">
+  </div>
+  <div class="mini_porfile_box">
+    <div class="expiration_time">
+      <span id="expiration_time"></span>
+      <button id="reissue_token" onclick="reissueToken()">접속 연장</button>
+    </div>
+    <div class="navigation__profile">
+      <div class="photo__header" id="getMySimpleProfile">
+        <div>
+          <a id="myProfile_post_pic" role="link" tabindex="0">
+            <img alt="프로필 사진" src="" id="myProfileImage" class="photo__avatar" />
+          </a>
+        </div>
+        <div class="photo__user-info">
+          <a id="myProfile_post_pic_auth" role="link" tabindex="0">
+            <span class="photo__author" id="myProfileUsername"></span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+<div class="post-write" id="update">
+  <div class="d-grid gap-2">
+    <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+      <input type="radio" class="btn-check" name="btnradio" value="OPEN" id="btnradio1" autocomplete="off"
+             checked>
+      <label class="btn btn-outline-primary" for="btnradio1">여는 노래</label>
+
+      <input type="radio" class="btn-check" name="btnradio" value="END" id="btnradio2" autocomplete="off">
+      <label class="btn btn-outline-primary" for="btnradio2">닫는 노래</label>
+    </div>
+  </div>
+  <div id="music-info" class="music-info">
+    <div>
+      <div id="post-melon-id">멜론아이디</div>
+      <div id="post-title">제목</div>
+      <div id="post-singer">가수</div>
+      <img id="post-cover"
+           src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlQ_lwqhefUx9tX5xxqH-ZZ9SOZO7YunrwOA&usqp=CAU">
+    </div>
+  </div>
+
+  <div class="input-group">
+    <span class="input-group-text">게시글작성</span>
+    <textarea aria-label="With textarea" class="form-control h-25" id="content" rows="10"></textarea>
+  </div>
+  <div class="input-group mb-3">
+    <span class="input-group-text"># 태그입력</span>
+    <input aria-describedby="basic-addon1" aria-label="Username" class="form-control" id="tag" placeholder=""
+           type="text" value="">
+  </div>
+  <div class="group" role="emotion" aria-label="emotion group">
+    <input type="radio" class="btn-check" name="emotion" value="ANGRY" id="angry" autocomplete="off">
+    <label class="btn btn-outline-primary" for="angry">😡</label>
+
+    <input type="radio" class="btn-check" name="emotion" value="SAD" id="sad" autocomplete="off">
+    <label class="btn btn-outline-primary" for="sad">😭</label>
+
+    <input type="radio" class="btn-check" name="emotion" value="SCREAM" id="scream" autocomplete="off">
+    <label class="btn btn-outline-primary" for="scream">😱</label>
+
+    <input type="radio" class="btn-check" name="emotion" value="SHY" id="shy" autocomplete="off" checked>
+    <label class="btn btn-outline-primary" for="shy">😳</label>
+
+    <input type="radio" class="btn-check" name="emotion" value="HAPPY" id="happy" autocomplete="off">
+    <label class="btn btn-outline-primary" for="happy">😆</label>
+
+    <input type="radio" class="btn-check" name="emotion" value="LOVE" id="love" autocomplete="off">
+    <label class="btn btn-outline-primary" for="love">😍</label>
+
+    <input type="radio" class="btn-check" name="emotion" value="FLEX" id="flex" autocomplete="off">
+    <label class="btn btn-outline-primary" for="flex">😎</label>
+  </div>
+</div>
+<div class="send">
+  <button class="btn btn-primary" type="submit" onclick="postUpdate()">수정하기</button>
+</div>
+
+<!--  부트스트랩 js 사용 -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+        crossorigin="anonymous"></script>
+<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+<script src="../static/js/post_update.js"></script>
+<script src="../static/js/post_search_word.js"></script>
+<script src="../static/js/reissue.js"></script>
+</body>
+
+</html>

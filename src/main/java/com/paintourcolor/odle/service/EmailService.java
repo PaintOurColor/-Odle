@@ -40,7 +40,7 @@ public class EmailService implements EmailServiceInterface{
         msgg+= "<br>";
         msgg+= "<p>이 메일은 발신 전용입니다.<p>";
         msgg+= "<br>";
-        msgg+= "<h1> 안녕하세요 Odel 입니다. </h1>";
+        msgg+= "<h1> 안녕하세요 Odle 입니다. </h1>";
         msgg+= "<br>";
         msgg+= "<p>아래 코드를 회원가입 창으로 돌아가 입력해주세요<p>";
         msgg+= "<br>";

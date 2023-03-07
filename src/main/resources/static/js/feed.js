@@ -81,7 +81,30 @@ function getPost() {
             const username = obj['username']
             const profileImage = obj['userProfileImage']
             const openOrEnd = obj['openOrEnd']
-            const emotion = obj['emotion']
+            let emotion = obj['emotion']
+            switch (emotion) {
+                case 'ANGRY':
+                    emotion = "😡";
+                    break;
+                case 'SAD':
+                    emotion = "😭";
+                    break;
+                case 'SCREAM':
+                    emotion = "😱";
+                    break;
+                case 'SHY':
+                    emotion = "😳";
+                    break;
+                case 'HAPPY':
+                    emotion = "😆";
+                    break;
+                case 'LOVE':
+                    emotion = "😍";
+                    break;
+                case 'FLEX':
+                    emotion = "😎";
+                    break;
+            }
             const musicTitle = obj['musicTitle']
             const musicSinger = obj['musicSinger']
             const musicCover = obj['musicCover']
@@ -94,6 +117,9 @@ function getPost() {
 
             if (login_feed_userId !== userId) {
                 showFollowButton(userId, postId)
+            }
+            else {
+                showUpdateButton(userId, postId)
             }
 
             showFeedLikeButton(postId)
@@ -152,6 +178,22 @@ function getPost() {
             $('#getPost').append(tempHtml)
         }
     });
+}
+
+function showUpdateButton(userId, postId) {
+    $.ajax({
+        url: "http://localhost:8080/posts/" + postId,
+        type: "GET",
+        dataType: "json",
+        headers: {
+            "Authorization": localStorage.getItem("accessToken")
+        },
+        success: function () {
+            update_button = `<div class="follow_button" onclick="window.location.href='./post-update.html?postId=${postId}'" role="link" tabindex="0">수정</div>`
+
+            $('#feed_follow_' + postId).append(update_button)
+        }
+    })
 }
 
 function showFollowButton(userId, postId) {

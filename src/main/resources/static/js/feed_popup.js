@@ -37,7 +37,30 @@ function get_post(post_id) {
             const like_count = response.likeCount;
             const content = response.content;
             const open_end = response.openOrEnd;
-            const emotion = response.emotion;
+            let emotion = response.emotion;
+            switch (emotion) {
+                case 'ANGRY':
+                    emotion = "😡";
+                    break;
+                case 'SAD':
+                    emotion = "😭";
+                    break;
+                case 'SCREAM':
+                    emotion = "😱";
+                    break;
+                case 'SHY':
+                    emotion = "😳";
+                    break;
+                case 'HAPPY':
+                    emotion = "😆";
+                    break;
+                case 'LOVE':
+                    emotion = "😍";
+                    break;
+                case 'FLEX':
+                    emotion = "😎";
+                    break;
+            }
             const tag_list = response.tagList;
             const comment_count = response.commentCount;
             const created_at = new Date(response.createdAt);

@@ -4,16 +4,12 @@ import com.paintourcolor.odle.repository.LogoutTokenRepository;
 import com.paintourcolor.odle.util.jwtutil.JwtAuthFilter;
 import com.paintourcolor.odle.util.jwtutil.JwtUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
-import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -31,11 +27,6 @@ public class WebSecurityConfig implements WebMvcConfigurer {
     private final JwtUtil jwtUtil;
 
     private final LogoutTokenRepository logoutTokenRepository;
-
-    @Bean
-    public WebSecurityCustomizer configure()  {
-        return (web) -> web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
-    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -71,9 +62,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "HEAD")
-                .allowedOrigins("*")
-                .allowCredentials(true)
-                .maxAge(3000)
+                .allowedOrigins("http://localhost:8080", "http://localhost:63342", "http://127.0.0.1:5500/", "http://ec2-3-37-153-26.ap-northeast-2.compute.amazonaws.com/", "odle.netlify.app")
                 .exposedHeaders("Authorization", "RefreshToken");
     }
 }

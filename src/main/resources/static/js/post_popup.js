@@ -42,6 +42,7 @@ function get_post(post_id) {
             const like_count = response.likeCount;
             const content = response.content;
             const open_end = response.openOrEnd;
+            let emotion = response.emotion;
             switch (emotion) {
                 case 'ANGRY':
                     emotion = "😡";

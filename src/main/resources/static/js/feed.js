@@ -81,6 +81,7 @@ function getPost() {
             const username = obj['username']
             const profileImage = obj['userProfileImage']
             const openOrEnd = obj['openOrEnd']
+            let emotion = obj['emotion']
             switch (emotion) {
                 case 'ANGRY':
                     emotion = "😡";
@@ -104,7 +105,6 @@ function getPost() {
                     emotion = "😎";
                     break;
             }
-            let emotion = obj['emotion']
             const musicTitle = obj['musicTitle']
             const musicSinger = obj['musicSinger']
             const musicCover = obj['musicCover']

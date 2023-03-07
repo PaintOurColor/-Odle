@@ -118,6 +118,9 @@ function getPost() {
             if (login_feed_userId !== userId) {
                 showFollowButton(userId, postId)
             }
+            else {
+                showUpdateButton(userId, postId)
+            }
 
             showFeedLikeButton(postId)
 

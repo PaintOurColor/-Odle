@@ -62,7 +62,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "HEAD")
-                .allowedOrigins("http://localhost:8080", "http://localhost:63342", "http://127.0.0.1:5500/", "http://ec2-3-37-153-26.ap-northeast-2.compute.amazonaws.com/", "odle.netlify.app")
+                .allowedOrigins("http://localhost:8080", "http://localhost:63342", "http://127.0.0.1:5500/", "https://api.odle8.com/", "https://odle8.com/")
                 .exposedHeaders("Authorization", "RefreshToken");
     }
 }

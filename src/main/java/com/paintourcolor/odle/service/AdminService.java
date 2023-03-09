@@ -5,7 +5,9 @@ import com.paintourcolor.odle.entity.*;
 import com.paintourcolor.odle.repository.CommentRepository;
 import com.paintourcolor.odle.repository.PostRepository;
 import com.paintourcolor.odle.repository.UserRepository;
+import com.paintourcolor.odle.util.jwtutil.JwtUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,8 +19,8 @@ import java.util.Set;
 @Service
 @RequiredArgsConstructor
 public class AdminService implements AdminServiceInterface {
-
-    private static final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
+    @Value("${jwt.secret.key}")
+    private String secretKey;
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final PostRepository postRepository;
@@ -35,7 +37,7 @@ public class AdminService implements AdminServiceInterface {
             throw new IllegalArgumentException("중복된 사용자가 존재합니다.");
         });
 
-        if (!adminSignupRequest.getAdminToken().equals(ADMIN_TOKEN)) {
+        if (!adminSignupRequest.getAdminToken().equals(secretKey)) {
             throw new IllegalArgumentException("관리자 암호가 틀려 등록이 불가능합니다.");
         }
 

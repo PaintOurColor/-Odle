@@ -9,7 +9,7 @@
         <!--insert into odle.melon_korea (title, singer, cover)-->
         <!--values(#{title}, #{singer}, #{cover})-->
         INSERT INTO odle.melon_korea (title, singer, cover) SELECT #{title}, #{singer}, #{cover} FROM DUAL WHERE NOT EXISTS
-        (SELECT * FROM odle.melon_korea WHERE id > 300 AND title = #{title} AND singer = #{singer} AND cover = #{cover});
+        (SELECT * FROM odle.melon_korea WHERE id > 363249 AND title = #{title} AND singer = #{singer} AND cover = #{cover});
     </insert>
 <!--    <insert id="insert" useGeneratedKeys="true"> ##parameterType="com.paintourcolor.odle.entity.MelonGlobal"-->
 <!--    insert into odle.melon_global (title, singer, cover)-->

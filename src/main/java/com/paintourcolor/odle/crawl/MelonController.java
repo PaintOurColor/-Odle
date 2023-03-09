@@ -13,7 +13,7 @@ public class MelonController {
     private final MelonMapper melonMapper;
 
     //2시간마다 국내 차트 크롤링
-    //@Scheduled(fixedRate = 60 * 1000 * 60 * 2)
+    @Scheduled(fixedRate = 60 * 1000 * 60 * 2)
     @GetMapping("/korea")
     public void crawlKoreaMelon() {
         MelonCrawler melonCrawler = new MelonCrawler(melonMapper);

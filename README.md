@@ -21,7 +21,7 @@
 서비스 둘러보기 링크 → odle8.com
 
 - 프로젝트 최종 완성본의 서비스 아키텍쳐 구상도
-![image](https://user-images.githubusercontent.com/117060860/221068244-b8baf317-d5f8-415c-95f3-8e22ef842533.png)
+![image](https://user-images.githubusercontent.com/117060896/224294884-78651db5-7bb6-4815-8c55-3bd582dcfbc4.png)
 
 - 사용한 기술 스택
 

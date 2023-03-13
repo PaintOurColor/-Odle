@@ -7,7 +7,6 @@ import com.paintourcolor.odle.entity.User;
 import com.paintourcolor.odle.security.UserDetailsImpl;
 import com.paintourcolor.odle.service.*;
 import com.paintourcolor.odle.util.jwtutil.JwtUtil;
-import com.paintourcolor.odle.util.redis.RedisService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -34,7 +33,6 @@ public class UserController {
     private final ProfileServiceInterface profileService;
     private final EmailServiceInterface emailService;
     private final JwtUtil jwtUtil;
-    private final RedisService redisService;
 
     @PostMapping("/signup")
     public ResponseEntity<StatusResponse> signUp(@RequestBody @Valid UserSignupRequest signUpRequest) {
@@ -236,8 +234,6 @@ public class UserController {
         UserFollowOrUnfollowResponse userFollowOrUnfollowResponse = userService.getUserFollowOrUnfollowResponse(userId, userDetails.getUserId());
         return new ResponseEntity<>(userFollowOrUnfollowResponse, HttpStatus.OK);
     }
-
-    //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ팔로우 기능 여기까지ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ//
 
     //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ이메일 인증 여기부터ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ//
 

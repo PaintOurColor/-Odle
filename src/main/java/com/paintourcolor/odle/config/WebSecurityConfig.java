@@ -6,7 +6,6 @@ import com.paintourcolor.odle.util.jwtutil.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -46,14 +45,9 @@ public class WebSecurityConfig implements WebMvcConfigurer {
                 .antMatchers("/users/**").permitAll()
                 .antMatchers("/posts/**").permitAll()
                 .antMatchers("/crawl/**").permitAll()
-//                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll() // 프론트 CORS 오류 뜰 때
                 .anyRequest().authenticated()
                 // JWT 인증/인가를 사용하기 위한 설정
                 .and().addFilterBefore(new JwtAuthFilter(jwtUtil, logoutTokenRepository), UsernamePasswordAuthenticationFilter.class);
-
-//        http.formLogin().loginPage("/api/user/login-page").permitAll();
-//
-//        http.exceptionHandling().accessDeniedPage("/api/user/forbidden");
 
         return http.build();
     }

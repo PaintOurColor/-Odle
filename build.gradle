@@ -64,8 +64,8 @@ dependencies {
     //redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
-    // XSS Filter
-    implementation 'org.apache.commons:commons-text:1.9'
+//    // XSS Filter
+//    implementation 'org.apache.commons:commons-text:1.9'
 }
 
 tasks.named('test') {

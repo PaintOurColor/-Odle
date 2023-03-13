@@ -16,11 +16,12 @@ public class WebMvcConfig implements WebMvcConfigurer {
         return new CommonsMultipartResolver();
     }
 
-    @Bean
-    public MappingJackson2HttpMessageConverter jsonEscapeConverter() {
-        // MappingJackson2HttpMessageConverter Default ObjectMapper 설정 및 ObjectMapper Config 설정
-        ObjectMapper objectMapper = Jackson2ObjectMapperBuilder.json().build();
-        objectMapper.getFactory().setCharacterEscapes(new HTMLCharacterEscapes());
-        return new MappingJackson2HttpMessageConverter(objectMapper);
-    }
+    // XSS Filter
+//    @Bean
+//    public MappingJackson2HttpMessageConverter jsonEscapeConverter() {
+//        // MappingJackson2HttpMessageConverter Default ObjectMapper 설정 및 ObjectMapper Config 설정
+//        ObjectMapper objectMapper = Jackson2ObjectMapperBuilder.json().build();
+//        objectMapper.getFactory().setCharacterEscapes(new HTMLCharacterEscapes());
+//        return new MappingJackson2HttpMessageConverter(objectMapper);
+//    }
 }

@@ -5,7 +5,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Getter
@@ -36,7 +35,7 @@ public class Post extends Timestamped{
     private Long commentCount;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<PostTag> postTags = new LinkedHashSet<>();
+    private Set<PostTag> postTags = new HashSet<>();
 
     public void plusComment() {
         this.commentCount += 1;

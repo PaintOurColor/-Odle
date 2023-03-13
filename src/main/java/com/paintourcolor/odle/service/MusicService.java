@@ -3,6 +3,7 @@ package com.paintourcolor.odle.service;
 import com.paintourcolor.odle.dto.mucis.response.MusicChartResponse;
 import com.paintourcolor.odle.dto.mucis.response.MusicResponse;
 import com.paintourcolor.odle.dto.mucis.response.MusicSearchResponse;
+import com.paintourcolor.odle.entity.EmotionEnum;
 import com.paintourcolor.odle.entity.MelonKorea;
 import com.paintourcolor.odle.repository.MelonKoreaRepository;
 import com.paintourcolor.odle.repository.PostRepository;
@@ -55,92 +56,15 @@ public class MusicService implements MusicServiceInterface {
                 .collect(Collectors.toList());
     }
 
-    // angry 차트 조회
     @Transactional(readOnly = true)
     @Override
-    public List<MusicChartResponse> getAngryChart() {
+    public List<MusicChartResponse> getEmotionChart(EmotionEnum emotion) {
         // 24시간
         LocalDateTime endDate = LocalDateTime.now();
-        LocalDateTime startDate = endDate.minusDays(1);
+        LocalDateTime startDate = endDate.minusDays(7);
 
-        List<Object[]> musicList = postRepository.findAngryMusicIdsWithCountAndMusicInfo(startDate, endDate).stream().limit(6).toList();
+        List<Object[]> musicList = postRepository.findEmotionMusicIdsWithCountAndMusicInfo(emotion, startDate, endDate).stream().limit(6).toList();
 
-        return musicChartResponses(musicList);
-    }
-
-    // sad 차트 조회
-    @Transactional(readOnly = true)
-    @Override
-    public List<MusicChartResponse> getSadChart() {
-        LocalDateTime endDate = LocalDateTime.now();
-        LocalDateTime startDate = endDate.minusDays(1);
-
-        List<Object[]> musicList = postRepository.findSadMusicIdsWithCountAndMusicInfo(startDate, endDate).stream().limit(6).toList();
-
-        return musicChartResponses(musicList);
-    }
-
-    // scream 차트 조회
-    @Transactional(readOnly = true)
-    @Override
-    public List<MusicChartResponse> getScreamChart() {
-        LocalDateTime endDate = LocalDateTime.now();
-        LocalDateTime startDate = endDate.minusDays(1);
-
-        List<Object[]> musicList = postRepository.findScreamMusicIdsWithCountAndMusicInfo(startDate, endDate).stream().limit(6).toList();
-
-        return musicChartResponses(musicList);
-    }
-
-    // shy 차트 조회
-    @Transactional(readOnly = true)
-    @Override
-    public List<MusicChartResponse> getShyChart() {
-        LocalDateTime endDate = LocalDateTime.now();
-        LocalDateTime startDate = endDate.minusDays(1);
-
-        List<Object[]> musicList = postRepository.findShyMusicIdsWithCountAndMusicInfo(startDate, endDate).stream().limit(6).toList();
-
-        return musicChartResponses(musicList);
-    }
-
-    // happy 차트 조회
-    @Transactional(readOnly = true)
-    @Override
-    public List<MusicChartResponse> getHappyChart() {
-        LocalDateTime endDate = LocalDateTime.now();
-        LocalDateTime startDate = endDate.minusDays(1);
-
-        List<Object[]> musicList = postRepository.findHappyMusicIdsWithCountAndMusicInfo(startDate, endDate).stream().limit(6).toList();
-
-        return musicChartResponses(musicList);
-    }
-
-    // love 차트 조회
-    @Transactional(readOnly = true)
-    @Override
-    public List<MusicChartResponse> getLoveChart() {
-        LocalDateTime endDate = LocalDateTime.now();
-        LocalDateTime startDate = endDate.minusDays(1);
-
-        List<Object[]> musicList = postRepository.findLoveMusicIdsWithCountAndMusicInfo(startDate, endDate).stream().limit(6).toList();
-
-        return musicChartResponses(musicList);
-    }
-
-    // flex 차트 조회
-    @Transactional(readOnly = true)
-    @Override
-    public List<MusicChartResponse> getFlexChart() {
-        LocalDateTime endDate = LocalDateTime.now();
-        LocalDateTime startDate = endDate.minusDays(1);
-
-        List<Object[]> musicList = postRepository.findFlexMusicIdsWithCountAndMusicInfo(startDate, endDate).stream().limit(6).toList();
-
-        return musicChartResponses(musicList);
-    }
-
-    public List<MusicChartResponse> musicChartResponses(List<Object[]> musicList) {
         List<MusicChartResponse> musicChartResponses = new ArrayList<>();
         for (Object[] music : musicList) {
             MusicChartResponse musicChartResponse = MusicChartResponse.builder()

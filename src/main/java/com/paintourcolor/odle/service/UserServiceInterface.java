@@ -3,7 +3,6 @@ package com.paintourcolor.odle.service;
 import com.paintourcolor.odle.dto.user.request.*;
 import com.paintourcolor.odle.dto.user.response.*;
 import com.paintourcolor.odle.entity.User;
-import com.paintourcolor.odle.security.UserDetailsImpl;
 import org.springframework.data.domain.Pageable;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,10 +16,9 @@ public interface UserServiceInterface {
     void loginUser(UserLoginRequest userLoginRequest, HttpServletResponse response);
     void logoutUser(HttpServletRequest request);
     TokenReissueResponse reissueToken(HttpServletRequest request, HttpServletResponse response); //AccessToken 재발급
-    void inactivateMe(User user, UserInactivateRequest userInactivateRequest); // 이거 리퀘스트 같이 써도 되는지,,,
+    void inactivateMe(User user, UserInactivateRequest userInactivateRequest);
     List<UserResponse> getUsers(Pageable pageable);
     List<ProfilePostResponse> getProfilePosts(Long userId, Pageable pageable);
     PostCountResponse getPostCount(Long userId);
-
     UserFollowOrUnfollowResponse getUserFollowOrUnfollowResponse(Long followingId, Long followerId);
 }

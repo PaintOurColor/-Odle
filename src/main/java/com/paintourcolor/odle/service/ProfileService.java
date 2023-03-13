@@ -1,7 +1,6 @@
 package com.paintourcolor.odle.service;
 
 import com.paintourcolor.odle.dto.user.request.ProfileUpdateRequest;
-import com.paintourcolor.odle.dto.user.response.FollowingResponse;
 import com.paintourcolor.odle.dto.user.response.MyProfileSimpleResponse;
 import com.paintourcolor.odle.dto.user.response.ProfileResponse;
 import com.paintourcolor.odle.dto.user.response.ProfileSimpleResponse;
@@ -14,10 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Date;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor

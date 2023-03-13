@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
-import java.util.LinkedHashSet;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -25,7 +25,7 @@ public class Tag {
     private Long tagCount;
 
     @OneToMany(mappedBy = "tag", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<PostTag> postTags = new LinkedHashSet<>();
+    private Set<PostTag> postTags = new HashSet<>();
 
     public Tag(String tagName) {
         this.tagName = tagName;

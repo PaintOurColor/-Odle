@@ -13,8 +13,4 @@ public interface MusicServiceInterface {
     MusicResponse getMusic(Long musicId);
     List<MusicSearchResponse> getMusicSearchList(Pageable pageable, String searchOption, String keyword);
     List<MusicChartResponse> getEmotionChart(EmotionEnum emotion);
-//    // 감정에 대한 TOP 포스팅 노래 리스트 조회(추가기능)
-//    EmotionChartResponse getEmotionChart(EmotionChartRequest emotionChartRequest, int page);
-//    // 오늘 가장 많이 포스팅된 TOP 노래 리스트 조회(추가기능)
-//    TodayTopChartResponse getTodayTopChart(TodayTopChartRequest todayTopChartRequest, int page);
 }

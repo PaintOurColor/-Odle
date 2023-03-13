@@ -5,7 +5,6 @@ import com.paintourcolor.odle.entity.*;
 import com.paintourcolor.odle.repository.CommentRepository;
 import com.paintourcolor.odle.repository.PostRepository;
 import com.paintourcolor.odle.repository.UserRepository;
-import com.paintourcolor.odle.util.jwtutil.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

@@ -9,5 +9,4 @@ import java.util.List;
 public interface MelonKoreaRepository extends JpaRepository<MelonKorea, Long> {
     List<MelonKorea> findAllByTitleContainsIgnoreCase(Pageable pageable, String keyword);
     List<MelonKorea> findAllBySingerContainsIgnoreCase(Pageable pageable, String keyword);
-
 }

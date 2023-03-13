@@ -1,10 +1,7 @@
 package com.paintourcolor.odle.service;
 
 import com.paintourcolor.odle.dto.user.request.AdminSignupRequest;
-import com.paintourcolor.odle.dto.user.request.UserActivateRequest;
-import com.paintourcolor.odle.dto.user.request.UserInactivateRequest;
 import com.paintourcolor.odle.entity.User;
-import com.paintourcolor.odle.entity.UserRoleEnum;
 
 public interface AdminServiceInterface {
     // 관리자 회원가입

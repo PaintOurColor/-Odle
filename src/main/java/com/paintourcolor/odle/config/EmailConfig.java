@@ -26,10 +26,12 @@ public class EmailConfig {
     private String password;
     @Value("${spring.mail.properties.mail.smtp.ssl.enable}")
     private boolean ssl;
+    @Value("${spring.mail.host}")
+    private String host;
     @Bean
     public JavaMailSender javaMailService() {
         JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
-        javaMailSender.setHost("smtp.naver.com");
+        javaMailSender.setHost(host);
         javaMailSender.setUsername(username);
         javaMailSender.setPassword(password);
         javaMailSender.setPort(port);

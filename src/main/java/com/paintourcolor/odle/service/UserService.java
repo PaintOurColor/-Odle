@@ -9,7 +9,6 @@ import com.paintourcolor.odle.util.redis.RedisServiceInterface;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -51,11 +50,6 @@ public class UserService implements UserServiceInterface {
         if (userRepository.existsByEmail(email)) {
             throw new IllegalArgumentException("중복된 이메일이 존재합니다.");
         }
-
-//        if (emailCodeRepository.findByEmail(email).getEmailAuthentication().equals(EmailVerifyEnum.UNVERIFIED)
-//                || !emailCodeRepository.existsByEmail(email)) {
-//            throw new IllegalArgumentException("인증이 완료된 이메일로만 회원가입이 가능합니다.");
-//        }
 
         if (!emailCodeRepository.existsByEmail(email)) {
             throw new IllegalArgumentException("인증이 완료된 이메일로만 회원가입이 가능합니다.");
@@ -133,7 +127,6 @@ public class UserService implements UserServiceInterface {
         String email = jwtUtil.getUserInfoFromToken(refreshToken).getSubject(); // 유저 이메일 정보 가져오기
 
         String newAccessToken = jwtUtil.createAccessToken(email, role); // 새로운 AccessToken 생성
-//        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, newAccessToken); // 새로운 AccessToken Header로 반환
 
         return new TokenReissueResponse(newAccessToken);
     }
